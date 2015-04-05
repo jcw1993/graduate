@@ -8,5 +8,19 @@
 </head>
 <body>
 <h1>Hello world!</h1>
+<table>
+<tr>
+	<th>Id</th>
+	<th>邮箱</th>
+	<th>用户名</th>
+	<th>密码</th>
+</tr>
+<tr>
+	<td>${model.admin.id}</td>
+	<td>${model.admin.mail}</td>
+	<td>${model.admin.name}</td>
+	<td>${model.admin.password}</td>
+</tr>
+</table>
 </body>
 </html>

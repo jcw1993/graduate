@@ -7,9 +7,7 @@
 <hibernate-mapping package="edu.nju.software.pojo">
     <class name="Company" table="company">
         <id name="id" column="id">
-            <generator class="sequence">
-            	<param name="sequence">SE_COMPANY</param>
-            </generator>
+            <generator class="increment" />
         </id>
         <property name="name" type="string" column="name" />
         <property name="desc" type="string" column="desc" />
