@@ -11,8 +11,8 @@ import edu.nju.software.pojo.Log;
 public class LogDaoImpl extends HibernateDaoBase implements LogDao {
 
 	@Override
-	public List<Log> search(Integer projectId, Integer taskId, Date startDate,
-			Date endDate) throws DataAccessException {
+	public List<Log> search(Integer projectId, Integer taskId, Date startTime,
+			Date endTime) throws DataAccessException {
 		if(null == projectId && null == taskId) {
 			return null;
 		}

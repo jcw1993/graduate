@@ -15,4 +15,6 @@ public class ResultCode {
 	public static final int E_INVALID_PARAMETER = 0x00000010;
 	
 	public static final int E_NO_DATA = 0x00000020;
+	
+	public static final int E_OTHER_ERROR = 0x00000030;
 }

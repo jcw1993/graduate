@@ -2,6 +2,7 @@ package edu.nju.software.util;
 
 public class GeneralResult<T> {
 	private int resultCode;
+	private String message;
 	private T data;
 	
 	public GeneralResult() {
@@ -23,6 +24,14 @@ public class GeneralResult<T> {
 
 	public void setResultCode(int resultCode) {
 		this.resultCode = resultCode;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public T getData() {

@@ -37,4 +37,9 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 		return (Task) getHibernateTemplate().find("from Task where taskId = :parentId", parentId);
 	}
 
+	@Override
+	public Task getById(int id) {
+		return getHibernateTemplate().get(Task.class, id);
+	}
+
 }

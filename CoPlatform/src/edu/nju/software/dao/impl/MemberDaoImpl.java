@@ -35,5 +35,10 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 		company.setId(id);
 		getHibernateTemplate().delete(company);
 	}
+
+	@Override
+	public Member getById(int id) {
+		return getHibernateTemplate().get(Member.class, id);
+	}
 	
 }

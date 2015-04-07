@@ -2,6 +2,7 @@ package edu.nju.software.util;
 
 public class NoDataResult {
 	private int resultCode;
+	private String message;
 	
 	public NoDataResult() {
 		this.resultCode = ResultCode.NORMAL;
@@ -18,4 +19,13 @@ public class NoDataResult {
 	public void setResultCode(int resultCode) {
 		this.resultCode = resultCode;
 	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 }
