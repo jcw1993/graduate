@@ -1,0 +1,63 @@
+package edu.nju.software.pojo;
+
+import java.util.Date;
+
+public class Log {
+	private int id;
+	private String title;
+	private String desc;
+	private int projectId;
+	private int taskId;
+	private int originStatus;
+	private int currentStatus;
+	private Date createdTime;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	public int getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
+	public int getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
+	}
+	public int getOriginStatus() {
+		return originStatus;
+	}
+	public void setOriginStatus(int originStatus) {
+		this.originStatus = originStatus;
+	}
+	public int getCurrentStatus() {
+		return currentStatus;
+	}
+	public void setCurrentStatus(int currentStatus) {
+		this.currentStatus = currentStatus;
+	}
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+}

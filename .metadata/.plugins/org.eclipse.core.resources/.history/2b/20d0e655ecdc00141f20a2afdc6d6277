@@ -1,0 +1,7 @@
+package edu.nju.software.dao.impl;
+
+import antlr.collections.List;
+
+public interface TaskStatusDao {
+	public List<TaskStatus> getAll();
+}

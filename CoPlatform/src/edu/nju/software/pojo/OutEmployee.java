@@ -6,6 +6,7 @@ public class OutEmployee {
 	private String wxNumber;
 	private String qqNumber;
 	private String phone;
+	
 	public int getId() {
 		return id;
 	}

@@ -1,0 +1,40 @@
+package edu.nju.software.dao.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import edu.nju.software.dao.AdminDao;
+import edu.nju.software.pojo.Admin;
+
+@Repository
+public class AdminDaoImpl extends HibernateDaoBase implements AdminDao {
+	
+	public AdminDaoImpl() {}
+
+	@Override
+	public List<Admin> getAll() {
+		// TODO Auto-generated method stub
+		return getHibernateTemplate().find("from admin");
+	}
+
+	@Override
+	public int create(Admin admin) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void update(Admin admin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+}

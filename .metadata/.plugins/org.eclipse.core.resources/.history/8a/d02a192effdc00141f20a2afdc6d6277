@@ -1,0 +1,21 @@
+package edu.nju.software.util;
+
+import net.sf.ehcache.CacheManager;
+
+public class CoCacheManager {
+	public void test() {
+		CacheManager cacheManager = CacheManager.
+	}
+	
+	public static void put(String cacheKey, Object value) {
+		
+	}
+	
+	public static Object get(String cacheKey) {
+		
+	}
+	
+	public static void remove(String cacheKey) {
+		
+	}
+}

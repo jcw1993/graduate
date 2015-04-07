@@ -1,0 +1,5 @@
+INDEX VERSION 1.127
+F:\graduate\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2145406640.index
+\CoPlatform\src
+F:\graduate\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3139039158.index
+\CoPlatform\src

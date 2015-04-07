@@ -1,14 +1,26 @@
 package edu.nju.software.service.impl;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.AdminDao;
 import edu.nju.software.pojo.Admin;
 import edu.nju.software.service.AdminService;
+import edu.nju.software.util.CoCacheManager;
+import edu.nju.software.util.GeneralResult;
+import edu.nju.software.util.NoDataResult;
+import edu.nju.software.util.ResultCode;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+	private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+	
+	private static final String ALL_ADMIN_CACHE_KEY = "all_admin_cache";
 	
 	@Autowired
 	private AdminDao adminDao;
@@ -16,7 +28,59 @@ public class AdminServiceImpl implements AdminService {
 	public AdminServiceImpl() {}
 
 	@Override
-	public Admin getById(int id) {
-		return adminDao.getById(id);
+	public GeneralResult<List<Admin>> getAll() {
+		GeneralResult<List<Admin>> result = new GeneralResult<List<Admin>>();
+		@SuppressWarnings("unchecked")
+		List<Admin> adminList = (List<Admin>) CoCacheManager.get(ALL_ADMIN_CACHE_KEY);
+		if(null != adminList && !adminList.isEmpty()) {
+			result.setData(adminList);
+		}else {
+			try {
+				adminList = adminDao.getAll();
+				if(null != adminList && !adminList.isEmpty()) {
+					result.setData(adminList);
+					CoCacheManager.put(ALL_ADMIN_CACHE_KEY, adminList);
+				}else {
+					result.setResultCode(ResultCode.E_NO_DATA);
+				}
+			}catch(DataAccessException e) {
+				logger.error(e.getMessage());
+				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			}
+		}
+		return result;
 	}
+
+	@Override
+	public GeneralResult<Admin> getById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeneralResult<Admin> getByMailAndPassword(String mail,
+			String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeneralResult<Integer> create(Admin admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NoDataResult update(Admin admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NoDataResult delete(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

@@ -1,0 +1,17 @@
+package edu.nju.software;
+
+
+public class ManagerFactory {
+	
+	private ManagerFactory() {}
+	
+	private static AdminManager adminManager = null;
+	
+	public static AdminManager getAdminManager() {
+		if(null == adminManager) {
+			adminManager = new AdminManager();
+		}
+		return adminManager;
+	}
+
+}

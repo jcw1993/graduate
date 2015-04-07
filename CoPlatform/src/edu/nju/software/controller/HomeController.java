@@ -1,6 +1,7 @@
 package edu.nju.software.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Admin;
 import edu.nju.software.service.AdminService;
+import edu.nju.software.util.GeneralResult;
+import edu.nju.software.util.ResultCode;
 
 @Controller
 public class HomeController {
@@ -24,8 +27,10 @@ public class HomeController {
 	@RequestMapping(value = { "/Home", "/home" }, method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> model = new HashMap<String, Object>();
-		Admin admin = adminService.getById(1);
-		model.put("admin", admin);
+		GeneralResult<List<Admin>> adminResult = adminService.getAll();
+		if(adminResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("admins", adminResult.getData());
+		}
 		return new ModelAndView("index", "model", model);
 	}
 }

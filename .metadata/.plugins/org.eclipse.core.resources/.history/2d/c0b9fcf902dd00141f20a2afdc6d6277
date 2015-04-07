@@ -1,0 +1,19 @@
+package edu.nju.software.service;
+
+import java.util.List;
+
+import edu.nju.software.pojo.Admin;
+
+public interface AdminService {
+	public List<Admin> getAll();
+	
+	public Admin getById(int id);
+	
+	public Admin getByMailAndPassword(String mail, String password);
+	
+	public int create(Admin admin);
+	
+	public void update(Admin admin);
+	
+	public void delete(int id);
+}

@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import edu.nju.software.wechat.MyWechat;
+import edu.nju.software.wechat.WeChatProcessor;
 
 @Controller
 public class WeChatController {
 	
 	@RequestMapping(value="/weixin")
 	public void test2(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		MyWechat myWechat = new MyWechat(request);
+		WeChatProcessor myWechat = new WeChatProcessor(request);
 		String result = myWechat.execute();
 		response.getOutputStream().write(result.getBytes());
 	}

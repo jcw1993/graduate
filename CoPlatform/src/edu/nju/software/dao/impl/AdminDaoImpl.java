@@ -1,5 +1,8 @@
 package edu.nju.software.dao.impl;
 
+import java.util.List;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.AdminDao;
@@ -10,10 +13,28 @@ public class AdminDaoImpl extends HibernateDaoBase implements AdminDao {
 	
 	public AdminDaoImpl() {}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Admin getById(int id) {
-		System.out.println("id: " + id);
-		return getHibernateTemplate().get(Admin.class, 1);
+	public List<Admin> getAll() throws DataAccessException {
+		return getHibernateTemplate().find("from Admin");
 	}
+
+	@Override
+	public int create(Admin admin) throws DataAccessException {
+		return (Integer) getHibernateTemplate().save(admin);
+	}
+
+	@Override
+	public void update(Admin admin) throws DataAccessException {
+		getHibernateTemplate().update(admin);
+	}
+
+	@Override
+	public void delete(int id) throws DataAccessException {
+		Admin admin = new Admin();
+		admin.setId(id);
+		getHibernateTemplate().delete(admin);
+	}
+
 	
 }

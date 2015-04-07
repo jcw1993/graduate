@@ -6,6 +6,7 @@ public class Company {
 	private String desc;
 	private String phone;
 	private String address;
+	
 	public int getId() {
 		return id;
 	}

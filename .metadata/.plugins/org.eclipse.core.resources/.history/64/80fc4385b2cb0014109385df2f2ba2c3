@@ -1,0 +1,18 @@
+package edu.nju.software;
+
+import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
+
+public class ManagerFactory {
+	
+	private ManagerFactory() {}
+	
+	private static AdminManager adminManager = null;
+	
+	public static AdminManager getAdminManager() {
+		if(null == adminManager) {
+			adminManager = new AdminManager();
+		}
+		return adminManager;
+	}
+
+}

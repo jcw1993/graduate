@@ -1,0 +1,15 @@
+package edu.nju.software.pojo;
+
+import java.util.Date;
+
+
+public class Task {
+	private int id;
+	private int projectId;
+	private String name;
+	private String desc;
+	private int parentId;
+	private int status;
+	private Date startTime;
+	private Date endTime;
+}

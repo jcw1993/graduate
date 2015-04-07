@@ -1,0 +1,6 @@
+package edu.nju.software.dao.impl;
+
+import edu.nju.software.dao.TaskStatusDao;
+
+public class TaskStatusDao extends HibernateDaoBase implements TaskStatusDaoImpl {
+}

@@ -2,21 +2,22 @@ package edu.nju.software.pojo;
 
 public class Admin {
 	private int id;
-	private int companyId;
+	private Company company;
 	private String mail;
 	private String name;
 	private String password;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	public String getMail() {
 		return mail;

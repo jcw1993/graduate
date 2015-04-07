@@ -1,0 +1,36 @@
+package edu.nju.software.dao.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import edu.nju.software.dao.CompanyDao;
+import edu.nju.software.pojo.Company;
+
+@Repository
+public class CompanyDaoImpl extends HibernateDaoBase implements CompanyDao {
+
+	@Override
+	public List<Company> getAll() {
+		return getHibernateTemplate().find("from company");
+	}
+
+	@Override
+	public int create(Company company) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void update(Company company) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
