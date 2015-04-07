@@ -4,14 +4,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
+<jsp:include page="header.jsp" flush="true"/>
+
 <body>
-<h1>Hello world!</h1>
+<ul class="nav nav-pills.nav-stacked">
+  <li role="presentation" class="active"><a href="#">员工管理</a></li>
+  <li role="presentation"><a href="#">项目管理</a></li>
+  <li role="presentation"><a href="#">任务管理</a></li>
+  <li role="presentation"><a href="#">日志管理</a></li>
+</ul>
+
 <table>
 <tr>
 	<th>Id</th>
