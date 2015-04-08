@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: "微软雅黑";
+	font-size: 14px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a .login {
+	text-align: center;
+}
+
+.center {
+	text-align:center;
+}
+
+div .input-item {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}

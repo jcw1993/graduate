@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.MemberDao;
 import edu.nju.software.pojo.Member;
@@ -15,6 +16,7 @@ import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.NoDataResult;
 import edu.nju.software.util.ResultCode;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 	
 	private static Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);

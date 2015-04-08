@@ -11,6 +11,7 @@
 
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/css/co_platform.css" />" />
 
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
@@ -18,14 +19,17 @@
 <title>南大任务协同平台-登录</title>
 </head>
 <body>
-<div class="container">
+<div class="container center">
+<h2>任务协同平台</h2>
+<h4>登录</h4>
+<div class="row col-xs-4"></div>
 <div class="row col-xs-4">
 <form id="loginForm" action="Login" method="post">
-<div class="input-group">
+<div class="input-group input-item">
 	<span class="input-group-addon">邮箱</span>
   	<input type="text" class="form-control" id="mail" name="mail" placeholder="邮箱" aria-describedby="basic-addon2" />
 </div>
-<div class="input-group">
+<div class="input-group input-item">
 	<span class="input-group-addon">密码</span>
   	<input type="password" class="form-control" id="password" name="password" placeholder="密码" aria-describedby="basic-addon2" />
 </div>

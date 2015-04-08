@@ -11,11 +11,12 @@
 
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/css/co_platform.css" />" />
 
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 
-<title>南大任务协同平台</title>
+<title>任务协同平台</title>
 </head>
 
 <body>

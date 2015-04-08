@@ -7,12 +7,7 @@
 <jsp:include page="header.jsp" flush="true"/>
 
 <body>
-<ul class="nav nav-pills.nav-stacked">
-  <li role="presentation" class="active"><a href="#">员工管理</a></li>
-  <li role="presentation"><a href="#">项目管理</a></li>
-  <li role="presentation"><a href="#">任务管理</a></li>
-  <li role="presentation"><a href="#">日志管理</a></li>
-</ul>
+<jsp:include page="navi.jsp" flush="true" />
 
 <table>
 <tr>

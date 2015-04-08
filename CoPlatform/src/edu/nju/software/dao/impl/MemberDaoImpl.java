@@ -15,7 +15,9 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Member> getByCompany(int companyId)  throws DataAccessException {
-		return getHibernateTemplate().find("from Member where companyId =:companyId", companyId);
+		Company company = new Company();
+		company.setId(companyId);
+		return getHibernateTemplate().find("from Member where company = ?", company);
 	}
 
 	@Override

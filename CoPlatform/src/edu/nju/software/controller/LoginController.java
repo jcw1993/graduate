@@ -41,7 +41,7 @@ public class LoginController {
 		password = password.trim();
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
 		if(adminResult.getResultCode() == ResultCode.NORMAL) {
-			response.sendRedirect(request.getContextPath() + "/" + "Home");
+			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompany().getId());
 		}else {
 			response.sendRedirect(request.getContextPath() + "/" + "Login");
 		}
