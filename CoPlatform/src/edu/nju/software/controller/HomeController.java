@@ -33,4 +33,11 @@ public class HomeController {
 		}
 		return new ModelAndView("index", "model", model);
 	}
+	
+	@RequestMapping(value = { "/Error", "/error" }, method = RequestMethod.GET)
+	public ModelAndView error(HttpServletRequest request, HttpServletResponse response) {
+		return new ModelAndView("error", null);
+	}
 }
+
+
