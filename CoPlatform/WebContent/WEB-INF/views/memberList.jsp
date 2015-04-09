@@ -9,6 +9,7 @@
 <body>
 <jsp:include page="navi.jsp" flush="true" />
 
+<div class="container-body">
 <table>
 <tr>
 	<th>Id</th>
@@ -31,6 +32,7 @@
 </tr>
 </c:forEach>
 </table>
+</div>
 <script type="text/javascipt">
 	$(function() {
 		setCurrentNavItem(0);

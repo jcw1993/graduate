@@ -9,9 +9,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 
+<link rel="stylesheet" href="<c:url value="/resources/css/co_platform.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css" />" />
-<link rel="stylesheet" href="<c:url value="/resources/css/co_platform.css" />" />
+
 
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
@@ -32,8 +33,10 @@
 <div class="input-group input-item">
 	<span class="input-group-addon">密码</span>
   	<input type="password" class="form-control" id="password" name="password" placeholder="密码" aria-describedby="basic-addon2" />
+</div> 
+<div class="input-item">
+<a id="login" class="btn btn-primary btn-lg login" href="#"> 登   录 </a>
 </div>
-<a id="login" class="btn btn-primary" href="#">登录</a>
 </form>
 </div>
 </div>
