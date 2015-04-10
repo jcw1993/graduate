@@ -32,10 +32,8 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	}
 
 	@Override
-	public void delete(int id)  throws DataAccessException {
-		Company company = new Company();
-		company.setId(id);
-		getHibernateTemplate().delete(company);
+	public void delete(Member member)  throws DataAccessException {
+		getHibernateTemplate().delete(member);
 	}
 
 	@Override

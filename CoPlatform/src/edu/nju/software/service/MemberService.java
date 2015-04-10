@@ -19,5 +19,5 @@ public interface MemberService {
 	
 	public NoDataResult update(Member member);
 	
-	public NoDataResult delete(int id);
+	public NoDataResult delete(Member member);
 }

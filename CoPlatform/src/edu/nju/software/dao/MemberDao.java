@@ -14,5 +14,5 @@ public interface MemberDao {
 	
 	public void update(Member member);
 	
-	public void delete(int id);
+	public void delete(Member member);
 }

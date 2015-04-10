@@ -37,5 +37,11 @@ public class Company {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public Company() {}
+	
+	public Company(int id) {
+		this.id = id;
+	}
 
 }
