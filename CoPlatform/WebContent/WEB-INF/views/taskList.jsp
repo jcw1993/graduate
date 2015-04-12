@@ -11,25 +11,25 @@
 <jsp:include page="navi.jsp" flush="true" />
 
 <div class="container-body">
-	<h3>项目列表</h3>
+	<h3>任务列表</h3>
 	<hr />
 <table class="table table-striped table-bordered table-hover table-responsive">
 <tr>
-	<th>项目名称</th>
-	<th>项目描述</th>
-	<th>公司Id</th>
+	<th>任务名称</th>
+	<th>任务列表</th>
+	<th>项目Id</th>
 	<th>开始时间</th>
 	<th>结束时间</th>
-	<th>当前进度</th>
+	<th>当前状态</th>
 </tr>
-<c:forEach items="${model.projects}" var="project">
+<c:forEach items="${model.tasks}" var="task">
 <tr>
-	<td><a class="projectInfo" href="#" projectId="${project.id}">${project.name}</a></td>
-	<td>${project.desc}</td>
-	<td>${project.company.id}</td>
-	<td>${project.startTime}</td>
-	<td>${project.endTime}</td>
-	<td>${project.progress}</td>
+	<td><a class="taskInfo" href="#" taskId="${task.id}">${task.name}</a></td>
+	<td>${task.desc}</td>
+	<td>${task.project.id}</td>
+	<td>${task.startTime}</td>
+	<td>${task.endTime}</td>
+	<td>${task.status.id}</td>
 </tr>
 </c:forEach>
 </table>

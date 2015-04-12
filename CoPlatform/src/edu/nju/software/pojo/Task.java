@@ -66,4 +66,17 @@ public class Task {
 	public Task(int id) {
 		this.id = id;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(null == obj) {
+			return false;
+		}
+		
+		if(obj instanceof Task) {
+			Task task = (Task) obj;
+			return this.id == task.getId();
+		}
+		return false;
+	}
 }

@@ -59,5 +59,17 @@ public class Project {
 	public Project(int id) {
 		this.id = id;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if(null == obj) {
+			return false;
+		}
+		
+		if(obj instanceof Project) {
+			Project project = (Project) obj;
+			return this.id == project.getId();
+		}
+		return false;
+	}
 }

@@ -1,7 +1,9 @@
 package edu.nju.software.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,11 @@ import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.LogDao;
 import edu.nju.software.pojo.Log;
+import edu.nju.software.pojo.Project;
+import edu.nju.software.pojo.Task;
 import edu.nju.software.service.LogService;
+import edu.nju.software.service.ProjectService;
+import edu.nju.software.service.TaskService;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
 
@@ -21,42 +27,68 @@ public class LogServiceImpl implements LogService {
 	
 	@Autowired
 	private LogDao logDao;
+	
+	@Autowired
+	private ProjectService projectService;
+	
+	@Autowired
+	private TaskService taskService;
 
 	@Override
-	public GeneralResult<List<Log>> getByProject(int projectId, Date startTime,
+	public GeneralResult<Map<Project, List<Log>>> getProjectLogs(int companyId, Date startTime,
 			Date endTime) {
-		GeneralResult<List<Log>> result = new GeneralResult<List<Log>>();
-		try {
-			List<Log> logList = logDao.search(projectId, 0, startTime, endTime);
-			if(null != logList && !logList.isEmpty()) {
-				result.setData(logList);
-			}else {
-				result.setResultCode(ResultCode.E_NO_DATA);
+		GeneralResult<Map<Project, List<Log>>> result = new GeneralResult<Map<Project, List<Log>>>();
+		GeneralResult<List<Project>> projectResult = projectService.getByCompany(companyId);
+		if(projectResult.getResultCode() == ResultCode.NORMAL) {
+			Map<Project, List<Log>> projectLogs = new HashMap<Project, List<Log>>();
+			for(Project project : projectResult.getData()) {
+				List<Log> logList = null;
+				try {
+					logList = logDao.getByProject(companyId, project.getId(), startTime, endTime);
+				}catch(DataAccessException e) {
+					logger.error(e.getMessage());
+					result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+					result.setMessage(e.getMessage());
+				}
+				if(null != logList && !logList.isEmpty()) {
+					projectLogs.put(project, logList);
+				}
 			}
-		}catch(DataAccessException e) {
-			logger.error(e.getMessage());
-			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
-			result.setMessage(e.getMessage());
+			result.setData(projectLogs);
+		}else {
+			result.setResultCode(projectResult.getResultCode());
+			result.setMessage(projectResult.getMessage());
 		}
+
 		return result;
 	}
 
 	@Override
-	public GeneralResult<List<Log>> getByTask(int taskId, Date startTime,
+	public GeneralResult<Map<Task, List<Log>>> getTaskLogs(int companyId, int projectId, Date startTime,
 			Date endTime) {
-		GeneralResult<List<Log>> result = new GeneralResult<List<Log>>();
-		try {
-			List<Log> logList = logDao.search(0, taskId, startTime, endTime);
-			if(null != logList && !logList.isEmpty()) {
-				result.setData(logList);
-			}else {
-				result.setResultCode(ResultCode.E_NO_DATA);
+		GeneralResult<Map<Task, List<Log>>> result = new GeneralResult<Map<Task, List<Log>>>();
+		GeneralResult<List<Task>> taskResult = taskService.getByProject(projectId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			Map<Task, List<Log>> taskLogs = new HashMap<Task, List<Log>>();
+			for(Task task : taskResult.getData()) {
+				List<Log> logList = null;
+				try {
+					logList = logDao.getByTask(companyId, task.getId(), startTime, endTime);
+				}catch(DataAccessException e) {
+					logger.error(e.getMessage());
+					result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+					result.setMessage(e.getMessage());
+				}
+				if(null != logList && !logList.isEmpty()) {
+					taskLogs.put(task, logList);
+				}
 			}
-		}catch(DataAccessException e) {
-			logger.error(e.getMessage());
-			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
-			result.setMessage(e.getMessage());
+			result.setData(taskLogs);
+		}else {
+			result.setResultCode(taskResult.getResultCode());
+			result.setMessage(taskResult.getMessage());
 		}
+
 		return result;
 	}
 
@@ -73,5 +105,4 @@ public class LogServiceImpl implements LogService {
 		}
 		return result;
 	}
-	
 }

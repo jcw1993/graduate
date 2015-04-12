@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.TaskService;
@@ -27,7 +27,7 @@ public class TaskController {
 	
 	@Autowired
 	private TaskService taskService;
-		
+
 	@RequestMapping(value = {"/TaskList"}, method = RequestMethod.GET)
 	public ModelAndView getTaskList(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
@@ -37,6 +37,7 @@ public class TaskController {
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("tasks", taskResult.getData());
 		}
+		
 		return new ModelAndView("taskList", "model", model);
 	}
 	

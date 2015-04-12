@@ -1,11 +1,14 @@
 package edu.nju.software.pojo;
 
+import java.util.Set;
+
 public class Company {
 	private int id;
 	private String name;
 	private String desc;
 	private String phone;
 	private String address;
+	private Set<OutEmployee> outEmployees;
 	
 	public int getId() {
 		return id;
@@ -36,6 +39,12 @@ public class Company {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public Set<OutEmployee> getOutEmployees() {
+		return outEmployees;
+	}
+	public void setOutEmployees(Set<OutEmployee> outEmployees) {
+		this.outEmployees = outEmployees;
 	}
 	
 	public Company() {}

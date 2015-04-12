@@ -13,6 +13,10 @@
         <property name="wxNumber" type="string" column="wx_number" />
         <property name="qqNumber" type="string" column="qq_number" />
         <property name="phone" type="string" column="phone" />
+        <set name="companies" table="company_out_employee">
+        	<key column="out_employee_id" />
+        	<many-to-many  class="Company" column="company_id" />
+        </set>
     </class>
 
 </hibernate-mapping>

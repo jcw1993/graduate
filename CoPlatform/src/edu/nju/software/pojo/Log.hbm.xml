@@ -16,6 +16,9 @@
         <many-to-one name="originStatus" column="origin_status" />
         <many-to-one name="currentStatus" column="current_status" />
         <property name="createdTime" type="timestamp" column="created_time" />
+        <many-to-one name="company" column="company_id" />
+        <property name="creatorId" type="integer" column="creator_id" />
+        <property name="creatorType" type="int" column="creator_type" />
     </class>
 
 </hibernate-mapping>

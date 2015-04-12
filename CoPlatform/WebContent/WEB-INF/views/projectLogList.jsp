@@ -11,28 +11,28 @@
 <jsp:include page="navi.jsp" flush="true" />
 
 <div class="container-body">
-	<h3>项目列表</h3>
+	<h3>项目日志</h3>
 	<hr />
+<c:forEach items="${model.projectLogs}" var="projectLog">
+<c:set value="${projectLog.key}" var="project" />
+<h4>${project.name}</h4>
 <table class="table table-striped table-bordered table-hover table-responsive">
 <tr>
-	<th>项目名称</th>
-	<th>项目描述</th>
-	<th>公司Id</th>
-	<th>开始时间</th>
-	<th>结束时间</th>
-	<th>当前进度</th>
+	<th>标题</th>
+	<th>描述</th>
+	<th>项目Id</th>
+	<th>记录时间</th>
 </tr>
-<c:forEach items="${model.projects}" var="project">
+<c:forEach items="${projectLog.value}" var="log">
 <tr>
-	<td><a class="projectInfo" href="#" projectId="${project.id}">${project.name}</a></td>
-	<td>${project.desc}</td>
-	<td>${project.company.id}</td>
-	<td>${project.startTime}</td>
-	<td>${project.endTime}</td>
-	<td>${project.progress}</td>
+	<td>${log.title}</td>
+	<td>${log.desc}</td>
+	<td>${log.project.id}</td>
+	<td>${log.createdTime}</td>
 </tr>
 </c:forEach>
 </table>
+</c:forEach>
 </div>
 
 

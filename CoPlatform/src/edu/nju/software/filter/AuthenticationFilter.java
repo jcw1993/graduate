@@ -25,7 +25,6 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO user authenticate 
-		
 		chain.doFilter(servletRequest, servletResponse);
 	}
 

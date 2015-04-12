@@ -3,7 +3,6 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<!-- <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> -->
 
 <jsp:include page="header.jsp" flush="true"/>
 
@@ -11,30 +10,25 @@
 <jsp:include page="navi.jsp" flush="true" />
 
 <div class="container-body">
-	<h3>项目列表</h3>
+	<h3>外聘人员列表</h3>
 	<hr />
 <table class="table table-striped table-bordered table-hover table-responsive">
 <tr>
-	<th>项目名称</th>
-	<th>项目描述</th>
-	<th>公司Id</th>
-	<th>开始时间</th>
-	<th>结束时间</th>
-	<th>当前进度</th>
+	<th>姓名</th>
+	<th>微信号</th>
+	<th>qq号</th>
+	<th>手机</th>
 </tr>
-<c:forEach items="${model.projects}" var="project">
+<c:forEach items="${model.outEmployees}" var="outEmployee">
 <tr>
-	<td><a class="projectInfo" href="#" projectId="${project.id}">${project.name}</a></td>
-	<td>${project.desc}</td>
-	<td>${project.company.id}</td>
-	<td>${project.startTime}</td>
-	<td>${project.endTime}</td>
-	<td>${project.progress}</td>
+	<td><a class="memberInfo" href="#" outEmployeeId="${outEmployee.id}">${outEmployee.name}</a></td>
+	<td>${outEmployee.wxNumber}</td>
+	<td>${outEmployee.qqNumber}</td>
+	<td>${outEmployee.phone}</td>
 </tr>
 </c:forEach>
 </table>
 </div>
-
 
 <script type="text/javascript">
 

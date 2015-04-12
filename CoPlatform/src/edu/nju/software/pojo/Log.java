@@ -11,6 +11,9 @@ public class Log {
 	private TaskStatus originStatus;
 	private TaskStatus currentStatus;
 	private Date createdTime;
+	private Company company;
+	private int creatorId;
+	private int creatorType;
 	
 	public int getId() {
 		return id;
@@ -60,4 +63,23 @@ public class Log {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
+	public Company getCompany() {
+		return company;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	public int getCreatorId() {
+		return creatorId;
+	}
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
+	public int getCreatorType() {
+		return creatorType;
+	}
+	public void setCreatorType(int creatorType) {
+		this.creatorType = creatorType;
+	}
+	
 }
