@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.TaskDao;
 import edu.nju.software.pojo.Task;
@@ -15,6 +16,7 @@ import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.NoDataResult;
 import edu.nju.software.util.ResultCode;
 
+@Service
 public class TaskServiceImpl implements TaskService {
 	private static final String PROJECT_TASK_CACHE_KEY = "PROJECT_TASK_%d";
 	private static final String TASK_CACHE_KEY = "TASK_%d";
@@ -52,10 +54,10 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public NoDataResult delete(int id) {
+	public NoDataResult delete(Task task) {
 		NoDataResult result = new NoDataResult();
 		try {
-			taskDao.delete(id);
+			taskDao.delete(task);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);

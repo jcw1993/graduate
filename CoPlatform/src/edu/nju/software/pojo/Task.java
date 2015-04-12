@@ -61,4 +61,9 @@ public class Task {
 		this.endTime = endTime;
 	}
 	
+	public Task() {}
+	
+	public Task(int id) {
+		this.id = id;
+	}
 }

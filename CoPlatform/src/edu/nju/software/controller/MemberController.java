@@ -8,9 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.service.MemberService;
+import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.NoDataJsonResult;
 import edu.nju.software.util.NoDataResult;
@@ -28,25 +26,13 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class MemberController {
-	private static Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@Autowired
 	private MemberService memberService;
 	
 	@RequestMapping(value = {"/MemberList"}, method = RequestMethod.GET)
 	public ModelAndView getMemberList(HttpServletRequest request, HttpServletResponse response) {
-		String companyIdStr = request.getParameter("companyId");
-		if(StringUtils.isBlank(companyIdStr)) {
-			throw new IllegalArgumentException();
-		}
-		
-		int companyId = 0;
-		try {
-			companyId = Integer.parseInt(companyIdStr);
-		}catch(NumberFormatException e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
@@ -59,18 +45,7 @@ public class MemberController {
 	
 	@RequestMapping(value = {"/GetMemberInfo"}, method = RequestMethod.GET)
 	public ModelAndView getMemberInfo(HttpServletRequest request, HttpServletResponse response) {
-		String memberIdStr = request.getParameter("memberId");
-		if(StringUtils.isBlank(memberIdStr)) {
-			throw new IllegalArgumentException();
-		}
-		
-		int memberId = 0;
-		try {
-			memberId = Integer.parseInt(memberIdStr);
-		}catch(NumberFormatException e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
+		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		GeneralResult<Member> memberResult = memberService.getById(memberId);
@@ -80,24 +55,12 @@ public class MemberController {
 		return new ModelAndView("memberInfo", "model", model);
 	}
 	
-	@RequestMapping(value = {"/EditMemberInfo"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/UpdateMember"}, method = RequestMethod.POST)
 	@ResponseBody
-	public NoDataJsonResult editMemberInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-		String idStr = request.getParameter("id");
-		String companyIdStr = request.getParameter("companyId");
-		if(StringUtils.isBlank(idStr) || StringUtils.isBlank(companyIdStr)) {
-			throw new IllegalArgumentException();
-		}
-		
-		int id = 0;
-		int companyId = 0;
-		try {
-			id = Integer.parseInt(idStr);
-			companyId = Integer.parseInt(companyIdStr);
-		}catch(NumberFormatException e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
+	public NoDataJsonResult updateMember(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+
+		int id = CoUtils.getRequestIntValue(request, "id", true);
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
 		String name = request.getParameter("name");
 		String workId = request.getParameter("workId");
@@ -120,17 +83,18 @@ public class MemberController {
 			phone = phone.trim();
 		}
 		
-		System.out.print("name: " + name);
-		Member member = new Member();
-		member.setId(id);
-		member.setName(name);
-		member.setWorkId(workId);
-		member.setQqNumber(qqNumber);
-		member.setWxNumber(wxNumber);
-		member.setPhone(phone);
-		member.setCompany(new Company(companyId));
+		Member member = new Member(id, name, new Company(companyId), workId,
+				qqNumber, wxNumber, phone);
 		
 		NoDataResult result = memberService.update(member);
+		return new NoDataJsonResult(result);
+	}
+	
+	@RequestMapping(value = {"/DeleteMember"}, method = RequestMethod.GET)
+	@ResponseBody
+	public NoDataJsonResult deleteMember(HttpServletRequest request, HttpServletResponse response) {
+		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
+		NoDataResult result = memberService.delete(new Member(memberId));
 		return new NoDataJsonResult(result);
 	}
 }

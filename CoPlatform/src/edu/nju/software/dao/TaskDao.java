@@ -9,7 +9,7 @@ public interface TaskDao {
 	
 	public void update(Task task);
 	
-	public void delete(int id);
+	public void delete(Task task);
 	
 	public List<Task> getByProject(int projectId);
 	

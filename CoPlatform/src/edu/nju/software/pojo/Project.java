@@ -54,4 +54,10 @@ public class Project {
 		this.progress = progress;
 	}
 	
+	public Project() {}
+	
+	public Project(int id) {
+		this.id = id;
+	}
+	
 }

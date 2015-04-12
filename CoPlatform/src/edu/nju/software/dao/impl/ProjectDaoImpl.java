@@ -1,10 +1,15 @@
 package edu.nju.software.dao.impl;
 
+import java.util.List;
+
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.ProjectDao;
+import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Project;
 
+@Repository
 public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 
 	@Override
@@ -23,10 +28,15 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	}
 
 	@Override
-	public void delete(int id)  throws DataAccessException {
-		Project project = new Project();
-		project.setId(id);
+	public void delete(Project project)  throws DataAccessException {
 		getHibernateTemplate().delete(project);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Project> getByCompany(int companyId) {
+		Company company = new Company(companyId);
+		return getHibernateTemplate().find("from Project where company = ?", company);
 	}
 
 }

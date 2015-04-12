@@ -12,4 +12,6 @@ public interface LogService {
 	
 	public GeneralResult<List<Log>> getByTask(int taskId, Date startTime, Date endTime);
 	
+	public GeneralResult<Integer> create(Log log);
+	
 }

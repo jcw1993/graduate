@@ -51,4 +51,21 @@ public class Member {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
+	public Member() {}
+	
+	public Member(int id) {
+		this.id = id;
+	}
+	
+	public Member(int id, String name, Company company, String workId, 
+			String qqNumber, String wxNumber, String phone) {
+		this.id = id;
+		this.name = name;
+		this.company = company;
+		this.workId = workId;
+		this.qqNumber = qqNumber;
+		this.wxNumber = wxNumber;
+		this.phone = phone;
+	}
 }

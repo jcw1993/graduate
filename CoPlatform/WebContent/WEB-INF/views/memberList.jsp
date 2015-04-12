@@ -69,7 +69,7 @@
 	$memberEditSubmit.click(function(e) {
 		console.log("submit member info");
 		$.post(
-			"EditMemberInfo",
+			"UpdateMember",
 			$("form").serialize(),
 			function(result) {
 				if(result.resultCode == 0) {

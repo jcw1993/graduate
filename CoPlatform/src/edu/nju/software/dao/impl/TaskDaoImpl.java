@@ -3,10 +3,13 @@ package edu.nju.software.dao.impl;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.TaskDao;
+import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 
+@Repository
 public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 
 	@Override
@@ -20,16 +23,15 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	}
 
 	@Override
-	public void delete(int id) throws DataAccessException {
-		Task task = new Task();
-		task.setId(id);
+	public void delete(Task task) throws DataAccessException {
 		getHibernateTemplate().delete(task);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Task> getByProject(int projectId) throws DataAccessException {
-		return getHibernateTemplate().find("from Task where projectId = :projectId", projectId);
+		Project project = new Project(projectId);
+		return getHibernateTemplate().find("from Task where project = ?", project);
 	}
 
 	@Override

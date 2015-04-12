@@ -11,7 +11,7 @@ public interface TaskService {
 	
 	public NoDataResult update(Task task);
 	
-	public NoDataResult delete(int id);
+	public NoDataResult delete(Task task);
 	
 	public GeneralResult<List<Task>> getByProject(int projectId);
 	
