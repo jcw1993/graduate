@@ -1,5 +1,6 @@
 package edu.nju.software.pojo;
 
+
 public class Admin {
 	private int id;
 	private Company company;

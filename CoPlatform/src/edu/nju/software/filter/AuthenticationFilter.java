@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,17 +32,30 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO user authenticate 
-/*		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+		
 		String requestURI = httpServletRequest.getRequestURI();
 		if(!(requestURI.endsWith(LOGIN_URL) || requestURI.endsWith(".js") || requestURI.endsWith(".css"))) {
-			Admin admin = (Admin) httpServletRequest.getSession().getAttribute("currentAdmin");
-			if(null == admin) {
-				((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Login");
+			HttpSession session = httpServletRequest.getSession(true);
+			if(null != session) {
+				System.out.println("session != null");
+				Admin admin = (Admin) session.getAttribute("currentAdmin");
+				System.out.println("sessionId:" + session.getId());
+				if(null == admin) {
+					System.out.println("admin = null");
+					httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
+					return;
+				}
+			}else {
+				System.out.println("session = null");
+				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
 				return;
 			}
-		}*/
+		}
 
 		chain.doFilter(request, response);
+		return;
 	}
 
 	@Override

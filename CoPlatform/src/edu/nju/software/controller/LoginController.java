@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Admin;
 import edu.nju.software.service.AdminService;
@@ -41,10 +41,12 @@ public class LoginController {
 		password = password.trim();
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
 		if(adminResult.getResultCode() == ResultCode.NORMAL) {
+			request.getSession(true).setAttribute("currentAdmin", adminResult.getData());
 			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompany().getId());
-			request.getSession().setAttribute("currentAdmin", adminResult.getData());
+			return;
 		}else {
 			response.sendRedirect(request.getContextPath() + "/Login");
+			return;
 		}
 		
 	}
