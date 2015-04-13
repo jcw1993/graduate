@@ -8,9 +8,13 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import edu.nju.software.pojo.Admin;
 
 public class AuthenticationFilter implements Filter {
 	
@@ -22,10 +26,21 @@ public class AuthenticationFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
+	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO user authenticate 
-		chain.doFilter(servletRequest, servletResponse);
+		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		String requestURI = httpServletRequest.getRequestURI();
+		if(!requestURI.endsWith("/Login")) {
+			Admin admin = (Admin) httpServletRequest.getSession().getAttribute("currentAdmin");
+			if(null == admin) {
+				((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Login");
+				return;
+			}
+		}
+
+
+		chain.doFilter(request, response);
 	}
 
 	@Override

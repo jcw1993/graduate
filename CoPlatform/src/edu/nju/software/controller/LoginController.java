@@ -23,17 +23,17 @@ public class LoginController {
 	@Autowired
 	private AdminService adminService;
 	
-	@RequestMapping(value = {"/Login", "/login"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/Login"}, method = RequestMethod.GET)
 	public ModelAndView loginView(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		return new ModelAndView("login", null);
 	}
 	
-	@RequestMapping(value = {"/Login", "/login"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/Login"}, method = RequestMethod.POST)
 	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String mail = request.getParameter("mail");
 		String password = request.getParameter("password");
 		if(StringUtils.isBlank(mail) || StringUtils.isBlank(password)) {
-			response.sendRedirect(request.getContextPath() + "/" + "Login");
+			response.sendRedirect(request.getContextPath() + "/Login");
 			return;
 		}
 		
@@ -42,8 +42,9 @@ public class LoginController {
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
 		if(adminResult.getResultCode() == ResultCode.NORMAL) {
 			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompany().getId());
+			request.getSession().setAttribute("currentAdmin", adminResult.getData());
 		}else {
-			response.sendRedirect(request.getContextPath() + "/" + "Login");
+			response.sendRedirect(request.getContextPath() + "/Login");
 		}
 		
 	}

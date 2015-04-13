@@ -24,7 +24,11 @@ public class CoCacheManager {
 	
 	public static void put(String key, Object value) {
 		if(null == cache) {
-			cache = initCache();
+			synchronized (CoCacheManager.class) {
+				if(null == cache) {
+					cache = initCache();
+				}
+			}
 		}
 		cache.put(new Element(key, value));
 	}
