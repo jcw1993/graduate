@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+<c:set value="${session.currentAdmin}" var="currentAdmin" />
+
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     
@@ -61,4 +63,7 @@
 		$navItems.removeClass("active"); 
 		$nav.children().eq(index).addClass("active");
 	}
+
+  var adminName = ${sessionScope.currentAdmin.name};
+  console.log("adminName: " + adminName);
 </script>

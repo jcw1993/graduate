@@ -15,9 +15,9 @@
       <param-name>log4jRefreshInterval</param-name>
       <param-value>6000</param-value>
    </context-param> -->
-  <error-page>  
+<!--   <error-page>  
        <location>/Error</location>  
-   </error-page>  
+   </error-page>   -->
    
 <!-- 对Spring容器进行实例化 -->
 <listener>

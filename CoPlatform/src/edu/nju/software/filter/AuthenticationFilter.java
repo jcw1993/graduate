@@ -19,6 +19,8 @@ import edu.nju.software.pojo.Admin;
 public class AuthenticationFilter implements Filter {
 	
 	private static Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+	
+	private static final String LOGIN_URL = "Login";
 
 	@Override
 	public void destroy() {
@@ -29,16 +31,15 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO user authenticate 
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+/*		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		String requestURI = httpServletRequest.getRequestURI();
-		if(!requestURI.endsWith("/Login")) {
+		if(!(requestURI.endsWith(LOGIN_URL) || requestURI.endsWith(".js") || requestURI.endsWith(".css"))) {
 			Admin admin = (Admin) httpServletRequest.getSession().getAttribute("currentAdmin");
 			if(null == admin) {
 				((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Login");
 				return;
 			}
-		}
-
+		}*/
 
 		chain.doFilter(request, response);
 	}
