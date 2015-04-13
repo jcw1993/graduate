@@ -1,9 +1,0 @@
-package edu.nju.software.dao;
-
-import edu.nju.software.pojo.OutEmployee;
-
-public class TaskAssign {
-	private Task task;
-	private Member member;
-	private OutEmployee outEmployee;
-}

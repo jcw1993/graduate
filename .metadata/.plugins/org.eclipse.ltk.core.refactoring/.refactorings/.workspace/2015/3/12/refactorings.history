@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;CoPlatformDal&apos;" deleteContents="false" description="Delete resource &apos;CoPlatformDal&apos;" element1="/CoPlatformDal" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1426488988977"/>&#x0A;<refactoring comment="Delete resource &apos;CoPlatformBLL&apos;" deleteContents="false" description="Delete resource &apos;CoPlatformBLL&apos;" element1="/CoPlatformBLL" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1426488995351"/>
-</session>

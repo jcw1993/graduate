@@ -1,5 +1,0 @@
-package edu.nju.software.dao;
-
-public interface Log {
-
-}

@@ -1,7 +1,0 @@
-package edu.nju.software.dao.impl;
-
-import edu.nju.software.dao.TaskDao;
-
-public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
-
-}

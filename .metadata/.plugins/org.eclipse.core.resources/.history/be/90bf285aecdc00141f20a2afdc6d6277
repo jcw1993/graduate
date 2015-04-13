@@ -1,7 +1,0 @@
-package edu.nju.software.dao.impl;
-
-import edu.nju.software.pojo.TaskStatus;
-
-public interface TaskStatusDao {
-	public List<TaskStatus> getAll();
-}

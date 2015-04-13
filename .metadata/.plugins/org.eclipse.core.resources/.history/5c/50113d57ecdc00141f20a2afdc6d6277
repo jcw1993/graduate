@@ -1,8 +1,0 @@
-package edu.nju.software.dao.impl;
-
-import antlr.collections.List;
-import edu.nju.software.pojo.TaskStatus;
-
-public interface TaskStatusDao {
-	public List<TaskStatus> getAll();
-}

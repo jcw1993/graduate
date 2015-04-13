@@ -1,7 +1,0 @@
-package edu.nju.software.dao;
-
-import java.util.Date;
-
-public interface LogDao {
-	public void search(Integer projectId, Integer taskId, Date startDate, Date endDate);
-}
