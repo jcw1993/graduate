@@ -1,1 +1,6 @@
 CoPlatform/build/
+CoPlatform/.classpath
+.metadata/
+RemoteSystemsTempFiles/
+Servers/
+.gitignore
