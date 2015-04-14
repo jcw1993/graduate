@@ -29,10 +29,6 @@
        org.springframework.web.util.Log4jConfigListener
      </listener-class>
  </listener>
- 
-<listener>
-     <listener-class>edu.nju.software.util.CoHttpSessionAttributeListener</listener-class>
-</listener>
 
   
    <filter>
