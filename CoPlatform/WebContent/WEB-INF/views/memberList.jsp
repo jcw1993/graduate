@@ -23,7 +23,10 @@
 </tr>
 <c:forEach items="${model.members}" var="member">
 <tr>
-	<td><a class="memberInfo" href="#" memberId="${member.id}">${member.name}</a></td>
+	<td class="memberNameTd">
+		<a class="memberInfo" href="#" memberId="${member.id}">${member.name}</a>
+		 <span><a class="memberDelete" href="#"><img src="<c:url value='/resources/images/delete.png' />"></a></span>
+	</td>
 	<td>${member.company.id}</td>
 	<td>${member.workId}</td>
 	<td>${member.wxNumber}</td>
@@ -54,6 +57,8 @@
 	var $memberEditModal = $("#memberEditModal");
 	var $memberEditContent = $("#memberEditContent");
 	var $memberEditSubmit = $("#memberEditSubmit");
+	var $memberDeleteLink = $(".memberDelete");
+	var $memberNameTd = $(".memberNameTd");
 
 	$memberInfoLink.click(function(e) {
 		var memberId = $(this).attr("memberId");
@@ -81,6 +86,34 @@
 					console.log("edit member info error, error code : " + result.resultCode + ";error message: " + result.message);
 				}
 			} 
+		});
+	});
+
+	$memberNameTd.on("mouseover", function(e) {
+		$(this).find("a.memberDelete").show();
+	});
+
+	$memberNameTd.on("mouseout", function(e) {
+		$(this).find("a.memberDelete").hide();
+	});
+
+	$memberDeleteLink.hide();
+
+	$memberDeleteLink.click(function(e) {
+		console.log("delete click");
+		var memberId = $(this).parent().prev().attr("memberId");
+		console.log("memberId: " + memberId);
+		$.ajax({
+			url: "DeleteMember?memberId=" + memberId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("delete member success");
+					location.reload();
+				}else {
+					console.log("delete member error");
+					alert("删除失败, 请重试");
+				}
+			}
 		});
 	});
 </script>

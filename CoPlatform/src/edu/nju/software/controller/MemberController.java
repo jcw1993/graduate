@@ -93,7 +93,14 @@ public class MemberController {
 	@ResponseBody
 	public NoDataJsonResult deleteMember(HttpServletRequest request, HttpServletResponse response) {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
-		NoDataResult result = memberService.delete(new Member(memberId));
-		return new NoDataJsonResult(result);
+		GeneralResult<Member> memberResult = memberService.getById(memberId);
+		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+			NoDataResult result = memberService.delete(memberResult.getData());
+			return new NoDataJsonResult(result);
+		}else {
+			return new NoDataJsonResult(memberResult.getResultCode(), memberResult.getMessage());
+		}
+	
+		
 	}
 }

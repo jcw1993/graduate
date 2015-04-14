@@ -15,6 +15,8 @@
 
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery.validate.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery.timepicker.js" />"></script>
 
 <title>任务协同平台</title>
 </head>

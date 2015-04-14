@@ -59,6 +59,16 @@ public class Project {
 	public Project(int id) {
 		this.id = id;
 	}
+	
+	public Project(int id, Company company, String name, String desc, Date startTime, Date endTime, double progress) {
+		this.id = id;
+		this.company = company;
+		this.name = name;
+		this.desc = desc;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.progress = progress;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

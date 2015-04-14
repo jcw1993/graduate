@@ -66,6 +66,17 @@ public class Task {
 	public Task(int id) {
 		this.id = id;
 	}
+	
+	public Task(int id, Project project, String name, String desc, Task parent, TaskStatus status, Date startTime, Date endTime) {
+		this.id = id;
+		this.project = project;
+		this.name = name;
+		this.desc = desc;
+		this.parent = parent;
+		this.status = status;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

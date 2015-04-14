@@ -1,5 +1,6 @@
 package edu.nju.software.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.ProjectService;
@@ -92,8 +94,31 @@ public class WorkController {
 	@RequestMapping(value = {"/EditProject"}, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult updateProject(HttpServletRequest request, HttpServletResponse response) {
-		// TODO
-		return null;
+		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		
+		String name = request.getParameter("name");
+		String desc = request.getParameter("desc");
+		String startTime = request.getParameter("startTime");
+		String endTime = request.getParameter("endTime");
+		double progress = CoUtils.getRequestDoubleValue(request, "progress", true);
+		if(null != name) {
+			name = name.trim();
+		}
+		if(null != desc) {
+			desc = desc.trim();
+		}
+		if(null != startTime) {
+			startTime = startTime.trim();
+		}
+		if(null != endTime) {
+			endTime = endTime.trim();
+		}
+		
+		Project project = new Project(projectId, new Company(companyId), name, desc, new Date(), new Date(), progress);
+		
+		NoDataResult result = projectService.update(project);
+		return new NoDataJsonResult(result);
 	}
 	
 	@RequestMapping(value = {"/DeleteProject"}, method = RequestMethod.GET)

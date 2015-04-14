@@ -8,7 +8,7 @@
 <form id="projectEditForm">
 	<c:set value="${model.project}" var="project" />
 	<div>
-		<input name="id" type="hidden" value="${project.id}"/>
+		<input name="projectId" type="hidden" value="${project.id}"/>
 		<input name="companyId" type="hidden" value="${project.company.id}"/>
 	</div>
 	<div>

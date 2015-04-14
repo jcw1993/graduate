@@ -33,4 +33,26 @@ public class CoUtils {
 		return result;
 	}
 
+	public static double getRequestDoubleValue(HttpServletRequest request, String parameterName, boolean throwException) {
+		double result = 0.0;
+		String parameterValue = request.getParameter(parameterName);
+		if(StringUtils.isBlank(parameterValue)) {
+			if(throwException) {
+				throw new IllegalArgumentException();
+			}else {
+				return result;
+			}
+		}
+		
+		try {
+			result = Double.parseDouble(parameterValue);
+		}catch(NumberFormatException e) {
+			logger.error(e.getMessage());
+			if(throwException) {
+				throw e;
+			}
+		}
+		
+		return result;
+	}
 }

@@ -25,6 +25,11 @@ public class NoDataJsonResult extends JsonBase {
 		this.resultCode = resultCode;
 	}
 	
+	public NoDataJsonResult(int resultCode, String message) {
+		this.resultCode = resultCode;
+		this.message = message;
+	}
+	
 	public NoDataJsonResult(NoDataResult result) {
 		this.resultCode = result.getResultCode();
 		this.message = result.getMessage();

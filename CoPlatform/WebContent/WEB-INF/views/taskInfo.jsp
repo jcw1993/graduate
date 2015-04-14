@@ -8,8 +8,8 @@
 <form id="taskEditForm">
 	<c:set value="${model.task}" var="task" />
 	<div>
-		<input name="id" type="hidden" value="${task.id}"/>
-		<!-- <input name="projectId" type="hidden" value="${task.project.id}"/> -->
+		<input name="taskId" type="hidden" value="${task.id}"/>
+		<input name="projectId" type="hidden" value="${task.project.id}"/>
 	</div>
 	<div>
 		<label>任务名称</label>
@@ -21,7 +21,7 @@
 	</div>
 	<div>
 		<label>任务Id</label>
-		<!-- <input name="projectId" type="text" value="${task.project.id}"/> -->
+		<input name="projectId" type="text" value="${task.project.id}"/>
 	</div>
 	<div>
 		<label>开始时间</label>
