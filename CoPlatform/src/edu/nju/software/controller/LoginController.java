@@ -2,8 +2,10 @@ package edu.nju.software.controller;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = {"/Login"}, method = RequestMethod.POST)
-	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String mail = request.getParameter("mail");
 		String password = request.getParameter("password");
 		if(StringUtils.isBlank(mail) || StringUtils.isBlank(password)) {
@@ -41,7 +43,11 @@ public class LoginController {
 		password = password.trim();
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
 		if(adminResult.getResultCode() == ResultCode.NORMAL) {
-			request.getSession(true).setAttribute("currentAdmin", adminResult.getData());
+			HttpSession session = request.getSession(true);
+//			session.setAttribute("currentAdmin", adminResult.getData());
+			session.setAttribute("adminId",  adminResult.getData().getId());
+			session.setAttribute("adminName", adminResult.getData().getName());
+//			request.getRequestDispatcher("MemberList?companyId=" + adminResult.getData().getCompany().getId()).forward(request, response);
 			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompany().getId());
 			return;
 		}else {

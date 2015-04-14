@@ -64,6 +64,6 @@
 		$nav.children().eq(index).addClass("active");
 	}
 
-  var adminName = ${sessionScope.currentAdmin.name};
+  var adminName = "${sessionScope.adminName}";
   console.log("adminName: " + adminName);
 </script>
