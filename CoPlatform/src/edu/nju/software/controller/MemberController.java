@@ -58,7 +58,6 @@ public class MemberController {
 	@RequestMapping(value = {"/UpdateMember"}, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult updateMember(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-
 		int id = CoUtils.getRequestIntValue(request, "id", true);
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		

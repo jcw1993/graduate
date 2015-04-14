@@ -1,7 +1,12 @@
 package edu.nju.software.pojo;
 
+import java.io.Serializable;
 
-public class Admin {
+
+public class Admin implements Serializable {
+	
+	private static final long serialVersionUID = 1260412896641800369L;
+
 	private int id;
 	private Company company;
 	private String mail;

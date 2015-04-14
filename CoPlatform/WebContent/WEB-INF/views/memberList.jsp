@@ -34,7 +34,7 @@
 </table>
 </div>
 
-<div id="memberEditModal" class="modal fade userArchiveEditDlg">
+<div id="memberEditModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -68,18 +68,20 @@
 
 	$memberEditSubmit.click(function(e) {
 		console.log("submit member info");
-		$.post(
-			"UpdateMember",
-			$("form").serialize(),
-			function(result) {
+		var formData = $("form").serialize();
+		$.ajax({
+			url: "UpdateMember",
+			data: formData,
+			method: "post",
+			success: function(result) {
 				if(result.resultCode == 0) {
 					console.log("success");
 					location.reload();
 				}else {
 					console.log("edit member info error, error code : " + result.resultCode + ";error message: " + result.message);
 				}
-			}
-		);
+			} 
+		});
 	});
 </script>
 </body>

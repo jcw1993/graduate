@@ -123,6 +123,7 @@ public class TaskServiceImpl implements TaskService {
 			try {
 				task = taskDao.getById(id);
 				result.setData(task);
+				CoCacheManager.put(String.format(TASK_CACHE_KEY, id), task);
 			}catch(DataAccessException e) {
 				logger.error(e.getMessage());
 				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);

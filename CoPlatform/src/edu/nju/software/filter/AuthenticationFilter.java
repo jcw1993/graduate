@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.nju.software.pojo.Admin;
+
 public class AuthenticationFilter implements Filter {
 	
 	private static Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
@@ -38,10 +40,10 @@ public class AuthenticationFilter implements Filter {
 			HttpSession session = httpServletRequest.getSession(false);
 			if(null != session) {
 				System.out.println("session != null");
-//				Admin admin = (Admin) session.getAttribute("currentAdmin");
-				String adminName = (String) session.getAttribute("adminName");
+				Admin admin = (Admin) session.getAttribute("admin");
+//				String adminName = (String) session.getAttribute("adminName");
 				System.out.println("sessionId:" + session.getId());
-				if(null == adminName) {
+				if(null == admin) {
 					System.out.println("admin = null");
 					httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
 					return;

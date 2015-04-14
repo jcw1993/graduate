@@ -44,9 +44,10 @@ public class LoginController {
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
 		if(adminResult.getResultCode() == ResultCode.NORMAL) {
 			HttpSession session = request.getSession(true);
-//			session.setAttribute("currentAdmin", adminResult.getData());
-			session.setAttribute("adminId",  adminResult.getData().getId());
-			session.setAttribute("adminName", adminResult.getData().getName());
+			session.setAttribute("currentAdmin", adminResult.getData());
+//			session.setAttribute("adminId",  adminResult.getData().getId());
+//			session.setAttribute("adminName", adminResult.getData().getName());
+			session.setAttribute("admin", adminResult.getData());
 //			request.getRequestDispatcher("MemberList?companyId=" + adminResult.getData().getCompany().getId()).forward(request, response);
 			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompany().getId());
 			return;
