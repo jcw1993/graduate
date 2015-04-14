@@ -26,7 +26,7 @@
 <c:forEach items="${projectLog.value}" var="log">
 <tr>
 	<td>${log.title}</td>
-	<td>${log.desc}</td>
+	<td>${log.description}</td>
 	<td>${log.project.id}</td>
 	<td>${log.createdTime}</td>
 </tr>

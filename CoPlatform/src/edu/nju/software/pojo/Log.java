@@ -5,7 +5,7 @@ import java.util.Date;
 public class Log {
 	private int id;
 	private String title;
-	private String desc;
+	private String description;
 	private Project project;
 	private Task task;
 	private TaskStatus originStatus;
@@ -27,11 +27,11 @@ public class Log {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public Project getProject() {
 		return project;

@@ -58,7 +58,10 @@ public class ProjectServiceImpl implements ProjectService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
 			result.setMessage(e.getMessage());
+			return result;
 		}
+		
+		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY, project.getCompany().getId()));
 		return result;
 	}
 
@@ -71,7 +74,11 @@ public class ProjectServiceImpl implements ProjectService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_UPDATE_ERROR);
 			result.setMessage(e.getMessage());
+			return result;
 		}
+		
+		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY, project.getCompany().getId()));
+		CoCacheManager.remove(String.format(PROJECT_CACHE_KEY_FOMAT, project.getId()));
 		return result;
 	}
 
@@ -84,7 +91,11 @@ public class ProjectServiceImpl implements ProjectService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
 			result.setMessage(e.getMessage());
+			return result;
 		}
+		
+		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY, project.getCompany().getId()));
+		CoCacheManager.remove(String.format(PROJECT_CACHE_KEY_FOMAT, project.getId()));
 		return result;
 	}
 

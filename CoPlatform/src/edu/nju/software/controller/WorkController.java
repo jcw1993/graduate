@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
+import edu.nju.software.pojo.TaskStatus;
 import edu.nju.software.service.ProjectService;
 import edu.nju.software.service.TaskService;
 import edu.nju.software.util.CoUtils;
@@ -91,22 +92,22 @@ public class WorkController {
 		return new ModelAndView("projectList", "model", model);
 	}
 	
-	@RequestMapping(value = {"/EditProject"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/UpdateProject"}, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult updateProject(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
 		String name = request.getParameter("name");
-		String desc = request.getParameter("desc");
+		String description = request.getParameter("description");
 		String startTime = request.getParameter("startTime");
 		String endTime = request.getParameter("endTime");
 		double progress = CoUtils.getRequestDoubleValue(request, "progress", true);
 		if(null != name) {
 			name = name.trim();
 		}
-		if(null != desc) {
-			desc = desc.trim();
+		if(null != description) {
+			description = description.trim();
 		}
 		if(null != startTime) {
 			startTime = startTime.trim();
@@ -115,7 +116,7 @@ public class WorkController {
 			endTime = endTime.trim();
 		}
 		
-		Project project = new Project(projectId, new Company(companyId), name, desc, new Date(), new Date(), progress);
+		Project project = new Project(projectId, new Company(companyId), name, description, new Date(), new Date(), progress);
 		
 		NoDataResult result = projectService.update(project);
 		return new NoDataJsonResult(result);
@@ -162,11 +163,35 @@ public class WorkController {
 		return new ModelAndView("taskInfo", "model", model);
 	}
 	
-	@RequestMapping(value = {"/EditTask"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/UpdateTask"}, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult updateTask(HttpServletRequest request, HttpServletResponse response) {
-		// TODO
-		return null;
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
+		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
+		
+		String name = request.getParameter("name");
+		String description = request.getParameter("description");
+		String startTime = request.getParameter("startTime");
+		String endTime = request.getParameter("endTime");
+		int status = CoUtils.getRequestIntValue(request, "status", true);
+		
+		if(null != name) {
+			name = name.trim();
+		}
+		if(null != description) {
+			description = description.trim();
+		}
+		if(null != startTime) {
+			startTime = startTime.trim();
+		}
+		if(null != endTime) {
+			endTime = endTime.trim();
+		}
+		
+		Task task = new Task(taskId, new Project(projectId), name, description, null ,new TaskStatus(status), new Date(), new Date());
+		
+		NoDataResult result = taskService.update(task);
+		return new NoDataJsonResult(result);
 	}
 	
 	@RequestMapping(value = {"/DeleteTask"}, method = RequestMethod.GET)

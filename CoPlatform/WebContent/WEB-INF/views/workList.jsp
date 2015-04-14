@@ -36,7 +36,7 @@
 			<c:forEach items="${tasks}" var="task">
 			<tr>
 				<td><a class="taskInfo" href="#" taskId="${task.id}">${task.name}</a></td>
-				<td>${task.desc}</td>
+				<td>${task.description}</td>
 				<td>${task.project.id}</td>
 				<td><fmt:formatDate value="${task.startTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td><fmt:formatDate value="${task.endTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
@@ -106,7 +106,10 @@
 
 	$projectEditSubmit.click(function(e) {
 		console.log("submit project info");
-		var formData = $("#projectEditForm").serialize();
+		var formData = $("form").serialize();
+		console.log("form: " + $("form"));
+		console.log("formData: " + formData);
+
 		$.ajax({
 			url: "UpdateProject",
 			data: formData,

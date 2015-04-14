@@ -64,7 +64,14 @@
 			console.log("password: " + password);
 			$loginForm.submit();
 		}); 
+
+		$passwordInput.keyup(function(e){
+			if(e.keyCode == 13) {
+				$loginLink.trigger("click");
+			}
+		});
 	});
+
 </script>
 </body>
 </html>

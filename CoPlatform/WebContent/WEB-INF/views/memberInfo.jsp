@@ -6,29 +6,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <form id="memberEditForm">
-	<c:set value="${model.member}" var="member" />
-	<div>
-		<input name="id" type="hidden" value="${member.id}"/>
-		<input name="companyId" type="hidden" value="${member.company.id}"/>
-	</div>
-	<div>
-		<label>用户名</label>
-		<input name="name" type="text" value="${member.name}"/>
-	</div>
-	<div>
-		<label>工号</label>
-		<input name="workId" type="text" value="${member.workId}"/>
-	</div>
-	<div>
-		<label>qq号</label>
-		<input name="qqNumber" type="text" value="${member.qqNumber}"/>
-	</div>
-	<div>
-		<label>微信号</label>
-		<input name="wxNumber" type="text" value="${member.wxNumber}"/>
-	</div>
-	<div>
-		<label>手机</label>
-		<input name="phone" type="text" value="${member.phone}"/>
-	</div>
+	<table class="table table-responsive">
+		<c:set value="${model.member}" var="member" />
+		<tr>
+			<td><input name="memberId" type="hidden" value="${member.id}"/></td>
+			<td><input name="companyId" type="hidden" value="${member.company.id}"/></td>
+		</tr>
+		<tr>
+			<td><label>用户名</label></td>
+			<td><input name="name" type="text" value="${member.name}"/></td>
+		</tr>
+		<tr>
+			<td><label>工号</label></td>
+			<td><input name="workId" type="text" value="${member.workId}"/></td>
+		</tr>
+		<tr>
+			<td><label>qq号</label></td>
+			<td><input name="qqNumber" type="text" value="${member.qqNumber}"/></td>
+		</tr>
+		<tr>
+			<td><label>微信号</label></td>
+			<td><input name="wxNumber" type="text" value="${member.wxNumber}"/></td>
+		</tr>
+		<tr>
+			<td><label>手机</label></td>
+			<td><input name="phone" type="text" value="${member.phone}"/></td>
+		</tr>
+	</table>
 </form>

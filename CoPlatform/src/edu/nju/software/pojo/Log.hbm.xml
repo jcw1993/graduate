@@ -10,7 +10,7 @@
             <generator class="increment" />
         </id>
         <property name="title" type="string" column="title" />
-        <property name="desc" type="string" column="desc" />
+        <property name="description" type="string" column="description" />
         <many-to-one name="project" column="project_id" />
         <many-to-one name="task" column="task_id" />
         <many-to-one name="originStatus" column="origin_status" />

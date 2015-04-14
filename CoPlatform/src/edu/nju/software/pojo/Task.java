@@ -6,7 +6,7 @@ public class Task {
 	private int id;
 	private Project project;
 	private String name;
-	private String desc;
+	private String description;
 	private Task parent;
 	private TaskStatus status;
 	private Date startTime;
@@ -30,11 +30,11 @@ public class Task {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public Task getParent() {
 		return parent;
@@ -67,11 +67,11 @@ public class Task {
 		this.id = id;
 	}
 	
-	public Task(int id, Project project, String name, String desc, Task parent, TaskStatus status, Date startTime, Date endTime) {
+	public Task(int id, Project project, String name, String description, Task parent, TaskStatus status, Date startTime, Date endTime) {
 		this.id = id;
 		this.project = project;
 		this.name = name;
-		this.desc = desc;
+		this.description = description;
 		this.parent = parent;
 		this.status = status;
 		this.startTime = startTime;

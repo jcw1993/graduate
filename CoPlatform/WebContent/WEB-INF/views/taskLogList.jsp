@@ -28,7 +28,7 @@
 <c:forEach items="${taskLog.value}" var="log">
 <tr>
 	<td>${log.title}</td>
-	<td>${log.desc}</td>
+	<td>${log.description}</td>
 	<td>${log.task.id}</td>
 	<td>${log.originStatus.id}</td>
 	<td>${log.currentStatus.id}</td>

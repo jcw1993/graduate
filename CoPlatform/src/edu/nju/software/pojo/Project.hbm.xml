@@ -11,7 +11,7 @@
         </id>
         <many-to-one name="company" column="company_id" />
         <property name="name" type="string" column="name" />
-        <property name="desc" type="string" column="desc" />
+        <property name="description" type="string" column="description" />
         <property name="startTime" type="timestamp" column="start_time" />
         <property name="endTime" type="timestamp" column="end_time" />
         <property name="progress" type="double" column="progress" />

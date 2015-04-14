@@ -36,7 +36,10 @@ public class TaskServiceImpl implements TaskService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
 			result.setMessage(e.getMessage());
+			return result;
 		}
+		
+		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY, task.getProject().getId()));
 		return result;
 	}
 
@@ -49,7 +52,11 @@ public class TaskServiceImpl implements TaskService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_UPDATE_ERROR);
 			result.setMessage(e.getMessage());
+			return result;
 		}
+		
+		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY, task.getProject().getId()));
+		CoCacheManager.remove(String.format(TASK_CACHE_KEY, task.getId()));
 		return result;
 	}
 
@@ -62,7 +69,11 @@ public class TaskServiceImpl implements TaskService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
 			result.setMessage(e.getMessage());
+			return result;
 		}
+		
+		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY, task.getProject().getId()));
+		CoCacheManager.remove(String.format(TASK_CACHE_KEY, task.getId()));
 		return result;
 	}
 

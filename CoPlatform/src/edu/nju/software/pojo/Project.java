@@ -6,7 +6,7 @@ public class Project {
 	private int id;
 	private Company company;
 	private String name;
-	private String desc;
+	private String description;
 	private Date startTime;
 	private Date endTime;
 	private double progress;
@@ -29,11 +29,11 @@ public class Project {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public Date getStartTime() {
 		return startTime;
@@ -60,11 +60,11 @@ public class Project {
 		this.id = id;
 	}
 	
-	public Project(int id, Company company, String name, String desc, Date startTime, Date endTime, double progress) {
+	public Project(int id, Company company, String name, String description, Date startTime, Date endTime, double progress) {
 		this.id = id;
 		this.company = company;
 		this.name = name;
-		this.desc = desc;
+		this.description = description;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.progress = progress;

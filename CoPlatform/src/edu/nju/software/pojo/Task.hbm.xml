@@ -11,7 +11,7 @@
         </id>
         <many-to-one name="project" column="project_id" />
         <property name="name" type="string" column="name" />
-        <property name="desc" type="string" column="desc" />
+        <property name="description" type="string" column="description" />
         <many-to-one name="parent" column="parent_id" />
         <property name="startTime" type="timestamp" column="start_time" />
         <property name="endTime" type="timestamp" column="end_time" />

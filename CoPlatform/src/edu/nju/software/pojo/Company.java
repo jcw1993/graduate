@@ -5,7 +5,7 @@ import java.util.Set;
 public class Company {
 	private int id;
 	private String name;
-	private String desc;
+	private String description;
 	private String phone;
 	private String address;
 	private Set<OutEmployee> outEmployees;
@@ -22,11 +22,11 @@ public class Company {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getPhone() {
 		return phone;
