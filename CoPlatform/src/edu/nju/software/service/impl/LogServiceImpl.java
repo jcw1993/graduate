@@ -16,8 +16,7 @@ import edu.nju.software.pojo.Log;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.LogService;
-import edu.nju.software.service.ProjectService;
-import edu.nju.software.service.TaskService;
+import edu.nju.software.service.WorkService;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
 
@@ -29,16 +28,13 @@ public class LogServiceImpl implements LogService {
 	private LogDao logDao;
 	
 	@Autowired
-	private ProjectService projectService;
+	private WorkService workService;
 	
-	@Autowired
-	private TaskService taskService;
-
 	@Override
 	public GeneralResult<Map<Project, List<Log>>> getProjectLogs(int companyId, Date startTime,
 			Date endTime) {
 		GeneralResult<Map<Project, List<Log>>> result = new GeneralResult<Map<Project, List<Log>>>();
-		GeneralResult<List<Project>> projectResult = projectService.getByCompany(companyId);
+		GeneralResult<List<Project>> projectResult = workService.getProjectsByCompany(companyId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
 			Map<Project, List<Log>> projectLogs = new HashMap<Project, List<Log>>();
 			for(Project project : projectResult.getData()) {
@@ -67,7 +63,7 @@ public class LogServiceImpl implements LogService {
 	public GeneralResult<Map<Task, List<Log>>> getTaskLogs(int companyId, int projectId, Date startTime,
 			Date endTime) {
 		GeneralResult<Map<Task, List<Log>>> result = new GeneralResult<Map<Task, List<Log>>>();
-		GeneralResult<List<Task>> taskResult = taskService.getByProject(projectId);
+		GeneralResult<List<Task>> taskResult = workService.getTasksByProject(projectId);
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
 			Map<Task, List<Log>> taskLogs = new HashMap<Task, List<Log>>();
 			for(Task task : taskResult.getData()) {

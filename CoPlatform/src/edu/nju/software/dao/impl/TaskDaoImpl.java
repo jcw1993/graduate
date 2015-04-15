@@ -2,6 +2,7 @@ package edu.nju.software.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -36,12 +37,19 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 
 	@Override
 	public Task getParent(int parentId) throws DataAccessException {
-		return (Task) getHibernateTemplate().find("from Task where taskId = :parentId", parentId);
+		Task task = new Task(parentId);
+		return (Task) getHibernateTemplate().find("from Task where task = ?", task);
 	}
 
 	@Override
 	public Task getById(int id) {
 		return getHibernateTemplate().get(Task.class, id);
+	}
+
+	@Override
+	public void deleteAllByProject(int projectId) {
+		getSession().createQuery("delete from Task where project.id = " + projectId);
+//		query.executeUpdate();
 	}
 
 }

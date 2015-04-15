@@ -21,6 +21,7 @@
 
 <div class="row">
 <a class="projectInfo btn" projectId="${project.id}">${project.name}</a>
+<a class="projectDelete btn btn-primary" projectId="${project.id}">删除</a> 
 <a class="btn" data-toggle="collapse" href="#projectTaskArea${project.id}" aria-expanded="false" aria-controls="collapseExample">展开/收起</a>
 <div id="projectTaskArea${project.id}" class="collapse">
 	<c:if test="${tasks != null}">
@@ -35,7 +36,10 @@
 			</tr>
 			<c:forEach items="${tasks}" var="task">
 			<tr>
-				<td><a class="taskInfo" href="#" taskId="${task.id}">${task.name}</a></td>
+				<td class="taskNameTd">
+					<a class="taskInfo" href="#" taskId="${task.id}">${task.name}</a>
+					<span><a class="taskDelete" href="#"><img src="<c:url value='/resources/images/delete.png' />"></a></span>
+				</td>
 				<td>${task.description}</td>
 				<td>${task.project.id}</td>
 				<td><fmt:formatDate value="${task.startTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
@@ -87,11 +91,14 @@
 	var $projectEditModal = $("#projectEditModal");
 	var $projectEditContent = $("#projectEditContent");
 	var $projectEditSubmit = $("#projectEditSubmit");
+	var $projectDeleteBtn = $(".projectDelete");
 
 	var $taskInfoLink = $(".taskInfo");
 	var $taskEditModal = $("#taskEditModal");
 	var $taskEditContent = $("#taskEditContent");
 	var $taskEditSubmit = $("#taskEditSubmit");
+	var $taskDeleteBtn = $(".taskDelete");
+	var $taskNameTd = $(".taskNameTd");
 
 	$projectInfoLink.click(function(e) {
 		var projectId = $(this).attr("projectId");
@@ -102,6 +109,22 @@
 			}
 		});
 		$projectEditModal.modal();
+	});
+
+	$projectDeleteBtn.click(function(e) {
+		var projectId = $(this).attr("projectId");
+		console.log("project delete click, projectId: " + projectId);
+		$.ajax({
+			url: "DeleteProject?projectId=" + projectId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("delete project success");
+					location.reload();
+				}else {
+					console.log("delete project fail");
+				}
+			}
+		});
 	});
 
 	$projectEditSubmit.click(function(e) {
@@ -156,6 +179,34 @@
 			} 
 		});
 	});
+
+	$taskDeleteBtn.click(function(e){
+		console.log("delete click");
+		var taskId = $(this).parent().prev().attr("taskId");
+		console.log("taskId: " + taskId);
+/*		$.ajax({
+			url: "DeleteTask?taskId=" + taskId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("delete task success");
+					location.reload();
+				}else {
+					console.log("delete task error");
+					alert("删除失败, 请重试");
+				}
+			}
+		});*/
+	});
+
+	$taskNameTd.on("mouseover", function(e) {
+		$(this).find("a.taskDelete").show();
+	});
+
+	$taskNameTd.on("mouseout", function(e) {
+		$(this).find("a.taskDelete").hide();
+	});
+
+	$taskDeleteBtn.hide();
 </script>
 </body>
 </html>

@@ -11,6 +11,8 @@ public interface TaskDao {
 	
 	public void delete(Task task);
 	
+	public void deleteAllByProject(int projectId);
+	
 	public List<Task> getByProject(int projectId);
 	
 	public Task getParent(int parentId);
