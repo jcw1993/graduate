@@ -17,4 +17,6 @@ public class ResultCode {
 	public static final int E_NO_DATA = 0x00000020;
 	
 	public static final int E_OTHER_ERROR = 0x00000030;
+	
+	public static final int E_TASK_ASSIGNED = 0x00000041;
 }

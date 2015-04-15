@@ -17,10 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
+import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskStatus;
 import edu.nju.software.service.MemberService;
+import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.service.WorkService;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
@@ -35,6 +37,8 @@ public class WorkController {
 	private WorkService workService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private OutEmployeeService outEmployeeService;
 	
 	@RequestMapping(value = {"/GetProjectInfo"}, method = RequestMethod.GET)
 	public ModelAndView getProjectInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -79,6 +83,11 @@ public class WorkController {
 		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
 		if(memberResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("members", memberResult.getData());
+		}
+		
+		GeneralResult<List<OutEmployee>> outEmployeeResult = outEmployeeService.getByCompany(companyId);
+		if(outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("outEmployees", outEmployeeResult.getData());
 		}
 		
 		return new ModelAndView("workList", "model", model);
@@ -241,10 +250,23 @@ public class WorkController {
 		return new NoDataJsonResult(result);
 	}
 	
-	@RequestMapping(value = {"/TaskAssign"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/MemberTaskAssign"}, method = RequestMethod.GET)
 	@ResponseBody
-	public NoDataJsonResult taskAssign(HttpServletRequest request, HttpServletResponse response) {
+	public NoDataJsonResult memberTaskAssign(HttpServletRequest request, HttpServletResponse response) {
+		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
 		
-		return null;
+		NoDataResult taskAssignResult = workService.assignTaskToMember(taskId, memberId);
+		return new NoDataJsonResult(taskAssignResult);
+	}
+	
+	@RequestMapping(value = {"/OutEmployeeTaskAssign"}, method = RequestMethod.GET)
+	@ResponseBody
+	public NoDataJsonResult outEmployeeTaskAssign(HttpServletRequest request, HttpServletResponse response) {
+		int outEmployeeId = CoUtils.getRequestIntValue(request, "outEmployeeId", true);
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
+		
+		NoDataResult taskAssignResult = workService.assignTaskToOutEmployee(taskId, outEmployeeId);
+		return new NoDataJsonResult(taskAssignResult);
 	}
 }

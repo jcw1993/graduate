@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.ProjectDao;
 import edu.nju.software.dao.TaskDao;
+import edu.nju.software.pojo.Member;
+import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
+import edu.nju.software.pojo.TaskAssign;
 import edu.nju.software.service.WorkService;
 import edu.nju.software.util.CoCacheManager;
 import edu.nju.software.util.GeneralResult;
@@ -288,5 +291,70 @@ public class WorkServiceImpl implements WorkService {
 			result.setMessage(e.getMessage());
 		}
 		return result;
+	}
+
+	@Override
+	public NoDataResult assignTaskToMember(int taskId, int memberId) {
+		NoDataResult result = new NoDataResult();
+		if(!checkTaskAssigned(taskId, memberId, 0)) {
+			Task task = new Task(taskId);
+			Member member = new Member(memberId);
+			try {
+				taskDao.assignTask(new TaskAssign(task, member, null));
+			}catch(DataAccessException e) {
+				logger.error(e.getMessage());
+				result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
+				result.setMessage(e.getMessage());
+			}
+		}else {
+			result.setResultCode(ResultCode.E_TASK_ASSIGNED);
+			result.setMessage("task is assigned");
+		}
+		return result;
+	}
+
+	@Override
+	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId) {
+		NoDataResult result = new NoDataResult();
+		if(!checkTaskAssigned(taskId, 0, outEmployeeId)) {
+			Task task = new Task(taskId);
+			OutEmployee outEmployee = new OutEmployee(outEmployeeId);
+			try {
+				taskDao.assignTask(new TaskAssign(task, null, outEmployee));
+			}catch(DataAccessException e) {
+				logger.error(e.getMessage());
+				result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
+				result.setMessage(e.getMessage());
+			}
+		}else {
+			result.setResultCode(ResultCode.E_TASK_ASSIGNED);
+			result.setMessage("task is assigned");
+		}
+		return result;
+	}
+	
+	private boolean checkTaskAssigned(int taskId, int memberId, int outEmployeeId) {
+		if((taskId <= 0) || (memberId <= 0 && outEmployeeId <= 0)) {
+			throw new IllegalArgumentException();
+		}
+
+		Task task = taskDao.getById(taskId);
+		if(null == task) {
+			throw new IllegalArgumentException();
+		}
+		
+		List<Task> taskList = null;
+		if(memberId > 0) {
+			taskList = taskDao.getTasksByMember(memberId);
+		}else {
+			taskList = taskDao.getTasksByOutEmployee(task.getProject().getCompany().getId(), outEmployeeId);
+		}
+		
+		for(Task taskItem : taskList) {
+			if(taskItem.getId() == taskId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

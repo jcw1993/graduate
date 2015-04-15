@@ -47,4 +47,9 @@ public class OutEmployee {
 		this.companies = companies;
 	}
 	
+	public OutEmployee() {}
+	
+	public OutEmployee(int id) {
+		this.id = id;
+	}
 }

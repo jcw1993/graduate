@@ -35,4 +35,8 @@ public interface WorkService {
 	
 	public GeneralResult<Task> getParentTask(int parentId);
 	
+	public NoDataResult assignTaskToMember(int taskId, int memberId);
+	
+	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId);
+	
 }

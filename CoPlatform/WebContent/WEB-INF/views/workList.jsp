@@ -95,6 +95,13 @@
         <h4 class="modal-title">任务分配</h4>
       </div>
       <div id="taskEditContent" class="modal-body">
+      	<label>类型</label>
+      	<select id="memberList">
+      		<option value="member">公司职员</option>
+      		<option value="member">外聘人员</option>
+      	</select>
+
+      	<label>人员</label>
       	<select id="memberList">
       	<c:forEach items="${model.members}" var="member">
       		<option value="${member.id}">${member.name}</option>
@@ -263,6 +270,15 @@
 	}*/
 
 	$taskDeleteBtn.hide();
+
+
+	// var members = "${model.members}";
+	// console.log(members);
+	// members.forEach(function(x) {
+	// 	// console.log(member.name);
+	// 	console.log("xxx");
+	// });
+
 </script>
 </body>
 </html>

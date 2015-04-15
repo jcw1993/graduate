@@ -32,4 +32,15 @@ public class TaskAssign {
 		this.outEmployee = outEmployee;
 	}
 	
+	public TaskAssign() {}
+	
+	public TaskAssign(int id) {
+		this.id = id;
+	}
+	
+	public TaskAssign(Task task, Member member, OutEmployee outEmployee) {
+		this.task = task;
+		this.member = member;
+		this.outEmployee = outEmployee;
+	}
 }
