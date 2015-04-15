@@ -69,8 +69,8 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Task> getTasksByOutEmployee(int companyId, int outEmployeeId) {
-		// TODO 
-		Query query = getSession().createQuery("select task from TaskAssign where outEmployee.id = " + outEmployeeId + " and task.company.id = " + companyId);
+		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, OutEmployee as oe where  ta.task.id = t.id and "
+				+ "ta.outEmployee.id = oe.id and t.project.company.id = " + companyId + " and oe.id = " + outEmployeeId);
 		return query.list();
 	}
 

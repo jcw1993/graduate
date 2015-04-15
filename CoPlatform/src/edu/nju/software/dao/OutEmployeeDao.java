@@ -10,5 +10,7 @@ public interface OutEmployeeDao {
 	public List<OutEmployee> getByCompany(int companyId);
 	
 	public List<Company> getRelatedCompanies(int outEmployeeId);
+	
+	public OutEmployee getById(int outEmployeeId);
 
 }

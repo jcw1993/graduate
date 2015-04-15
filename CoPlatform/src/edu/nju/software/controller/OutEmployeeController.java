@@ -39,6 +39,18 @@ public class OutEmployeeController {
 		return new ModelAndView("outEmployeeList", "model", model);
 	}
 	
+	@RequestMapping(value = {"/GetOutEmployeeInfo"}, method = RequestMethod.GET)
+	public ModelAndView getOutEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
+		int outEmployeeId = CoUtils.getRequestIntValue(request, "outEmployeeId", true);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		GeneralResult<OutEmployee> outEmployeeResult = outEmployeeService.getById(outEmployeeId);
+		if(outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("outEmployee", outEmployeeResult.getData());
+		}
+		return new ModelAndView("outEmployeeInfo", "model", model);
+	}
+	
 	@RequestMapping(value = {"/GetOutEmployeeTasks"}, method = RequestMethod.GET)
 	public ModelAndView memberTaskList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);

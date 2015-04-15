@@ -26,5 +26,10 @@ public class OutEmployeeDaoImpl extends HibernateDaoBase implements OutEmployeeD
 		return query.list();
 	}
 
+	@Override
+	public OutEmployee getById(int outEmployeeId) {
+		return getHibernateTemplate().get(OutEmployee.class, outEmployeeId);
+	}
+
 
 }

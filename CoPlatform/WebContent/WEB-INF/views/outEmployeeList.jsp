@@ -18,20 +18,78 @@
 	<th>微信号</th>
 	<th>qq号</th>
 	<th>手机</th>
+	<th>操作</th>
 </tr>
 <c:forEach items="${model.outEmployees}" var="outEmployee">
 <tr>
-	<td><a class="memberInfo" href="#" outEmployeeId="${outEmployee.id}">${outEmployee.name}</a></td>
+	<td><a class="outEmployeeInfo" href="#" outEmployeeId="${outEmployee.id}">${outEmployee.name}</a></td>
 	<td>${outEmployee.wxNumber}</td>
 	<td>${outEmployee.qqNumber}</td>
 	<td>${outEmployee.phone}</td>
+	<td><a class="outEmployeeTask" href="#" outEmployeeId="${outEmployee.id}">查看任务</td>
 </tr>
 </c:forEach>
 </table>
 </div>
 
-<script type="text/javascript">
+<div id="outEmployeeInfoModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">职员信息</h4>
+      </div>
+      <div id="outEmployeeInfoContent" class="modal-body">
+      </div>
+    </div>
+  </div>
+</div>
 
+<div id="outEmployeeTaskModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">任务信息</h4>
+      </div>
+      <div id="outEmployeeTaskContent" class="modal-body">
+      </div>
+<!--       <div class="modal-footer">
+        <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	var $outEmployeeInfoLink = $(".outEmployeeInfo");
+	var $outEmployeeInfoModal = $("#outEmployeeInfoModal");
+	var $outEmployeeInfoContent = $("#outEmployeeInfoContent");
+
+	var $outEmployeeTaskLink = $(".outEmployeeTask");
+	var $outEmployeeTaskModal = $("#outEmployeeTaskModal");
+	var $outEmployeeTaskContent = $("#outEmployeeTaskContent");
+
+	$outEmployeeInfoLink.click(function(e) {
+		var outEmployeeId = $(this).attr("outEmployeeId");
+		console.log("get outEmployeeId info, outEmployeeId: " + outEmployeeId);
+		$outEmployeeInfoContent.load("GetOutEmployeeInfo?outEmployeeId=" + outEmployeeId, function(response, status, xhr) {
+			if(status == "error") {
+				$outEmployeeInfoContent.load("Error");
+			}
+		});
+		$outEmployeeInfoModal.modal();
+	});
+
+	$outEmployeeTaskLink.click(function(e) {
+		var outEmployeeId = $(this).attr("outEmployeeId");
+		var companyId = "${currentAdmin.company.id}";
+		console.log("outEmployeeTask click, outEmployeeId: " + outEmployeeId);
+		$outEmployeeTaskContent.load("GetOutEmployeeTasks?companyId=" + companyId + "&outEmployeeId=" + outEmployeeId, function(response, status, xhr) {
+			if(status == "error") {
+				$outEmployeeTaskContent.load("Error");
+			}
+		});
+		$outEmployeeTaskModal.modal();
+	});
 </script>
 </body>
 </html>

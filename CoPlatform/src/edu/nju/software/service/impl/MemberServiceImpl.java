@@ -163,6 +163,7 @@ public class MemberServiceImpl implements MemberService {
 			try {
 				member = memberDao.getById(id);
 				result.setData(member);
+				CoCacheManager.put(String.format(MEMBER_CACHE_KEY, id), member);
 			}catch(DataAccessException e) {
 				logger.error(e.getMessage());
 				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);

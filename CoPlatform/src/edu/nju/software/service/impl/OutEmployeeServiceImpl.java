@@ -26,6 +26,8 @@ public class OutEmployeeServiceImpl implements OutEmployeeService {
 	
 	private static final String OUT_EMPLOYEE_RELATED_COMPANY_CACHE_KEY = "out_employee_related_company_cache_key_%d";
 	
+	private static final String OUT_EMPLOYEE_KEY_FORMAT = "out_employee_%d";
+	
 	@Autowired
 	private OutEmployeeDao outEmployeeDao;
 	@Autowired
@@ -98,6 +100,26 @@ public class OutEmployeeServiceImpl implements OutEmployeeService {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
 			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public GeneralResult<OutEmployee> getById(int outEmployeeId) {
+		GeneralResult<OutEmployee> result = new GeneralResult<OutEmployee>();
+		OutEmployee outEmployee = (OutEmployee) CoCacheManager.get(String.format(OUT_EMPLOYEE_KEY_FORMAT, outEmployeeId));
+		if(null != outEmployee) {
+			result.setData(outEmployee);
+		}else {
+			try {
+				outEmployee = outEmployeeDao.getById(outEmployeeId);
+				result.setData(outEmployee);
+				CoCacheManager.put(String.format(OUT_EMPLOYEE_KEY_FORMAT, outEmployeeId), outEmployee);
+			}catch(DataAccessException e) {
+				logger.error(e.getMessage());
+				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+				result.setMessage(e.getMessage());
+			}
 		}
 		return result;
 	}

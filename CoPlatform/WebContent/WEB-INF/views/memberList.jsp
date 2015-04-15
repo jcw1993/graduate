@@ -10,7 +10,7 @@
 <jsp:include page="navi.jsp" flush="true" />
 
 <div class="container-body">
-	<h3>员工列表</h3>
+	<h3>职员列表</h3>
 	<hr />
 <table class="table table-striped table-bordered table-hover table-responsive">
 <tr>
@@ -62,9 +62,6 @@
       </div>
       <div id="memberTaskContent" class="modal-body">
       </div>
-<!--       <div class="modal-footer">
-        <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
-      </div> -->
     </div>
   </div>
 </div>

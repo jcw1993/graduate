@@ -14,4 +14,6 @@ public interface OutEmployeeService {
 	public GeneralResult<List<Company>> getRelatedCompanies(int outEmployeeId);
 	
 	public GeneralResult<List<Task>> getTasks(int companyId, int outEmployeeId);
+	
+	public GeneralResult<OutEmployee> getById(int outEmployeeId);
 }
