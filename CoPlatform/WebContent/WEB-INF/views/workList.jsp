@@ -33,6 +33,7 @@
 				<th>开始时间</th>
 				<th>结束时间</th>
 				<th>当前状态</th>
+				<th>操作</th>
 			</tr>
 			<c:forEach items="${tasks}" var="task">
 			<tr>
@@ -45,6 +46,7 @@
 				<td><fmt:formatDate value="${task.startTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td><fmt:formatDate value="${task.endTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td>${task.status.id}</td>
+				<td><a class="taskAssign" href="#" taskId="${task.id}">分配任务</a></td>
 			</tr>
 			</c:forEach>
 		</table>
@@ -65,7 +67,7 @@
       <div id="projectEditContent" class="modal-body">
       </div>
       <div class="modal-footer">
-        <button id="projectEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+        <button id="projectEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
       </div>
     </div>
   </div>
@@ -80,7 +82,27 @@
       <div id="taskEditContent" class="modal-body">
       </div>
       <div class="modal-footer">
-        <button id="taskEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+        <button id="taskEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="taskAssignModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">任务分配</h4>
+      </div>
+      <div id="taskEditContent" class="modal-body">
+      	<select id="memberList">
+      	<c:forEach items="${model.members}" var="member">
+      		<option value="${member.id}">${member.name}</option>
+      	</c:forEach>
+      	</select>
+      </div>
+      <div class="modal-footer">
+        <button id="taskEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
       </div>
     </div>
   </div>
@@ -99,6 +121,11 @@
 	var $taskEditSubmit = $("#taskEditSubmit");
 	var $taskDeleteBtn = $(".taskDelete");
 	var $taskNameTd = $(".taskNameTd");
+
+	var $taskAssignBtn = $(".taskAssign");
+
+	var $taskAssignModal = $("#taskAssignModal");
+	var $memberListSelect = $("#memberList");
 
 	$projectInfoLink.click(function(e) {
 		var projectId = $(this).attr("projectId");
@@ -184,7 +211,7 @@
 		console.log("delete click");
 		var taskId = $(this).parent().prev().attr("taskId");
 		console.log("taskId: " + taskId);
-/*		$.ajax({
+		$.ajax({
 			url: "DeleteTask?taskId=" + taskId,
 			success: function(result) {
 				if(result.resultCode == 0) {
@@ -195,7 +222,7 @@
 					alert("删除失败, 请重试");
 				}
 			}
-		});*/
+		});
 	});
 
 	$taskNameTd.on("mouseover", function(e) {
@@ -205,6 +232,35 @@
 	$taskNameTd.on("mouseout", function(e) {
 		$(this).find("a.taskDelete").hide();
 	});
+
+	$taskAssignBtn.click(function(e) {
+		console.log("task assign click");
+		var taskId = $(this).attr("taskId");
+		console.log("taskId: " + taskId);
+/*		if($memberListSelect.children().length == 0) {
+			loadMember();
+		}*/
+		$taskAssignModal.modal();
+	});
+
+
+/*	function loadMember() {
+		var companyId = "${currentAdmin.company.id}";
+		console.log("companyId: " + companyId);
+		$.ajax({
+			url: "GetMemberList?companyId=" + companyId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					var members = result.data;
+					members.forEach(function(member){
+						$memberList.append($("<option value='" + member.id + "'>" + member.name + "</option>"));
+					}); 
+				}else {
+					console.log("get member list error");
+				}
+			}
+		});
+	}*/
 
 	$taskDeleteBtn.hide();
 </script>

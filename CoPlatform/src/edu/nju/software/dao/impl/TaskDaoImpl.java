@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import edu.nju.software.dao.TaskDao;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
+import edu.nju.software.pojo.TaskAssign;
 
 @Repository
 public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
@@ -50,6 +51,27 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	public void deleteAllByProject(int projectId) {
 		Query query = getSession().createQuery("delete from Task where project.id = " + projectId);
 		query.executeUpdate();
+	}
+
+	@Override
+	public void assignTask(TaskAssign taskAssign) {
+		getHibernateTemplate().saveOrUpdate(taskAssign);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Task> getTasksByMember(int memberId) {
+		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, Member as m where ta.task.id = t.id and "
+				+ "ta.member.id = m.id and m.id = " + memberId);
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Task> getTasksByOutEmployee(int companyId, int outEmployeeId) {
+		// TODO 
+		Query query = getSession().createQuery("select task from TaskAssign where outEmployee.id = " + outEmployeeId + " and task.company.id = " + companyId);
+		return query.list();
 	}
 
 }

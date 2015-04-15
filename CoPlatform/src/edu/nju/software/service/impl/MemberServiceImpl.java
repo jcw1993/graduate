@@ -9,7 +9,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.MemberDao;
+import edu.nju.software.dao.TaskDao;
 import edu.nju.software.pojo.Member;
+import edu.nju.software.pojo.Task;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.util.CoCacheManager;
 import edu.nju.software.util.GeneralResult;
@@ -27,6 +29,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private TaskDao taskDao;
 	
 	@Override
 	public GeneralResult<List<Member>> getAllByCompany(int companyId) {
@@ -163,6 +168,25 @@ public class MemberServiceImpl implements MemberService {
 				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
 				result.setMessage(e.getMessage());
 			}
+		}
+		return result;
+	}
+
+	@Override
+	public GeneralResult<List<Task>> getTasks(int memberId) {
+		GeneralResult<List<Task>> result = new GeneralResult<List<Task>>();
+		try {
+			List<Task> taskList = taskDao.getTasksByMember(memberId);
+			if(null != taskList && !taskList.isEmpty()) {
+				result.setData(taskList);
+			}else {
+				result.setResultCode(ResultCode.E_NO_DATA);
+				result.setMessage("no task find, memberId: " + memberId);
+			}
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			result.setMessage(e.getMessage());
 		}
 		return result;
 	}

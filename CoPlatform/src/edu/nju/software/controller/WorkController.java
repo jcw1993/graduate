@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Company;
+import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskStatus;
+import edu.nju.software.service.MemberService;
 import edu.nju.software.service.WorkService;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
@@ -31,6 +33,8 @@ public class WorkController {
 	
 	@Autowired
 	private WorkService workService;
+	@Autowired
+	private MemberService memberService;
 	
 	@RequestMapping(value = {"/GetProjectInfo"}, method = RequestMethod.GET)
 	public ModelAndView getProjectInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -70,6 +74,11 @@ public class WorkController {
 				}
 			}
 			model.put("works", workMap);
+		}
+		
+		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
+		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("members", memberResult.getData());
 		}
 		
 		return new ModelAndView("workList", "model", model);
@@ -230,5 +239,12 @@ public class WorkController {
 		task.setProject(project);
 		NoDataResult result = workService.deleteTask(task);
 		return new NoDataJsonResult(result);
+	}
+	
+	@RequestMapping(value = {"/TaskAssign"}, method = RequestMethod.GET)
+	@ResponseBody
+	public NoDataJsonResult taskAssign(HttpServletRequest request, HttpServletResponse response) {
+		
+		return null;
 	}
 }

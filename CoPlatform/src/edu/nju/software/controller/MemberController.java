@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
+import edu.nju.software.pojo.Task;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.util.CoUtils;
+import edu.nju.software.util.GeneralJsonResult;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.NoDataJsonResult;
 import edu.nju.software.util.NoDataResult;
@@ -31,7 +33,7 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@RequestMapping(value = {"/MemberList"}, method = RequestMethod.GET)
-	public ModelAndView getMemberList(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView memberList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -41,6 +43,14 @@ public class MemberController {
 		}
 		
 		return new ModelAndView("memberList", "model", model);
+	}
+	
+	@RequestMapping(value = {"/GetMemberList"}, method = RequestMethod.GET)
+	@ResponseBody
+	public GeneralJsonResult<List<Member>> getMemberList(HttpServletRequest request, HttpServletResponse response) {
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
+		return new GeneralJsonResult<List<Member>>(memberResult);
 	}
 	
 	@RequestMapping(value = {"/GetMemberInfo"}, method = RequestMethod.GET)
@@ -100,7 +110,16 @@ public class MemberController {
 		}else {
 			return new NoDataJsonResult(memberResult.getResultCode(), memberResult.getMessage());
 		}
+	}
 	
-		
+	@RequestMapping(value = {"/GetMemberTasks"}, method = RequestMethod.GET)
+	public ModelAndView memberTaskList(HttpServletRequest request, HttpServletResponse response) {
+		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
+		Map<String, Object> model = new HashMap<String, Object>();
+		GeneralResult<List<Task>> taskResult = memberService.getTasks(memberId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("tasks", taskResult.getData());
+		}
+		return new ModelAndView("taskList", "model", model);
 	}
 }

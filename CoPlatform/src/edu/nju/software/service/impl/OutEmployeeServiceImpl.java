@@ -9,8 +9,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.OutEmployeeDao;
+import edu.nju.software.dao.TaskDao;
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.OutEmployee;
+import edu.nju.software.pojo.Task;
 import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.util.CoCacheManager;
 import edu.nju.software.util.GeneralResult;
@@ -26,6 +28,8 @@ public class OutEmployeeServiceImpl implements OutEmployeeService {
 	
 	@Autowired
 	private OutEmployeeDao outEmployeeDao;
+	@Autowired
+	private TaskDao taskDao;
 	
 	@Override
 	public GeneralResult<List<OutEmployee>> getByCompany(int companyId) {
@@ -75,6 +79,25 @@ public class OutEmployeeServiceImpl implements OutEmployeeService {
 				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
 				result.setMessage(e.getMessage());
 			}
+		}
+		return result;
+	}
+
+	@Override
+	public GeneralResult<List<Task>> getTasks(int companyId, int outEmployeeId) {
+		GeneralResult<List<Task>> result = new GeneralResult<List<Task>>();
+		try {
+			List<Task> taskList = taskDao.getTasksByOutEmployee(companyId, outEmployeeId);
+			if(null != taskList && !taskList.isEmpty()) {
+				result.setData(taskList);
+			}else {
+				result.setResultCode(ResultCode.E_NO_DATA);
+				result.setMessage("no task find, outEmployeeId: " + outEmployeeId + ",companyId: " + companyId);
+			}
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			result.setMessage(e.getMessage());
 		}
 		return result;
 	}

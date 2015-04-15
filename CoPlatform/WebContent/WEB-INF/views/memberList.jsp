@@ -20,6 +20,7 @@
 	<th>微信号</th>
 	<th>qq号</th>
 	<th>手机</th>
+	<th>操作</th>
 </tr>
 <c:forEach items="${model.members}" var="member">
 <tr>
@@ -32,6 +33,7 @@
 	<td>${member.wxNumber}</td>
 	<td>${member.qqNumber}</td>
 	<td>${member.phone}</td>
+	<td><a class="memberTask" href="#" memberId="${member.id}">查看任务</a></td>
 </tr>
 </c:forEach>
 </table>
@@ -46,8 +48,23 @@
       <div id="memberEditContent" class="modal-body">
       </div>
       <div class="modal-footer">
-        <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+        <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="memberTaskModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">任务信息</h4>
+      </div>
+      <div id="memberTaskContent" class="modal-body">
+      </div>
+<!--       <div class="modal-footer">
+        <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+      </div> -->
     </div>
   </div>
 </div>
@@ -59,6 +76,10 @@
 	var $memberEditSubmit = $("#memberEditSubmit");
 	var $memberDeleteLink = $(".memberDelete");
 	var $memberNameTd = $(".memberNameTd");
+
+	var $memberTaskLink = $(".memberTask");
+	var $memberTaskModal = $("#memberTaskModal");
+	var $memberTaskContent = $("#memberTaskContent");
 
 	$memberInfoLink.click(function(e) {
 		var memberId = $(this).attr("memberId");
@@ -115,6 +136,17 @@
 				}
 			}
 		});
+	});
+
+	$memberTaskLink.click(function(e) {
+		var memberId = $(this).attr("memberId");
+		console.log("memberTask click, memberId: " + memberId);
+		$memberTaskContent.load("GetMemberTasks?memberId=" + memberId, function(response, status, xhr) {
+			if(status == "error") {
+				$memberTaskContent.load("Error");
+			}
+		});
+		$memberTaskModal.modal();
 	});
 </script>
 </body>
