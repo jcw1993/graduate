@@ -48,8 +48,8 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 
 	@Override
 	public void deleteAllByProject(int projectId) {
-		getSession().createQuery("delete from Task where project.id = " + projectId);
-//		query.executeUpdate();
+		Query query = getSession().createQuery("delete from Task where project.id = " + projectId);
+		query.executeUpdate();
 	}
 
 }
