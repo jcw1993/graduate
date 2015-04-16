@@ -53,14 +53,17 @@
 </form>
 
 <script type="text/javascript">
-	$startDatePicker = $("#startDate");
-	$startTimePicker = $("#startTime");
-	$endDatePicker = $("#endDate");
-	$endTimePicker = $("#endTime");
+	$(function() {
+		$startDatePicker = $("#startDate");
+		$startTimePicker = $("#startTime");
+		$endDatePicker = $("#endDate");
+		$endTimePicker = $("#endTime");
 
-	$startDatePicker.datepicker();
-	$startTimePicke.timepicker({ "timeFormat": "H:i:s" });
-	
-	$endDatePicker.datepicker();
-	$endTimePicker.timepicker({ "timeFormat": "H:i:s" });
+		$startDatePicker.datepicker();
+		$startTimePicker.timepicker({ "timeFormat": "H:i:s" });
+		
+		$endDatePicker.datepicker();
+		$endTimePicker.timepicker({ "timeFormat": "H:i:s" });		
+	});
+
 </script>
