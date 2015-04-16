@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.timepicker.css" />" />
-<link rel="stylesheet" href="<c:url value="/resources/css/jquery-ui-1.9.2.min.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/css/ui_lightness/jquery-ui.min.css" />" />
 <link rel="stylesheet" href="<c:url value="/resources/css/co_platform.css" />" />
 
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/js/jquery-ui-1.9.2.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/datepicker-zh-CN.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.validate.js" />"></script>

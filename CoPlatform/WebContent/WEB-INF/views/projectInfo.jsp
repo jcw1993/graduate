@@ -31,17 +31,17 @@
 		<tr>
 			<td><label>开始时间</label></td>
 			<td>
-				<input id="startDate" name="startDate" type="text" placeholder="yyyy-MM-dd"
+				<input id="projectStartDate" name="startDate" type="text" placeholder="yyyy-MM-dd"
 					value="<fmt:formatDate value='${project.startTime}' pattern='yyyy-MM-dd' />"/>
-				<input id="startTime" name="startTime" type="text" placeholder="HH:mm:ss"
+				<input id="projectStartTime" name="startTime" type="text" placeholder="HH:mm:ss"
 					value="<fmt:formatDate value='${project.startTime}' pattern='HH:mm:ss' />"/>
 			</td>
 		<tr>
 			<td><label>结束时间</label></td>
 			<td>
-				<input id="endDate" name="endDate" type="text" placeholder="yyyy-MM-dd"
+				<input id="projectEndDate" name="endDate" type="text" placeholder="yyyy-MM-dd"
 					value="<fmt:formatDate value='${project.endTime}' pattern='yyyy-MM-dd' />"/>
-				<input id="endTime" name="endTime" type="text" placeholder="HH:mm:ss"
+				<input id="projectEndTime" name="endTime" type="text" placeholder="HH:mm:ss"
 					value="<fmt:formatDate value='${project.endTime}' pattern='HH:mm:ss' />"/>
 			</td>
 		</tr>
@@ -53,16 +53,13 @@
 </form>
 
 <script type="text/javascript">
-	$(function() {
-		$startDatePicker = $("#startDate");
-		$startTimePicker = $("#startTime");
-		$endDatePicker = $("#endDate");
-		$endTimePicker = $("#endTime");
-		
-		$startDatePicker.datepicker();
-		$startTimePicker.timepicker({ "timeFormat": "H:i:s" });
-		$endDatePicker.datepicker();
-		$endTimePicker.timepicker({ "timeFormat": "H:i:s" });		
-	});
-
+	$projectStartDatePicker = $("#projectStartDate");
+	$projectStartTimePicker = $("#projectStartTime");
+	$projectEndDatePicker = $("#projectEndDate");
+	$projectEndTimePicker = $("#projectEndTime");
+	
+	$projectStartDatePicker.datepicker();
+	$projectStartTimePicker.timepicker({ "timeFormat": "H:i:s" });
+	$projectEndDatePicker.datepicker();
+	$projectEndTimePicker.timepicker({ "timeFormat": "H:i:s" });
 </script>
