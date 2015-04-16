@@ -37,6 +37,6 @@ public interface WorkService {
 	
 	public NoDataResult assignTaskToMember(int taskId, int memberId);
 	
-	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId);
+	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId, int companyId);
 	
 }

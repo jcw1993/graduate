@@ -284,8 +284,9 @@ public class WorkController {
 	public NoDataJsonResult outEmployeeTaskAssign(HttpServletRequest request, HttpServletResponse response) {
 		int outEmployeeId = CoUtils.getRequestIntValue(request, "outEmployeeId", true);
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
-		NoDataResult taskAssignResult = workService.assignTaskToOutEmployee(taskId, outEmployeeId);
+		NoDataResult taskAssignResult = workService.assignTaskToOutEmployee(taskId, outEmployeeId, companyId);
 		return new NoDataJsonResult(taskAssignResult);
 	}
 	

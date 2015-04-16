@@ -296,7 +296,7 @@ public class WorkServiceImpl implements WorkService {
 	@Override
 	public NoDataResult assignTaskToMember(int taskId, int memberId) {
 		NoDataResult result = new NoDataResult();
-		if(!checkTaskAssigned(taskId, memberId, 0)) {
+		if(!checkTaskAssigned(taskId, memberId, 0, 0)) {
 			Task task = new Task(taskId);
 			Member member = new Member(memberId);
 			try {
@@ -314,9 +314,9 @@ public class WorkServiceImpl implements WorkService {
 	}
 
 	@Override
-	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId) {
+	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId, int companyId) {
 		NoDataResult result = new NoDataResult();
-		if(!checkTaskAssigned(taskId, 0, outEmployeeId)) {
+		if(!checkTaskAssigned(taskId, 0, outEmployeeId, companyId)) {
 			Task task = new Task(taskId);
 			OutEmployee outEmployee = new OutEmployee(outEmployeeId);
 			try {
@@ -333,7 +333,7 @@ public class WorkServiceImpl implements WorkService {
 		return result;
 	}
 	
-	private boolean checkTaskAssigned(int taskId, int memberId, int outEmployeeId) {
+	private boolean checkTaskAssigned(int taskId, int memberId, int outEmployeeId, int companyId) {
 		if((taskId <= 0) || (memberId <= 0 && outEmployeeId <= 0)) {
 			throw new IllegalArgumentException();
 		}
@@ -347,7 +347,7 @@ public class WorkServiceImpl implements WorkService {
 		if(memberId > 0) {
 			taskList = taskDao.getTasksByMember(memberId);
 		}else {
-			taskList = taskDao.getTasksByOutEmployee(task.getProject().getCompany().getId(), outEmployeeId);
+			taskList = taskDao.getTasksByOutEmployee(companyId, outEmployeeId);
 		}
 		
 		for(Task taskItem : taskList) {

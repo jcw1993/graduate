@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.util.CoUtils;
+import edu.nju.software.util.GeneralJsonResult;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
 
@@ -27,7 +29,7 @@ public class OutEmployeeController {
 	private OutEmployeeService outEmployeeService;
 	
 	@RequestMapping(value = {"/OutEmployeeList"}, method = RequestMethod.GET)
-	public ModelAndView getOutEmployeeList(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView outEmployeeList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -37,6 +39,19 @@ public class OutEmployeeController {
 		}
 		
 		return new ModelAndView("outEmployeeList", "model", model);
+	}
+	
+	@RequestMapping(value = {"/GetOutEmployeeList"}, method = RequestMethod.GET)
+	@ResponseBody
+	public GeneralJsonResult<List<OutEmployee>> getOutEmployeeList(HttpServletRequest request, HttpServletResponse response) {
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		GeneralResult<List<OutEmployee>> outEmployeResult = outEmployeeService.getByCompany(companyId);
+		if(outEmployeResult.getResultCode() == ResultCode.NORMAL) {
+			for(OutEmployee outEmployee : outEmployeResult.getData()) {
+				outEmployee.setCompanies(null);
+			}
+		}
+		return new GeneralJsonResult<List<OutEmployee>>(outEmployeResult);
 	}
 	
 	@RequestMapping(value = {"/GetOutEmployeeInfo"}, method = RequestMethod.GET)

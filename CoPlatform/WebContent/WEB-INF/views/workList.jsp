@@ -99,20 +99,17 @@
       </div>
       <div id="taskAssignContent" class="modal-body">
       	<label>类型</label>
-<!--       	<select id="memberList">
-      		<option value="member">公司职员</option>
-      		<option value="member">外聘人员</option>
-      	</select> -->
+      	<select id="employeeTypeSelect">
+      		<option value="0">公司职员</option>
+      		<option value="1">外聘人员</option>
+      	</select>
 
       	<label>人员</label>
-      	<select id="memberList">
-      	<c:forEach items="${model.members}" var="member">
-      		<option value="${member.id}">${member.name}</option>
-      	</c:forEach>
+      	<select id="employeeList">
       	</select>
       </div>
       <div class="modal-footer">
-        <button id="taskEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        <button id="taskAssignSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
       </div>
     </div>
   </div>
@@ -153,6 +150,9 @@
 	var SAVE_TYPE_CREATE = 0;
 	var SAVE_TYPE_UPDATE = 1;
 
+	var EMPLOYEE_TYPE_MEMBER = 0;
+	var EMPLOYEE_TYPE_OUT = 1;
+
 	/*components*/
 	var $projectInfoLink = $(".projectInfo");
 	var $projectEditModal = $("#projectEditModal");
@@ -170,7 +170,9 @@
 	var $taskAssignBtn = $(".taskAssign");
 
 	var $taskAssignModal = $("#taskAssignModal");
-	var $memberListSelect = $("#memberList");
+	var $employeeTypeSelect = $("#employeeTypeSelect");
+	var $employeeListSelect = $("#employeeList");
+	var $taskAssignSubmit = $("#taskAssignSubmit");
 
 	var $projectCreateBtn = $("#projectCreate");
 	var $projectCreateModal = $("#projectCreateModal");
@@ -181,6 +183,12 @@
 	var $taskCreateModal = $("#taskCreateModal");
 	var $taskCreateContent = $("#taskCreateContent");
 	var $taskCreateSubmit = $("#taskCreateSubmit");
+
+	/*variables*/
+	var members;
+	var outEmployees;
+	var currentEmployeeType = EMPLOYEE_TYPE_MEMBER;
+	var currentTaskId;
 
 
 	$projectInfoLink.click(function(e) {
@@ -237,13 +245,19 @@
 	});
 
 	$taskAssignBtn.click(function(e) {
-		console.log("task assign click");
 		var taskId = $(this).attr("taskId");
-		console.log("taskId: " + taskId);
-		if($memberListSelect.children().length == 0) {
-			loadMember();
+		currentTaskId = taskId;
+		if($employeeListSelect.children().length == 0) {
+			appendEmployees(EMPLOYEE_TYPE_MEMBER);
 		}
 		$taskAssignModal.modal();
+	});
+
+	$taskAssignSubmit.click(function(e) {
+		var employeeIndex = $employeeListSelect[0].selectedIndex;
+		var employeeId = $employeeListSelect.children().eq(employeeIndex).val().trim();
+		var companyId = "${currentAdmin.company.id}";
+		assignTaskToEmployee(currentTaskId, employeeId, currentEmployeeType, companyId);
 	});
 
 	$projectCreateBtn.click(function(e) {
@@ -276,24 +290,77 @@
 		saveTask($("#taskEditForm"), SAVE_TYPE_CREATE);
 	});
 
+	$employeeTypeSelect.change(function(e) {
+		var typeIndex = $employeeTypeSelect[0].selectedIndex;
+		$employeeListSelect.empty();
+		console.log("selectIndex: " + typeIndex);
+		if(typeIndex == 0) {
+			currentEmployeeType = EMPLOYEE_TYPE_MEMBER;
+			appendEmployees(EMPLOYEE_TYPE_MEMBER);
+		}else {
+			currentEmployeeType = EMPLOYEE_TYPE_OUT;
+			appendEmployees(EMPLOYEE_TYPE_OUT);
+		}
+	});
+
 	/*functions*/
-	function loadMember() {
+	function loadEmployees(employeeType) {
 		var companyId = "${currentAdmin.company.id}";
-		console.log("companyId: " + companyId);
+		var url;
+		if(employeeType == EMPLOYEE_TYPE_MEMBER) {
+			url = "GetMemberList?companyId=" + companyId;
+		}else {
+			url = "GetOutEmployeeList?companyId=" + companyId;
+		}
+
 		$.ajax({
-			url: "GetMemberList?companyId=" + companyId,
+			url: url,
+			success: function(result) {
+				if(result.resultCode == 0) {	
+					if(employeeType == EMPLOYEE_TYPE_MEMBER) {
+						members = result.data;
+					}else {
+						outEmployees = result.data;
+					}
+				}else {
+					console.log("get employee error");
+				}
+			}
+		});		
+	}
+
+	function appendEmployees(employeeType) {
+		if(employeeType == EMPLOYEE_TYPE_MEMBER) {
+			members.forEach(function(member){
+				$employeeListSelect.append($("<option value='" + member.id + "'>" + member.name + "</option>"));
+			}); 
+		}else {
+			outEmployees.forEach(function(outEmployee){
+				$employeeListSelect.append($("<option value='" + outEmployee.id + "'>" + outEmployee.name + "</option>"));
+			}); 
+		}
+	}
+
+	function assignTaskToEmployee(taskId, employeeId, employeeType, companyId) {
+		var url;
+		if(employeeType == EMPLOYEE_TYPE_MEMBER) {
+			url = "MemberTaskAssign?taskId=" + taskId + "&memberId=" + employeeId;
+		}else {
+			url = "OutEmployeeTaskAssign?taskId=" + taskId + "&outEmployeeId=" + employeeId + "&companyId=" + companyId;
+		}
+
+		$.ajax({
+			url: url,
 			success: function(result) {
 				if(result.resultCode == 0) {
-					var members = result.data;
-					members.forEach(function(member){
-						$memberListSelect.append($("<option value='" + member.id + "'>" + member.name + "</option>"));
-					}); 
+					console.log("分配任务成功");
 				}else {
-					console.log("get member list error");
+					console.log("分配任务失败");
 				}
 			}
 		});
 	}
+
 
 	function saveProject($form, saveType) {
 		var formData = $form.serialize();
@@ -374,6 +441,9 @@
 
 
 	$taskDeleteBtn.hide();
+
+	loadEmployees(EMPLOYEE_TYPE_MEMBER);
+	loadEmployees(EMPLOYEE_TYPE_OUT);
 
 </script>
 </body>

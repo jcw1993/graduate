@@ -52,7 +52,7 @@ public class MemberController {
 		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
 		if(memberResult.getResultCode() == ResultCode.NORMAL) {
 			for(Member member : memberResult.getData()) {
-				member.setCompany(null);
+				member.setCompany(new Company(companyId));
 			}
 		}
 		return new GeneralJsonResult<List<Member>>(memberResult);
