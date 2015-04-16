@@ -15,15 +15,18 @@
 	<hr />
 
 <div class="container-fluid">
+	<a id="projectCreate" href="#" class="btn btn-primary">创建项目</a>
+
 <c:forEach items="${model.works}" var="work">
 <c:set value="${work.key}" var="project" />
 <c:set value="${work.value}" var="tasks" />
 
 <div class="row">
 <a class="projectInfo btn" projectId="${project.id}">${project.name}</a>
-<a class="projectDelete btn btn-primary" projectId="${project.id}">删除</a> 
+<a class="projectDelete" projectId="${project.id}">删除</a> 
 <a class="btn" data-toggle="collapse" href="#projectTaskArea${project.id}" aria-expanded="false" aria-controls="collapseExample">展开/收起</a>
 <div id="projectTaskArea${project.id}" class="collapse">
+	<a class="taskCreate btn btn-primary" href="#" projectId="${project.id}">创建任务</a>
 	<c:if test="${tasks != null}">
 		<table class="table table-striped table-bordered table-hover table-responsive">
 			<tr>
@@ -94,7 +97,7 @@
       <div class="modal-header">
         <h4 class="modal-title">任务分配</h4>
       </div>
-      <div id="taskEditContent" class="modal-body">
+      <div id="taskAssignContent" class="modal-body">
       	<label>类型</label>
       	<select id="memberList">
       		<option value="member">公司职员</option>
@@ -115,7 +118,42 @@
   </div>
 </div>
 
+<div id="projectCreateModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">创建项目</h4>
+      </div>
+      <div id="projectCreateContent" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button id="projectCreateSubmit" type="button" class="btn btn-primary" data-dismiss="modal">创建</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="taskCreateModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">创建任务</h4>
+      </div>
+      <div id="taskCreateContent" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button id="taskCreateSubmit" type="button" class="btn btn-primary" data-dismiss="modal">创建</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
+	/*constants*/
+	var SAVE_TYPE_CREATE = 0;
+	var SAVE_TYPE_UPDATE = 1;
+
+	/*components*/
 	var $projectInfoLink = $(".projectInfo");
 	var $projectEditModal = $("#projectEditModal");
 	var $projectEditContent = $("#projectEditContent");
@@ -134,6 +172,17 @@
 	var $taskAssignModal = $("#taskAssignModal");
 	var $memberListSelect = $("#memberList");
 
+	var $projectCreateBtn = $("#projectCreate");
+	var $projectCreateModal = $("#projectCreateModal");
+	var $projectCreateContent = $("#projectCreateContent");
+	var $projectCreateSubmit = $("#projectCreateSubmit");
+
+	var $taskCreateBtn = $(".taskCreate");
+	var $taskCreateModal = $("#taskCreateModal");
+	var $taskCreateContent = $("#taskCreateContent");
+	var $taskCreateSubmit = $("#taskCreateSubmit");
+
+
 	$projectInfoLink.click(function(e) {
 		var projectId = $(this).attr("projectId");
 		console.log("get project info, projectId: " + projectId);
@@ -147,39 +196,12 @@
 
 	$projectDeleteBtn.click(function(e) {
 		var projectId = $(this).attr("projectId");
-		console.log("project delete click, projectId: " + projectId);
-		$.ajax({
-			url: "DeleteProject?projectId=" + projectId,
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("delete project success");
-					location.reload();
-				}else {
-					console.log("delete project fail");
-				}
-			}
-		});
+		deleteProject(projectId);
 	});
 
 	$projectEditSubmit.click(function(e) {
 		console.log("submit project info");
-		var formData = $("form").serialize();
-		console.log("form: " + $("form"));
-		console.log("formData: " + formData);
-
-		$.ajax({
-			url: "UpdateProject",
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("edit project info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		saveProject($("#projectEditForm"), SAVE_TYPE_UPDATE);
 	});
 
 
@@ -197,39 +219,13 @@
 	});
 
 	$taskEditSubmit.click(function(e) {
-		console.log("submit task info");
-		var formData = $("#taskEditForm").serialize();
-		$.ajax({
-			url: "UpdateTask",
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("edit task info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		saveTask($("#taskEditForm"), SAVE_TYPE_UPDATE);
 	});
 
 	$taskDeleteBtn.click(function(e){
 		console.log("delete click");
 		var taskId = $(this).parent().prev().attr("taskId");
-		console.log("taskId: " + taskId);
-		$.ajax({
-			url: "DeleteTask?taskId=" + taskId,
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("delete task success");
-					location.reload();
-				}else {
-					console.log("delete task error");
-					alert("删除失败, 请重试");
-				}
-			}
-		});
+		deleteTask(taskId);
 	});
 
 	$taskNameTd.on("mouseover", function(e) {
@@ -250,6 +246,35 @@
 		$taskAssignModal.modal();
 	});
 
+	$projectCreateBtn.click(function(e) {
+		console.log("click create project");
+		var companyId = "${currentAdmin.company.id}";
+		$projectCreateContent.load("CreateProject?companyId=" + companyId, function(response, status, xhr) {
+			if(status == "error") {
+				$projectEditContent.load("Error");
+			}
+		});
+		$projectCreateModal.modal();
+	});
+
+	$projectCreateSubmit.click(function(e) {
+		saveProject($("#projectEditForm"), SAVE_TYPE_CREATE);
+	});
+
+	$taskCreateBtn.click(function(e) {
+		var projectId = $(this).attr("projectId");
+		console.log("click task, projectId: " + projectId);
+		$taskCreateContent.load("CreateTask?projectId=" + projectId, function(response, status, xhr) {
+			if(status == "error") {
+				$taskCreateContent.load("Error");
+			}
+		});
+		$taskCreateModal.modal();
+	});
+
+	$taskCreateSubmit.click(function(e) {
+		saveTask($("#taskEditForm"), SAVE_TYPE_CREATE);
+	});
 
 /*	function loadMember() {
 		var companyId = "${currentAdmin.company.id}";
@@ -269,15 +294,85 @@
 		});
 	}*/
 
+	function saveProject($form, saveType) {
+		var formData = $form.serialize();
+		var url;
+		if(saveType == SAVE_TYPE_CREATE) {
+			url = "CreateProject";
+		}else {
+			url = "UpdateProject";
+		}
+
+		$.ajax({
+			url: url,
+			data: formData,
+			method: "post",
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("success");
+					location.reload();
+				}else {
+					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+				}
+			} 
+		});
+	}
+
+	function saveTask($form, saveType) {
+		var formData = $form.serialize();
+		var url;
+		if(saveType == SAVE_TYPE_CREATE) {
+			url = "CreateTask";
+		}else {
+			url = "UpdateTask";
+		}
+
+		$.ajax({
+			url: url,
+			data: formData,
+			method: "post",
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("success");
+					location.reload();
+				}else {
+					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+				}
+			} 
+		});
+	}
+
+	function deleteTask(taskId) {
+		$.ajax({
+			url: "DeleteTask?taskId=" + taskId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("delete task success");
+					location.reload();
+				}else {
+					console.log("delete task error");
+					alert("删除失败, 请重试");
+				}
+			}
+		});
+	}
+
+	function deleteProject(projectId) {
+		$.ajax({
+			url: "DeleteProject?projectId=" + projectId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("delete project success");
+					location.reload();
+				}else {
+					console.log("delete project fail");
+				}
+			}
+		});
+	}
+
+
 	$taskDeleteBtn.hide();
-
-
-	// var members = "${model.members}";
-	// console.log(members);
-	// members.forEach(function(x) {
-	// 	// console.log(member.name);
-	// 	console.log("xxx");
-	// });
 
 </script>
 </body>

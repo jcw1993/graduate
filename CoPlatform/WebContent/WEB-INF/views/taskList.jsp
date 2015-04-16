@@ -3,7 +3,9 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!-- <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> -->
 
+<c:if test="${model.tasks != null}">
 <table class="table table-striped table-bordered table-hover table-responsive">
 	<tr>
 		<th>任务名称</th>
@@ -24,3 +26,7 @@
 	</tr>
 	</c:forEach>
 </table>
+</c:if>
+<c:if test="${model.tasks == null}">
+<h3>暂无任务</h3>
+</c:if>

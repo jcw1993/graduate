@@ -1,5 +1,10 @@
 package edu.nju.software.util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -54,5 +59,10 @@ public class CoUtils {
 		}
 		
 		return result;
+	}
+	
+	public static Date parseDate(String dateStr, String format) throws ParseException {
+		DateFormat formatter = new SimpleDateFormat(format);
+		return formatter.parse(dateStr);
 	}
 }

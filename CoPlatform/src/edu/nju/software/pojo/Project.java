@@ -60,6 +60,15 @@ public class Project {
 		this.id = id;
 	}
 	
+	public Project(Company company, String name, String description, Date startTime, Date endTime, double progress) {
+		this.company = company;
+		this.name = name;
+		this.description = description;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.progress = progress;
+	}
+	
 	public Project(int id, Company company, String name, String description, Date startTime, Date endTime, double progress) {
 		this.id = id;
 		this.company = company;

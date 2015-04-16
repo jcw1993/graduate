@@ -9,7 +9,11 @@
 	<table class="table table-responsive">
 	<c:set value="${model.project}" var="project" />
 		<tr>
-			<td><input name="projectId" type="hidden" value="${project.id}"/></td>
+			<td>
+				<c:if test="${project.id != null && projet.id != 0}">
+					<input name="projectId" type="hidden" value="${project.id}"/>
+				</c:if>
+			</td>
 			<td><input name="companyId" type="hidden" value="${project.company.id}"/></td>
 		</tr>
 		<tr>
@@ -26,10 +30,20 @@
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>
-			<td><input name="startTime" type="text" value="${project.startTime}"/></td>
+			<td>
+				<input id="startDate" name="startDate" type="text" placeholder="yyyy-MM-dd"
+					value="<fmt:formatDate value='${project.startTime}' pattern='yyyy-MM-dd' />"/>
+				<input id="startTime" name="startTime" type="text" placeholder="HH:mm:ss"
+					value="<fmt:formatDate value='${project.startTime}' pattern='HH:mm:ss' />"/>
+			</td>
 		<tr>
 			<td><label>结束时间</label></td>
-			<td><input name="endTime" type="text" value="${project.endTime}"/></td>
+			<td>
+				<input id="endDate" name="endDate" type="text" placeholder="yyyy-MM-dd"
+					value="<fmt:formatDate value='${project.endTime}' pattern='yyyy-MM-dd' />"/>
+				<input id="endTime" name="endTime" type="text" placeholder="HH:mm:ss"
+					value="<fmt:formatDate value='${project.endTime}' pattern='HH:mm:ss' />"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label>当前进度</label></td>
@@ -37,3 +51,23 @@
 		</tr>
 	</table>
 </form>
+
+<script type="text/javascript">
+	$startDatePicker = $("#startDate");
+	$startTimePicker = $("#startTime");
+	$endDatePicker = $("#endDate");
+	$endTimePicker = $("#endTime");
+	
+	// $startDatePicker.datepicker();
+	// $startTimePicke.timepicker({ "timeFormat": "H:i:s" });
+	
+	// $endDatePicker.datepicker();
+	// $endTimePicker.timepicker({ "timeFormat": "H:i:s" });
+
+	$("#startDate").datepicker();
+	$("#startTime").timepicker({ "timeFormat": "H:i:s" });
+	
+	$("#endDate").datepicker();
+	$("#endTime").timepicker({ "timeFormat": "H:i:s" });
+
+</script>

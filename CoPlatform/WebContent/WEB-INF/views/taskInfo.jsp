@@ -9,7 +9,11 @@
 	<table class="table table-responsive">
 		<c:set value="${model.task}" var="task" />
 		<tr>
-			<td><input name="taskId" type="hidden" value="${task.id}"/></td>
+			<td>
+			<c:if test="${task.id != null && task.id != 0}">
+				<input name="taskId" type="hidden" value="${task.id}"/>
+			</c:if>
+			</td>
 			<td><input name="projectId" type="hidden" value="${task.project.id}"/></td>
 		</tr>
 		<tr>
@@ -26,11 +30,20 @@
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>
-			<td><input name="startTime" type="text" value="${task.startTime}"/></td>
-		</tr>
+			<td>
+				<input id="startDate" name="startDate" type="text" placeholder="yyyy-MM-dd"
+					value="<fmt:formatDate value='${task.startTime}' pattern='yyyy-MM-dd' />"/>
+				<input id="startTime" name="startTime" type="text" placeholder="HH:mm:ss"
+					value="<fmt:formatDate value='${task.startTime}' pattern='HH:mm:ss' />"/>
+			</td>
 		<tr>
 			<td><label>结束时间</label></td>
-			<td><input name="endTime" type="text" value="${task.endTime}"/></td>
+			<td>
+				<input id="endDate" name="endDate" type="text" placeholder="yyyy-MM-dd"
+					value="<fmt:formatDate value='${task.endTime}' pattern='yyyy-MM-dd' />"/>
+				<input id="endTime" name="endTime" type="text" placeholder="HH:mm:ss"
+					value="<fmt:formatDate value='${task.endTime}' pattern='HH:mm:ss' />"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label>当前状态</label></td>
@@ -38,3 +51,16 @@
 		</tr>
 	</table>
 </form>
+
+<script type="text/javascript">
+	$startDatePicker = $("#startDate");
+	$startTimePicker = $("#startTime");
+	$endDatePicker = $("#endDate");
+	$endTimePicker = $("#endTime");
+
+	$startDatePicker.datepicker();
+	$startTimePicke.timepicker({ "timeFormat": "H:i:s" });
+	
+	$endDatePicker.datepicker();
+	$endTimePicker.timepicker({ "timeFormat": "H:i:s" });
+</script>

@@ -1,5 +1,6 @@
 package edu.nju.software.controller;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +35,10 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class WorkController {
+	
+	private static Logger logger = LoggerFactory.getLogger(WorkController.class);
+	
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	@Autowired
 	private WorkService workService;
@@ -114,8 +121,21 @@ public class WorkController {
 		
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
-		String startTime = request.getParameter("startTime");
-		String endTime = request.getParameter("endTime");
+		
+		String startDateStr = request.getParameter("startDate").trim();
+		String startTimeStr = request.getParameter("startTime").trim();
+		String endDateStr = request.getParameter("endDate").trim();
+		String endTimeStr = request.getParameter("endTime").trim();
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr, DATE_FORMAT);
+			endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr, DATE_FORMAT);
+		} catch (ParseException e) {
+			logger.error(e.getMessage());
+			return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
+		}
+		
 		double progress = CoUtils.getRequestDoubleValue(request, "progress", true);
 		if(null != name) {
 			name = name.trim();
@@ -123,14 +143,8 @@ public class WorkController {
 		if(null != description) {
 			description = description.trim();
 		}
-		if(null != startTime) {
-			startTime = startTime.trim();
-		}
-		if(null != endTime) {
-			endTime = endTime.trim();
-		}
 		
-		Project project = new Project(projectId, new Company(companyId), name, description, new Date(), new Date(), progress);
+		Project project = new Project(projectId, new Company(companyId), name, description, startDate, endDate, progress);
 		
 		NoDataResult result = workService.updateProject(project);
 		return new NoDataJsonResult(result);
@@ -203,8 +217,21 @@ public class WorkController {
 		
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
-		String startTime = request.getParameter("startTime");
-		String endTime = request.getParameter("endTime");
+		
+		String startDateStr = request.getParameter("startDate").trim();
+		String startTimeStr = request.getParameter("startTime").trim();
+		String endDateStr = request.getParameter("endDate").trim();
+		String endTimeStr = request.getParameter("endTime").trim();
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr, DATE_FORMAT);
+			endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr, DATE_FORMAT);
+		} catch (ParseException e) {
+			logger.error(e.getMessage());
+			return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
+		}
+		
 		int status = CoUtils.getRequestIntValue(request, "status", true);
 		
 		if(null != name) {
@@ -213,14 +240,8 @@ public class WorkController {
 		if(null != description) {
 			description = description.trim();
 		}
-		if(null != startTime) {
-			startTime = startTime.trim();
-		}
-		if(null != endTime) {
-			endTime = endTime.trim();
-		}
 		
-		Task task = new Task(taskId, new Project(projectId), name, description, null ,new TaskStatus(status), new Date(), new Date());
+		Task task = new Task(taskId, new Project(projectId), name, description, null ,new TaskStatus(status), startDate, endDate);
 		
 		NoDataResult result = workService.updateTask(task);
 		return new NoDataJsonResult(result);
@@ -268,5 +289,102 @@ public class WorkController {
 		
 		NoDataResult taskAssignResult = workService.assignTaskToOutEmployee(taskId, outEmployeeId);
 		return new NoDataJsonResult(taskAssignResult);
+	}
+	
+	@RequestMapping(value = {"/CreateProject"}, method = RequestMethod.GET)
+	public ModelAndView createProjectGet(HttpServletRequest request, HttpServletResponse response) {
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		
+		Company company = new Company(companyId);
+		Project project = new Project();
+		project.setCompany(company);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("project", project);
+		return new ModelAndView("projectInfo", "model", model);
+	}
+	
+	@RequestMapping(value = {"/CreateProject"}, method = RequestMethod.POST)
+	@ResponseBody
+	public NoDataJsonResult createProjectPost(HttpServletRequest request, HttpServletResponse response) {
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		
+		String name = request.getParameter("name");
+		String description = request.getParameter("description");
+		
+		String startDateStr = request.getParameter("startDate").trim();
+		String startTimeStr = request.getParameter("startTime").trim();
+		String endDateStr = request.getParameter("endDate").trim();
+		String endTimeStr = request.getParameter("endTime").trim();
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr, DATE_FORMAT);
+			endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr, DATE_FORMAT);
+		} catch (ParseException e) {
+			logger.error(e.getMessage());
+			return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
+		}
+		
+		double progress = 0.0;
+		if(null != name) {
+			name = name.trim();
+		}
+		if(null != description) {
+			description = description.trim();
+		}
+		
+		Project project = new Project(new Company(companyId), name, description, startDate, endDate, progress);
+		
+		GeneralResult<Integer> createResult = workService.createProject(project);
+		return new NoDataJsonResult(createResult);
+	}
+	
+	@RequestMapping(value = {"/CreateTask"}, method = RequestMethod.GET)
+	public ModelAndView createTaskGet(HttpServletRequest request, HttpServletResponse response) {
+		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
+		
+		Project project = new Project(projectId);
+		Task task = new Task();
+		task.setProject(project);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("task", task);
+		return new ModelAndView("taskInfo", "model", model);
+	}
+	
+	@RequestMapping(value = {"/CreateTask"}, method = RequestMethod.POST)
+	@ResponseBody
+	public NoDataJsonResult createTaskPost(HttpServletRequest request, HttpServletResponse response) {
+		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
+		
+		String name = request.getParameter("name");
+		String description = request.getParameter("description");
+		
+		String startDateStr = request.getParameter("startDate").trim();
+		String startTimeStr = request.getParameter("startTime").trim();
+		String endDateStr = request.getParameter("endDate").trim();
+		String endTimeStr = request.getParameter("endTime").trim();
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr, DATE_FORMAT);
+			endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr, DATE_FORMAT);
+		} catch (ParseException e) {
+			logger.error(e.getMessage());
+			return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
+		}
+		
+		int status = CoUtils.getRequestIntValue(request, "status", true);
+		
+		if(null != name) {
+			name = name.trim();
+		}
+		if(null != description) {
+			description = description.trim();
+		}
+		
+		Task task = new Task(new Project(projectId), name, description, null ,new TaskStatus(status), startDate, endDate);
+		
+		GeneralResult<Integer> result = workService.createTask(task);
+		return new NoDataJsonResult(result);
 	}
 }
