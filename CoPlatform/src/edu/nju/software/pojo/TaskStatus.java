@@ -1,5 +1,6 @@
 package edu.nju.software.pojo;
 
+
 public class TaskStatus {
 	private int id;
 	private String name;

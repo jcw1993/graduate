@@ -30,7 +30,6 @@
      </listener-class>
  </listener>
 
-  
    <filter>
     <filter-name>Character Encoding</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

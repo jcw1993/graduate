@@ -1,6 +1,8 @@
 package edu.nju.software.pojo;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class TaskAssign {
 	private int id;
 	private Task task;

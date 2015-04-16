@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Company;
-import edu.nju.software.pojo.Member;
-import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskStatus;
@@ -87,7 +85,7 @@ public class WorkController {
 			model.put("works", workMap);
 		}
 		
-		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
+/*		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
 		if(memberResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("members", memberResult.getData());
 		}
@@ -95,7 +93,7 @@ public class WorkController {
 		GeneralResult<List<OutEmployee>> outEmployeeResult = outEmployeeService.getByCompany(companyId);
 		if(outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("outEmployees", outEmployeeResult.getData());
-		}
+		}*/
 		
 		return new ModelAndView("workList", "model", model);
 	}

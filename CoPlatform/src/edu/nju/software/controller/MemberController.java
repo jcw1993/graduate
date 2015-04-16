@@ -50,6 +50,11 @@ public class MemberController {
 	public GeneralJsonResult<List<Member>> getMemberList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
+		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+			for(Member member : memberResult.getData()) {
+				member.setCompany(null);
+			}
+		}
 		return new GeneralJsonResult<List<Member>>(memberResult);
 	}
 	

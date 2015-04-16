@@ -99,10 +99,10 @@
       </div>
       <div id="taskAssignContent" class="modal-body">
       	<label>类型</label>
-      	<select id="memberList">
+<!--       	<select id="memberList">
       		<option value="member">公司职员</option>
       		<option value="member">外聘人员</option>
-      	</select>
+      	</select> -->
 
       	<label>人员</label>
       	<select id="memberList">
@@ -240,9 +240,9 @@
 		console.log("task assign click");
 		var taskId = $(this).attr("taskId");
 		console.log("taskId: " + taskId);
-/*		if($memberListSelect.children().length == 0) {
+		if($memberListSelect.children().length == 0) {
 			loadMember();
-		}*/
+		}
 		$taskAssignModal.modal();
 	});
 
@@ -276,7 +276,8 @@
 		saveTask($("#taskEditForm"), SAVE_TYPE_CREATE);
 	});
 
-/*	function loadMember() {
+	/*functions*/
+	function loadMember() {
 		var companyId = "${currentAdmin.company.id}";
 		console.log("companyId: " + companyId);
 		$.ajax({
@@ -285,14 +286,14 @@
 				if(result.resultCode == 0) {
 					var members = result.data;
 					members.forEach(function(member){
-						$memberList.append($("<option value='" + member.id + "'>" + member.name + "</option>"));
+						$memberListSelect.append($("<option value='" + member.id + "'>" + member.name + "</option>"));
 					}); 
 				}else {
 					console.log("get member list error");
 				}
 			}
 		});
-	}*/
+	}
 
 	function saveProject($form, saveType) {
 		var formData = $form.serialize();
