@@ -37,6 +37,9 @@
 </tr>
 </c:forEach>
 </table>
+
+<a id="memberCreate" href="#" class="btn btn-primary">创建员工</a>
+
 </div>
 
 <div id="memberEditModal" class="modal fade">
@@ -49,6 +52,21 @@
       </div>
       <div class="modal-footer">
         <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="memberCreateModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">职员信息</h4>
+      </div>
+      <div id="memberCreateContent" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button id="memberCreateSubmit" type="button" class="btn btn-primary" data-dismiss="modal">创建</button>
       </div>
     </div>
   </div>
@@ -67,6 +85,11 @@
 </div>
 
 <script type="text/javascript">
+	/*constants*/
+	var SAVE_TYPE_CREATE = 0;
+	var SAVE_TYPE_UPDATE = 1;
+
+	/*components*/
 	var $memberInfoLink = $(".memberInfo");
 	var $memberEditModal = $("#memberEditModal");
 	var $memberEditContent = $("#memberEditContent");
@@ -77,6 +100,11 @@
 	var $memberTaskLink = $(".memberTask");
 	var $memberTaskModal = $("#memberTaskModal");
 	var $memberTaskContent = $("#memberTaskContent");
+
+	var $memberCreateModal = $("#memberCreateModal");
+	var $memberCreateContent = $("#memberCreateContent");
+	var $memberCreateSubmit = $("#memberCreateSubmit");
+	var $memberCreateBtn = $("#memberCreate");
 
 	$memberInfoLink.click(function(e) {
 		var memberId = $(this).attr("memberId");
@@ -90,21 +118,21 @@
 	});
 
 	$memberEditSubmit.click(function(e) {
-		console.log("submit member info");
-		var formData = $("form").serialize();
-		$.ajax({
-			url: "UpdateMember",
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("edit member info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
+		saveMember($("#memberEditForm"), SAVE_TYPE_UPDATE);
+	});
+
+	$memberCreateBtn.click(function(e) {
+		var companyId = "${currentAdmin.company.id}";
+		$memberCreateContent.load("CreateMember?companyId=" + companyId, function(response, status, xhr) {
+			if(status == "error") {
+				$memberEditContent.load("Error");
+			}
 		});
+		$memberCreateModal.modal();
+	});
+
+	$memberCreateSubmit.click(function(e) {
+		saveMember($("#memberEditForm"), SAVE_TYPE_CREATE);
 	});
 
 	$memberNameTd.on("mouseover", function(e) {
@@ -121,18 +149,7 @@
 		console.log("delete click");
 		var memberId = $(this).parent().prev().attr("memberId");
 		console.log("memberId: " + memberId);
-		$.ajax({
-			url: "DeleteMember?memberId=" + memberId,
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("delete member success");
-					location.reload();
-				}else {
-					console.log("delete member error");
-					alert("删除失败, 请重试");
-				}
-			}
-		});
+		deleteMember(memberId);
 	});
 
 	$memberTaskLink.click(function(e) {
@@ -145,6 +162,46 @@
 		});
 		$memberTaskModal.modal();
 	});
+
+
+	function saveMember($form, saveType) {
+		var formData = $form.serialize();
+		var url;
+		if(saveType == SAVE_TYPE_CREATE) {
+			url = "CreateMember";
+		}else {
+			url = "UpdateMember";
+		}
+
+		$.ajax({
+			url: url,
+			data: formData,
+			method: "post",
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("success");
+					location.reload();
+				}else {
+					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+				}
+			} 
+		});
+	}
+
+	function deleteMember(memberId) {
+		$.ajax({
+			url: "DeleteMember?memberId=" + memberId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("delete member success");
+					location.reload();
+				}else {
+					console.log("delete member error");
+					alert("删除失败, 请重试");
+				}
+			}
+		});
+	}
 </script>
 </body>
 </html>

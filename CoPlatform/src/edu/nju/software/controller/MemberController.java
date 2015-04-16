@@ -127,4 +127,49 @@ public class MemberController {
 		}
 		return new ModelAndView("taskList", "model", model);
 	}
+	
+	@RequestMapping(value = {"/CreateMember"}, method = RequestMethod.GET)
+	public ModelAndView createMemberGet(HttpServletRequest request, HttpServletResponse response) {
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		Company company = new Company(companyId);
+		Member member = new Member();
+		member.setCompany(company);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("member", member);
+		return new ModelAndView("memberInfo", "model", model);
+	}
+	
+	@RequestMapping(value = {"/CreateMember"}, method = RequestMethod.POST)
+	@ResponseBody
+	public NoDataJsonResult createMemberPost(HttpServletRequest request, HttpServletResponse response) {
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
+		
+		String name = request.getParameter("name");
+		String workId = request.getParameter("workId");
+		String qqNumber = request.getParameter("qqNumber");
+		String wxNumber = request.getParameter("wxNumber");
+		String phone = request.getParameter("phone");
+		if(null != name) {
+			name = name.trim();
+		}
+		if(null != workId) {
+			workId = workId.trim();
+		}
+		if(null != qqNumber) {
+			qqNumber = qqNumber.trim();
+		}
+		if(null != wxNumber) {
+			wxNumber = wxNumber.trim();
+		}
+		if(null != phone) {
+			phone = phone.trim();
+		}
+		
+		Member member = new Member(name, new Company(companyId), workId,
+				qqNumber, wxNumber, phone);
+		
+		GeneralResult<Integer> result = memberService.create(member);
+		return new NoDataJsonResult(result);
+	}
 }

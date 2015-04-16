@@ -21,7 +21,7 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@Override
 	public int create(Member member)  throws DataAccessException {
-		return 0;
+		return (Integer) getHibernateTemplate().save(member);
 	}
 
 	@Override

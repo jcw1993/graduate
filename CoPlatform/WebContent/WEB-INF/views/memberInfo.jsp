@@ -9,7 +9,10 @@
 	<table class="table table-responsive">
 		<c:set value="${model.member}" var="member" />
 		<tr>
-			<td><input name="memberId" type="hidden" value="${member.id}"/></td>
+			<c:if test="${member.id != null && member.id != 0}">
+				<td><input name="memberId" type="hidden" value="${member.id}"/></td>
+			</c:if>
+			
 			<td><input name="companyId" type="hidden" value="${member.company.id}"/></td>
 		</tr>
 		<tr>
