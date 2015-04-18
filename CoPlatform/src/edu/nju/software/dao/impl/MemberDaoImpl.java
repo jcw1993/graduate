@@ -39,5 +39,10 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	public Member getById(int id) {
 		return getHibernateTemplate().get(Member.class, id);
 	}
+
+	@Override
+	public Member getByOpenId(String openId) {
+		return (Member) getHibernateTemplate().find("from Member where open_id = ?",openId).get(0);
+	}
 	
 }

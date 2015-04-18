@@ -10,6 +10,8 @@ public interface MemberDao {
 	
 	public Member getById(int id);
 	
+	public Member getByOpenId(String openId);
+	
 	public int create(Member member);
 	
 	public void update(Member member);

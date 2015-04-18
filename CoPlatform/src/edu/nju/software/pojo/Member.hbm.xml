@@ -12,9 +12,11 @@
         <property name="name" type="string" column="name" />
         <many-to-one name="company" column="company_id" />
         <property name="workId" type="string" column="work_id" />
+        <property name="password" type="string" column="password" />
         <property name="wxNumber" type="string" column="wx_number" />
         <property name="qqNumber" type="string" column="qq_number" />
         <property name="phone" type="string" column="phone" />
+        <property name="openId" type="string" column="open_id" />
     </class>
 
 </hibernate-mapping>

@@ -28,147 +28,164 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class MemberController {
-	
+
 	@Autowired
 	private MemberService memberService;
-	
-	@RequestMapping(value = {"/MemberList"}, method = RequestMethod.GET)
-	public ModelAndView memberList(HttpServletRequest request, HttpServletResponse response) {
+
+	@RequestMapping(value = { "/MemberList" }, method = RequestMethod.GET)
+	public ModelAndView memberList(HttpServletRequest request,
+			HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		
+
 		Map<String, Object> model = new HashMap<String, Object>();
-		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
-		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+		GeneralResult<List<Member>> memberResult = memberService
+				.getAllByCompany(companyId);
+		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("members", memberResult.getData());
 		}
-		
+
 		return new ModelAndView("memberList", "model", model);
 	}
-	
-	@RequestMapping(value = {"/GetMemberList"}, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "/GetMemberList" }, method = RequestMethod.GET)
 	@ResponseBody
-	public GeneralJsonResult<List<Member>> getMemberList(HttpServletRequest request, HttpServletResponse response) {
+	public GeneralJsonResult<List<Member>> getMemberList(
+			HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
-		if(memberResult.getResultCode() == ResultCode.NORMAL) {
-			for(Member member : memberResult.getData()) {
+		GeneralResult<List<Member>> memberResult = memberService
+				.getAllByCompany(companyId);
+		if (memberResult.getResultCode() == ResultCode.NORMAL) {
+			for (Member member : memberResult.getData()) {
 				member.setCompany(new Company(companyId));
 			}
 		}
 		return new GeneralJsonResult<List<Member>>(memberResult);
 	}
-	
-	@RequestMapping(value = {"/GetMemberInfo"}, method = RequestMethod.GET)
-	public ModelAndView getMemberInfo(HttpServletRequest request, HttpServletResponse response) {
+
+	@RequestMapping(value = { "/GetMemberInfo" }, method = RequestMethod.GET)
+	public ModelAndView getMemberInfo(HttpServletRequest request,
+			HttpServletResponse response) {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
-		
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		GeneralResult<Member> memberResult = memberService.getById(memberId);
-		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("member", memberResult.getData());
 		}
 		return new ModelAndView("memberInfo", "model", model);
 	}
-	
-	@RequestMapping(value = {"/UpdateMember"}, method = RequestMethod.POST)
+
+	@RequestMapping(value = { "/UpdateMember" }, method = RequestMethod.POST)
 	@ResponseBody
-	public NoDataJsonResult updateMember(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+	public NoDataJsonResult updateMember(HttpServletRequest request,
+			HttpServletResponse response) throws UnsupportedEncodingException {
 		int id = CoUtils.getRequestIntValue(request, "memberId", true);
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		
+
 		String name = request.getParameter("name");
 		String workId = request.getParameter("workId");
 		String qqNumber = request.getParameter("qqNumber");
 		String wxNumber = request.getParameter("wxNumber");
 		String phone = request.getParameter("phone");
-		if(null != name) {
+		if (null != name) {
 			name = name.trim();
 		}
-		if(null != workId) {
+		if (null != workId) {
 			workId = workId.trim();
 		}
-		if(null != qqNumber) {
+		if (null != qqNumber) {
 			qqNumber = qqNumber.trim();
 		}
-		if(null != wxNumber) {
+		if (null != wxNumber) {
 			wxNumber = wxNumber.trim();
 		}
-		if(null != phone) {
+		if (null != phone) {
 			phone = phone.trim();
 		}
-		
+
 		Member member = new Member(id, name, new Company(companyId), workId,
 				qqNumber, wxNumber, phone);
-		
+
 		NoDataResult result = memberService.update(member);
 		return new NoDataJsonResult(result);
 	}
-	
-	@RequestMapping(value = {"/DeleteMember"}, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "/DeleteMember" }, method = RequestMethod.GET)
 	@ResponseBody
-	public NoDataJsonResult deleteMember(HttpServletRequest request, HttpServletResponse response) {
+	public NoDataJsonResult deleteMember(HttpServletRequest request,
+			HttpServletResponse response) {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
 		GeneralResult<Member> memberResult = memberService.getById(memberId);
-		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			NoDataResult result = memberService.delete(memberResult.getData());
 			return new NoDataJsonResult(result);
-		}else {
-			return new NoDataJsonResult(memberResult.getResultCode(), memberResult.getMessage());
+		} else {
+			return new NoDataJsonResult(memberResult.getResultCode(),
+					memberResult.getMessage());
 		}
 	}
-	
-	@RequestMapping(value = {"/GetMemberTasks"}, method = RequestMethod.GET)
-	public ModelAndView memberTaskList(HttpServletRequest request, HttpServletResponse response) {
+
+	@RequestMapping(value = { "/GetMemberTasks" }, method = RequestMethod.GET)
+	public ModelAndView memberTaskList(HttpServletRequest request,
+			HttpServletResponse response) {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
 		Map<String, Object> model = new HashMap<String, Object>();
 		GeneralResult<List<Task>> taskResult = memberService.getTasks(memberId);
-		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+		if (taskResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("tasks", taskResult.getData());
 		}
 		return new ModelAndView("taskList", "model", model);
 	}
-	
-	@RequestMapping(value = {"/CreateMember"}, method = RequestMethod.GET)
-	public ModelAndView createMemberGet(HttpServletRequest request, HttpServletResponse response) {
+
+	@RequestMapping(value = { "/CreateMember" }, method = RequestMethod.GET)
+	public ModelAndView createMemberGet(HttpServletRequest request,
+			HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		Company company = new Company(companyId);
 		Member member = new Member();
 		member.setCompany(company);
-		
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("member", member);
 		return new ModelAndView("memberInfo", "model", model);
 	}
-	
-	@RequestMapping(value = {"/CreateMember"}, method = RequestMethod.POST)
+
+	@RequestMapping(value = { "/CreateMember" }, method = RequestMethod.POST)
 	@ResponseBody
-	public NoDataJsonResult createMemberPost(HttpServletRequest request, HttpServletResponse response) {
+	public NoDataJsonResult createMemberPost(HttpServletRequest request,
+			HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		
+
 		String name = request.getParameter("name");
 		String workId = request.getParameter("workId");
 		String qqNumber = request.getParameter("qqNumber");
 		String wxNumber = request.getParameter("wxNumber");
 		String phone = request.getParameter("phone");
-		if(null != name) {
+		String password = phone.substring(phone.length() - 6);
+		String openId = request.getParameter("open_id");
+
+		if (null != name) {
 			name = name.trim();
 		}
-		if(null != workId) {
+		if (null != workId) {
 			workId = workId.trim();
 		}
-		if(null != qqNumber) {
+		if (null != qqNumber) {
 			qqNumber = qqNumber.trim();
 		}
-		if(null != wxNumber) {
+		if (null != wxNumber) {
 			wxNumber = wxNumber.trim();
 		}
-		if(null != phone) {
+		if (null != phone) {
 			phone = phone.trim();
 		}
-		
+		if (null != openId) {
+			openId = openId.trim();
+		}
+
 		Member member = new Member(name, new Company(companyId), workId,
-				qqNumber, wxNumber, phone);
-		
+				password, qqNumber, wxNumber, phone, openId);
+
 		GeneralResult<Integer> result = memberService.create(member);
 		return new NoDataJsonResult(result);
 	}
