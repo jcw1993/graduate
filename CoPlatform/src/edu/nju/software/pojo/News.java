@@ -47,4 +47,16 @@ public class News implements Serializable{
 	public void setPublishTime(Date publishTime) {
 		this.publishTime = publishTime;
 	}
+	
+	public News(int id, String title, String content, Date createdTime,
+			Date publishTime) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.createdTime = createdTime;
+		this.publishTime = publishTime;
+	}
+	
+	
 }

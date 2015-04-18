@@ -42,25 +42,25 @@
 			</list>
 		</property>
 	</bean>
-		<!--Hibernate SessionFatory-->
+	<!--Hibernate SessionFatory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-	<!-- 	<property name="lobHandler" ref="lobHandler" /> -->
+		<!-- <property name="lobHandler" ref="lobHandler" /> -->
 		<property name="configLocations">
 			<list>
 				<value>/WEB-INF/hibernate.cfg.xml</value>
 			</list>
 		</property>
-		<!-- <property name="configurationClass"
-			value="org.hibernate.cfg.AnnotationConfiguration" /> -->
-			<property name="mappingDirectoryLocations">
+		<!-- <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" 
+			/> -->
+		<property name="mappingDirectoryLocations">
 			<list>
-			<value>
-			classpath*:/edu/nju/software/pojo/
-			</value>
+				<value>
+					classpath*:/edu/nju/software/pojo/
+				</value>
 			</list>
-			</property>
+		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
@@ -72,29 +72,28 @@
 			</props>
 		</property>
 	</bean>
-	<!-- 定义事务管理器 -->    
-    <bean id="transactionManager"  
-        class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
-        <property name="sessionFactory" ref="sessionFactory" />  
-    </bean>  
-    <!-- 定义事务 -->  
-   <tx:advice id="txAdvice" transaction-manager="transactionManager">  
-        <tx:attributes>  
-            <tx:method name="*" propagation="NOT_SUPPORTED"/> 
-        </tx:attributes>  
-    </tx:advice>  
-    
-       <!--  定义切面  -->
-   <!-- 对于getHibernateTemplate的查询相关的方法，如果出现数据库异常，则直接抛出DataAccessException，而与事务拦截器无关
-		而对于增删改方法，如果出现数据库异常，则当下不会抛出异常，而是在切面抛出
-		如果切面抛出DataAccessException，则事务回滚
-		因此如果在切面内部捕获了DataAccessException而导致没有抛出，则事务不会回滚
-		 --> 
-    <aop:config>  
-        <aop:pointcut id="services" expression="execution(* edu.nju.software.service.impl.*.*(..))" />  
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="services" />  
-    </aop:config>  
+	<!-- 定义事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 定义事务 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="NOT_SUPPORTED" />
+		</tx:attributes>
+	</tx:advice>
 
- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+	<!-- 定义切面 -->
+	<!-- 对于getHibernateTemplate的查询相关的方法，如果出现数据库异常，则直接抛出DataAccessException，而与事务拦截器无关 
+		而对于增删改方法，如果出现数据库异常，则当下不会抛出异常，而是在切面抛出 如果切面抛出DataAccessException，则事务回滚 因此如果在切面内部捕获了DataAccessException而导致没有抛出，则事务不会回滚 -->
+	<aop:config>
+		<aop:pointcut id="services"
+			expression="execution(* edu.nju.software.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="services" />
+	</aop:config>
+
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
 </beans>

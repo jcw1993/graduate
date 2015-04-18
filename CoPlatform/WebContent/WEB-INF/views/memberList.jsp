@@ -1,90 +1,90 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<jsp:include page="header.jsp" flush="true"/>
+<jsp:include page="header.jsp" flush="true" />
 
 <body>
-<jsp:include page="navi.jsp" flush="true" />
+	<jsp:include page="navi.jsp" flush="true" />
 
-<div class="container-body">
-	<h3>职员列表</h3>
-	<hr />
-<table class="table table-striped table-bordered table-hover table-responsive">
-<tr>
-	<th>用户名</th>
-	<th>公司Id</th>
-	<th>工号</th>
-	<th>微信号</th>
-	<th>qq号</th>
-	<th>手机</th>
-	<th>操作</th>
-</tr>
-<c:forEach items="${model.members}" var="member">
-<tr>
-	<td class="memberNameTd">
-		<a class="memberInfo" href="#" memberId="${member.id}">${member.name}</a>
-		 <span><a class="memberDelete" href="#"><img src="<c:url value='/resources/images/delete.png' />"></a></span>
-	</td>
-	<td>${member.company.id}</td>
-	<td>${member.workId}</td>
-	<td>${member.wxNumber}</td>
-	<td>${member.qqNumber}</td>
-	<td>${member.phone}</td>
-	<td><a class="memberTask" href="#" memberId="${member.id}">查看任务</a></td>
-</tr>
-</c:forEach>
-</table>
+	<div class="container-body">
+		<h3>职员列表</h3>
+		<hr />
+		<table
+			class="table table-striped table-bordered table-hover table-responsive">
+			<tr>
+				<th>用户名</th>
+				<th>公司Id</th>
+				<th>工号</th>
+				<th>微信号</th>
+				<th>qq号</th>
+				<th>手机</th>
+				<th>操作</th>
+			</tr>
+			<c:forEach items="${model.members}" var="member">
+				<tr>
+					<td class="memberNameTd"><a class="memberInfo" href="#"
+						memberId="${member.id}">${member.name}</a> <span><a
+							class="memberDelete" href="#"><img
+								src="<c:url value='/resources/images/delete.png' />"></a></span></td>
+					<td>${member.company.id}</td>
+					<td>${member.workId}</td>
+					<td>${member.wxNumber}</td>
+					<td>${member.qqNumber}</td>
+					<td>${member.phone}</td>
+					<td><a class="memberTask" href="#" memberId="${member.id}">查看任务</a></td>
+				</tr>
+			</c:forEach>
+		</table>
 
-<a id="memberCreate" href="#" class="btn btn-primary">创建员工</a>
+		<a id="memberCreate" href="#" class="btn btn-primary">创建员工</a>
 
-</div>
+	</div>
 
-<div id="memberEditModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">职员信息</h4>
-      </div>
-      <div id="memberEditContent" class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button id="memberEditSubmit" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
-      </div>
-    </div>
-  </div>
-</div>
+	<div id="memberEditModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">职员信息</h4>
+				</div>
+				<div id="memberEditContent" class="modal-body"></div>
+				<div class="modal-footer">
+					<button id="memberEditSubmit" type="button" class="btn btn-primary"
+						data-dismiss="modal">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="memberCreateModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">职员信息</h4>
-      </div>
-      <div id="memberCreateContent" class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button id="memberCreateSubmit" type="button" class="btn btn-primary" data-dismiss="modal">创建</button>
-      </div>
-    </div>
-  </div>
-</div>
+	<div id="memberCreateModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">职员信息</h4>
+				</div>
+				<div id="memberCreateContent" class="modal-body"></div>
+				<div class="modal-footer">
+					<button id="memberCreateSubmit" type="button"
+						class="btn btn-primary" data-dismiss="modal">创建</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="memberTaskModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">任务信息</h4>
-      </div>
-      <div id="memberTaskContent" class="modal-body">
-      </div>
-    </div>
-  </div>
-</div>
+	<div id="memberTaskModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">任务信息</h4>
+				</div>
+				<div id="memberTaskContent" class="modal-body"></div>
+			</div>
+		</div>
+	</div>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 	/*constants*/
 	var SAVE_TYPE_CREATE = 0;
 	var SAVE_TYPE_UPDATE = 1;
