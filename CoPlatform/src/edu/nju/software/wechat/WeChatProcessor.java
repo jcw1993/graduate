@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +42,6 @@ public class WeChatProcessor extends WechatSupport {
 		String parameter = "?openID=" + openID;
 
 		logger.info(content);
-
-		// 文本测试
-		if (content.equals("1")) {
-			responseText("你好，hello world!<a href=\"http://www.baidu.com\">这是链接</a>");
-		} else if (content.equals("2")) {
-			responseNew(
-					"图文消息",
-					"测试图文消息",
-					"http://njucowork-pic.stor.sinaapp.com/01.jpg",
-					"http://1.njucowork.sinaapp.com/");
-		}
 
 		// 回复任务相关图文链接
 		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
@@ -109,12 +98,14 @@ public class WeChatProcessor extends WechatSupport {
 					+ content;
 			HttpGet request = new HttpGet(requesturl);
 			HttpResponse response;
+			
 			try {
-				response = HttpClients.createDefault().execute(request);
-
-				// 200即正确的返回码
-				if (response.getStatusLine().getStatusCode() == 200) {
-					String result = EntityUtils.toString(response.getEntity());
+				DefaultHttpClient client = new DefaultHttpClient();
+				response = client.execute(request);
+				
+				//200即正确的返回码  
+		        if(response.getStatusLine().getStatusCode()==200){  
+		            String result = EntityUtils.toString(response.getEntity());  
 					responseText(result);
 				} else {
 					responseText("什么鬼？？？");
