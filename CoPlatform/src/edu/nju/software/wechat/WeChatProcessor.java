@@ -41,9 +41,14 @@ public class WeChatProcessor extends WechatSupport {
 		String parameter = "?openID=" + openID;
 
 		logger.info(content);
+		
+		//文本测试
+		if(content.equals("1")){
+			responseText("你好，hello world!<a href=\"http://www.baidu.com\">这是链接</a>"+openID);
+		}
 
 		// 回复任务相关图文链接
-		if (content.toUpperCase().equals(WeChatInstruct.TASKS)) {
+		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
 			List<ArticleResponse> tasksRsp = new ArrayList<ArticleResponse>();
 
 			ArticleResponse viewTasksRsp = new ArticleResponse();
@@ -65,7 +70,7 @@ public class WeChatProcessor extends WechatSupport {
 			responseNews(tasksRsp);
 		}
 		// 回复资讯
-		else if (content.toUpperCase().equals(WeChatInstruct.NEWS)) {
+		else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
 			List<News> newsList = newsService.getLatestFewNews().getData();
 
 			if (newsList == null || newsList.isEmpty()) {
@@ -85,7 +90,7 @@ public class WeChatProcessor extends WechatSupport {
 			}
 		}
 		//回复帮助信息
-		else if(content.toUpperCase().equals(WeChatInstruct.HELP)){
+		else if((content.toUpperCase()).equals(WeChatInstruct.HELP)){
 			String result = "您好，若需查询任务或修改任务状态请发送" + WeChatInstruct.TASKS
 					+ ",若需获取最新资讯请发送" + WeChatInstruct.NEWS + ",若需要帮助请发送"
 					+ WeChatInstruct.HELP + "。祝您工作愉快↖(^ω^)↗";
@@ -94,7 +99,7 @@ public class WeChatProcessor extends WechatSupport {
 		}
 		else {
 			// 聊天机器人
-			String requesturl = "http://www.tuling123.com/openapi/wechatapi?key=525dc3676cf81a5e8def59891d1ef813&info="
+			String requesturl = "http://www.tuling123.com/openapi/api?key=525dc3676cf81a5e8def59891d1ef813&info="
 					+ content;
 			HttpGet request = new HttpGet(requesturl);
 			HttpResponse response;
