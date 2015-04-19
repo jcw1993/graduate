@@ -1,6 +1,8 @@
 package edu.nju.software.wechat;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +38,15 @@ public class WeChatProcessor extends WechatSupport {
 	 */
 	@Override
 	protected void onText() {
-		String content = super.wechatRequest.getContent().trim();
-		// String openID = super.wechatRequest.getFromUserName();
-		String openID = "";
+		String content = wechatRequest.getContent().trim();
+		String openID = wechatRequest.getFromUserName();
 		String parameter = "?openID=" + openID;
 
 		logger.info(content);
+
+		if (content.equals("1")) {
+			responseText("openId=" + openID);
+		}
 
 		// 回复任务相关图文链接
 		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
@@ -96,16 +101,27 @@ public class WeChatProcessor extends WechatSupport {
 			// 聊天机器人
 			String requesturl = "http://www.tuling123.com/openapi/api?key=525dc3676cf81a5e8def59891d1ef813&info="
 					+ content;
+			try {
+				requesturl = URLDecoder.decode(requesturl, "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
 			HttpGet request = new HttpGet(requesturl);
 			HttpResponse response;
-			
+
 			try {
 				DefaultHttpClient client = new DefaultHttpClient();
 				response = client.execute(request);
-				
-				//200即正确的返回码  
-		        if(response.getStatusLine().getStatusCode()==200){  
-		            String result = EntityUtils.toString(response.getEntity());  
+
+				// 200即正确的返回码
+				if (response.getStatusLine().getStatusCode() == 200) {
+					String result = EntityUtils.toString(response.getEntity());
+					String[] splitString = result.split("\"");
+					if (splitString.length >= 6)
+						result = splitString[5];
+					else {
+						result = "好像有哪里不对...";
+					}
 					responseText(result);
 				} else {
 					responseText("什么鬼？？？");
