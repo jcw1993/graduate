@@ -12,6 +12,10 @@ public interface MemberDao {
 	
 	public Member getByOpenId(String openId);
 	
+	public Member getByPhone(String phone);
+	
+//	public List<Member> getAll();
+	
 	public int create(Member member);
 	
 	public void update(Member member);

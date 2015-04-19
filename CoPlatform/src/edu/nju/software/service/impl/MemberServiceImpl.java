@@ -2,6 +2,7 @@ package edu.nju.software.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.MemberDao;
 import edu.nju.software.dao.TaskDao;
+import edu.nju.software.pojo.Admin;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.MemberService;
@@ -189,6 +191,29 @@ public class MemberServiceImpl implements MemberService {
 			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
 			result.setMessage(e.getMessage());
 		}
+		return result;
+	}
+
+	@Override
+	public GeneralResult<Member> getByPhoneAndPassword(String phone,
+			String password) {
+		GeneralResult<Member> result = new GeneralResult<Member>();
+		if(StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
+			result.setResultCode(ResultCode.E_INVALID_PARAMETER);
+			return result;
+		}
+		
+		Member member = memberDao.getByPhone(phone);
+		
+		if(null == member){
+			result.setResultCode(ResultCode.E_NO_DATA);
+		}else if(member.getPassword().equals(password)){
+			result.setData(member);
+			result.setResultCode(ResultCode.NORMAL);
+		}else {
+			result.setResultCode(ResultCode.E_PSW_ERROR);
+		}
+		
 		return result;
 	}
 

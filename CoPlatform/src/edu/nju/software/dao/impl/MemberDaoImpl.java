@@ -14,24 +14,25 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Member> getByCompany(int companyId)  throws DataAccessException {
+	public List<Member> getByCompany(int companyId) throws DataAccessException {
 		Company company = new Company(companyId);
-		return getHibernateTemplate().find("from Member where company = ?", company);
+		return getHibernateTemplate().find("from Member where company = ?",
+				company);
 	}
 
 	@Override
-	public int create(Member member)  throws DataAccessException {
+	public int create(Member member) throws DataAccessException {
 		return (Integer) getHibernateTemplate().save(member);
 	}
 
 	@Override
-	public void update(Member member)  throws DataAccessException {
+	public void update(Member member) throws DataAccessException {
 		getHibernateTemplate().update(member);
-		
+
 	}
 
 	@Override
-	public void delete(Member member)  throws DataAccessException {
+	public void delete(Member member) throws DataAccessException {
 		getHibernateTemplate().delete(member);
 	}
 
@@ -42,7 +43,21 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@Override
 	public Member getByOpenId(String openId) {
-		return (Member) getHibernateTemplate().find("from Member where open_id = ?",openId).get(0);
+		return (Member) getHibernateTemplate().find(
+				"from Member where open_id = ?", openId).get(0);
 	}
-	
+
+	/*
+	 * @SuppressWarnings("unchecked")
+	 * 
+	 * @Override public List<Member> getAll() { return
+	 * getHibernateTemplate().find("from Member"); }
+	 */
+
+	@Override
+	public Member getByPhone(String phone) {
+		return (Member) getHibernateTemplate().find(
+				"from Member where phone = ?", phone).get(0);
+	}
+
 }
