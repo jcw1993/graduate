@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import test.LoggerUtils;
+//import test.LoggerUtils;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.util.GeneralResult;
@@ -22,7 +22,7 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class WechatLoginController {
-	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatLoginController.class, "log1.txt", true);
+//	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatLoginController.class, "log1.txt", true);
 
 	@Autowired
 	private MemberService memberService;
@@ -50,7 +50,7 @@ public class WechatLoginController {
 		redirectPath = (null == redirectPath) ? "mytasks" : redirectPath;
 
 		
-		log.info("phone" + phone + ", openid=" + openId);
+//		log.info("phone" + phone + ", openid=" + openId);
 
 		if (StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
 			response.sendRedirect(request.getContextPath() + "/wechat");
