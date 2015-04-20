@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import edu.nju.software.dao.MemberDao;
 import edu.nju.software.dao.TaskDao;
-import edu.nju.software.pojo.Admin;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.MemberService;

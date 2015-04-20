@@ -18,25 +18,29 @@
 		</tr>
 		<tr>
 			<td><label>用户名</label></td>
-			<td><input name="name" type="text" value="${member.name}" /></td>
+			<td><input id="name" name="name" type="text" value="${member.name}" /></td>
 		</tr>
 		<tr>
 			<td><label>工号</label></td>
-			<td><input name="workId" type="text" value="${member.workId}" /></td>
+			<td><input id="workId" name="workId" type="text" value="${member.workId}" /></td>
 		</tr>
 		<tr>
 			<td><label>qq号</label></td>
-			<td><input name="qqNumber" type="text"
+			<td><input id="qqNumber" name="qqNumber" type="text"
 				value="${member.qqNumber}" /></td>
 		</tr>
 		<tr>
 			<td><label>微信号</label></td>
-			<td><input name="wxNumber" type="text"
+			<td><input id="wxNumber" name="wxNumber" type="text"
 				value="${member.wxNumber}" /></td>
 		</tr>
 		<tr>
 			<td><label>手机</label></td>
-			<td><input name="phone" type="text" value="${member.phone}" /></td>
+			<td><input id="phone" name="phone" type="text" value="${member.phone}" /></td>
+		</tr>
+		<tr>
+			<td><label>密码</label></td>
+			<td><input id="password" name="password" type="password" value="${member.password}" /></td>
 		</tr>
 	</table>
 </form>

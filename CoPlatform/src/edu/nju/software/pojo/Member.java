@@ -90,15 +90,16 @@ public class Member {
 		this.id = id;
 	}
 
-	/*public Member(String name, Company company, String workId, String qqNumber,
+	public Member(String name, Company company, String workId, String password, String qqNumber,
 			String wxNumber, String phone) {
 		this.name = name;
 		this.company = company;
 		this.workId = workId;
+		this.password = password;
 		this.qqNumber = qqNumber;
 		this.wxNumber = wxNumber;
 		this.phone = phone;
-	}*/
+	}
 	
 	public Member(int id, String name, Company company, String workId,
 			String qqNumber, String wxNumber, String phone) {

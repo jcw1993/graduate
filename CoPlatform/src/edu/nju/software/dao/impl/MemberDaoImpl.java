@@ -47,13 +47,6 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 				"from Member where open_id = ?", openId).get(0);
 	}
 
-	/*
-	 * @SuppressWarnings("unchecked")
-	 * 
-	 * @Override public List<Member> getAll() { return
-	 * getHibernateTemplate().find("from Member"); }
-	 */
-
 	@Override
 	public Member getByPhone(String phone) {
 		return (Member) getHibernateTemplate().find(

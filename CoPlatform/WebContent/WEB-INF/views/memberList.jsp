@@ -66,8 +66,10 @@
 				</div>
 				<div id="memberCreateContent" class="modal-body"></div>
 				<div class="modal-footer">
+
+					<p id="warningMessage" class="text-danger"></p>
 					<button id="memberCreateSubmit" type="button"
-						class="btn btn-primary" data-dismiss="modal">创建</button>
+						class="btn btn-primary">创建</button>
 				</div>
 			</div>
 		</div>
@@ -105,6 +107,10 @@
 	var $memberCreateContent = $("#memberCreateContent");
 	var $memberCreateSubmit = $("#memberCreateSubmit");
 	var $memberCreateBtn = $("#memberCreate");
+
+
+	var $warningMessage = $("#warningMessage");
+
 
 	$memberInfoLink.click(function(e) {
 		var memberId = $(this).attr("memberId");
@@ -165,7 +171,6 @@
 
 
 	function saveMember($form, saveType) {
-		var formData = $form.serialize();
 		var url;
 		if(saveType == SAVE_TYPE_CREATE) {
 			url = "CreateMember";
@@ -173,19 +178,30 @@
 			url = "UpdateMember";
 		}
 
-		$.ajax({
-			url: url,
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		var name = $("#name").val();
+		var workId = $("#workId").val();
+		var qqNumber = $("#qqNumber").val();
+		var wxNumber = $("#wxNumber").val();
+		var phone = $("#phone").val();
+		var password = $("#password").val();
+
+		if(checkMemberParameters(name, workId, qqNumber, wxNumber, phone, password)) {
+			console.log("save member")
+			var formData = $form.serialize();
+			$.ajax({
+				url: url,
+				data: formData,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						console.log("success");
+						location.reload();
+					}else {
+						console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+					}
+				} 
+			});
+		}
 	}
 
 	function deleteMember(memberId) {
@@ -201,6 +217,45 @@
 				}
 			}
 		});
+	}
+
+	function checkMemberParameters(name, workId, qqNumber, wxNumber, phone, password) {
+		if(name == undefined || name.trim() == "") {
+			showWarningMessage("用户名不能为空");
+			return false;
+		}
+
+		if(workId == undefined || workId.trim() == "") {
+			showWarningMessage("工号不能为空");
+			return false;
+		} 
+
+		if((qqNumber == undefined || qqNumber.trim() == "")
+			&& (wxNumber == undefined || wxNumber.trim(0 == ""))) {
+			showWarningMessage("qq号与微信号不能同时为空");
+			return false;
+		}
+
+		if(phone == undefined || phone.trim() == "") {
+			showWarningMessage("手机号不能为空");
+			return false;
+		}
+
+console.log("password: " + password);
+		if(password == undefined || password.trim() == "") {
+			showWarningMessage("密码不能为空");
+			return false;
+		}
+
+		return true;
+	}
+
+	function showWarningMessage(message) {
+		$warningMessage.text(message);
+	}
+
+	function clearWarningMessage() {
+		$warningMessage.text("");
 	}
 </script>
 </body>

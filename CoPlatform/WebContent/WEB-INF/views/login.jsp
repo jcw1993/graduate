@@ -59,6 +59,8 @@
 	var $passwordInput;
 	var $loginBtn;
 	var $loginForm;
+
+	var MAIL_PATTERN = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
 	
 	$(function() {
 		$mailInput = $("#mail");
@@ -72,7 +74,11 @@
 			var password = $passwordInput.val();
 			console.log("mail: " + mail);
 			console.log("password: " + password);
-			$loginForm.submit();
+			if(checkParameters(mail, password)) {
+				mail = mail.trim();
+				password = password.trim();
+				$loginForm.submit();	
+			}
 		}); 
 
 		$passwordInput.keyup(function(e){
@@ -80,8 +86,27 @@
 				$loginLink.trigger("click");
 			}
 		});
+
+
 	});
 
+	function checkParameters(mail, password) {
+		if(mail == undefined || mail.trim() == "") {
+			alert("邮箱不能为空");
+			return false;
+		}
+
+		if(!MAIL_PATTERN.test(mail)) {
+			alert("邮箱格式不正确");
+			return false;
+		}
+
+		if(password == undefined || password == "") {
+			alert("密码不能为空!");
+			return false;
+		}
+		return true;
+	}
 </script>
 </body>
 </html>

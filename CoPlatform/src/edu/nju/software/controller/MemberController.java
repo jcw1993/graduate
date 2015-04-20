@@ -87,6 +87,8 @@ public class MemberController {
 		String qqNumber = request.getParameter("qqNumber");
 		String wxNumber = request.getParameter("wxNumber");
 		String phone = request.getParameter("phone");
+		String password= request.getParameter("password");
+		
 		if (null != name) {
 			name = name.trim();
 		}
@@ -102,9 +104,12 @@ public class MemberController {
 		if (null != phone) {
 			phone = phone.trim();
 		}
+		if(null != password) {
+			password = password.trim();
+		}
 
-		Member member = new Member(id, name, new Company(companyId), workId,
-				qqNumber, wxNumber, phone);
+		Member member = new Member(id, name, new Company(companyId), workId,  password,
+				qqNumber, wxNumber, phone, null);
 
 		NoDataResult result = memberService.update(member);
 		return new NoDataJsonResult(result);
@@ -161,8 +166,7 @@ public class MemberController {
 		String qqNumber = request.getParameter("qqNumber");
 		String wxNumber = request.getParameter("wxNumber");
 		String phone = request.getParameter("phone");
-		String password = phone.substring(phone.length() - 6);
-		String openId = request.getParameter("open_id");
+		String password = request.getParameter("password");
 
 		if (null != name) {
 			name = name.trim();
@@ -179,12 +183,15 @@ public class MemberController {
 		if (null != phone) {
 			phone = phone.trim();
 		}
-		if (null != openId) {
-			openId = openId.trim();
+		
+		if(null != password && password.trim().length() > 0) {
+			password = password.trim();
+		}else {
+			password = phone.substring(phone.length() - 6);
 		}
-
+		
 		Member member = new Member(name, new Company(companyId), workId,
-				password, qqNumber, wxNumber, phone, openId);
+				password, qqNumber, wxNumber, phone, null);
 
 		GeneralResult<Integer> result = memberService.create(member);
 		return new NoDataJsonResult(result);
