@@ -54,13 +54,6 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 		
 	}
 
-	/*
-	 * @SuppressWarnings("unchecked")
-	 * 
-	 * @Override public List<Member> getAll() { return
-	 * getHibernateTemplate().find("from Member"); }
-	 */
-
 	@Override
 	public Member getByPhone(String phone) {
 		@SuppressWarnings("unchecked")

@@ -27,8 +27,6 @@ public interface MemberService {
 
 	public GeneralResult<List<Task>> getTasks(int memberId);
 
-//	public GeneralResult<List<Member>> getAll();
-
 	public GeneralResult<Member> getByPhoneAndPassword(String phone,
 			String password);
 }

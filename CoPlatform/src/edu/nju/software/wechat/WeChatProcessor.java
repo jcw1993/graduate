@@ -3,6 +3,7 @@ package edu.nju.software.wechat;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.sword.wechat4j.response.ArticleResponse;
 
 import edu.nju.software.pojo.News;
 import edu.nju.software.service.NewsService;
+import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.WeChatInstruct;
 
 public class WeChatProcessor extends WechatSupport {
@@ -43,10 +45,6 @@ public class WeChatProcessor extends WechatSupport {
 		String parameter = "?openID=" + openID;
 
 		logger.info(content);
-
-		if (content.equals("1")) {
-			responseText("openId=" + openID);
-		}
 
 		// 回复任务相关图文链接
 		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
@@ -72,11 +70,13 @@ public class WeChatProcessor extends WechatSupport {
 		}
 		// 回复资讯
 		else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
-			List<News> newsList = newsService.getLatestFewNews().getData();
+			GeneralResult<List<News>> result = newsService.getLatestFewNews();
 
-			if (newsList == null || newsList.isEmpty()) {
+			if (result == null || result.getData() == null
+					|| result.getData().isEmpty()) {
 				responseText("抱歉，没有最新资讯咯╮(╯▽╰)╭");
 			} else {
+				List<News> newsList = result.getData();
 				List<ArticleResponse> newsRsps = new ArrayList<ArticleResponse>();
 
 				for (News news : newsList) {
@@ -99,13 +99,16 @@ public class WeChatProcessor extends WechatSupport {
 			responseText(result);
 		} else {
 			// 聊天机器人
-			String requesturl = "http://www.tuling123.com/openapi/api?key=525dc3676cf81a5e8def59891d1ef813&info="
-					+ content;
+			String info = "";
 			try {
-				requesturl = URLDecoder.decode(requesturl, "UTF-8");
+				info = URLEncoder.encode(content.replaceAll(" ", "%20"),
+						"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 			}
+			String requesturl = "http://www.tuling123.com/openapi/api?key=525dc3676cf81a5e8def59891d1ef813&info="
+					+ info;
+
 			HttpGet request = new HttpGet(requesturl);
 			HttpResponse response;
 
@@ -117,9 +120,10 @@ public class WeChatProcessor extends WechatSupport {
 				if (response.getStatusLine().getStatusCode() == 200) {
 					String result = EntityUtils.toString(response.getEntity());
 					String[] splitString = result.split("\"");
-					if (splitString.length >= 6)
+					if (splitString.length >= 6) {
 						result = splitString[5];
-					else {
+						result.replaceAll("<br>", " ");
+					} else {
 						result = "好像有哪里不对...";
 					}
 					responseText(result);
