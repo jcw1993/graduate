@@ -29,6 +29,8 @@ public class MemberServiceImpl implements MemberService {
 	
 	private static final String MEMBER_CACHE_KEY = "member_%d";
 	
+	private static final String MEMBER_OPENID_CACHE_KEY = "member_openid";
+	
 	@Autowired
 	private MemberDao memberDao;
 	
@@ -174,6 +176,29 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return result;
 	}
+	
+
+
+	@Override
+	public GeneralResult<Member> getByOpenId(String openId) {
+		GeneralResult<Member> result = new GeneralResult<Member>();
+		Member member = (Member) CoCacheManager.get(MEMBER_CACHE_KEY + openId);
+		if(null != member) {
+			result.setData(member);
+		}else {
+			try {
+				member = memberDao.getByOpenId(openId);
+				result.setData(member);
+				CoCacheManager.put(MEMBER_CACHE_KEY + openId, member);
+			}catch(DataAccessException e) {
+				logger.error(e.getMessage());
+				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+				result.setMessage(e.getMessage());
+			}
+		}
+		return result;
+	}
+
 
 	@Override
 	public GeneralResult<List<Task>> getTasks(int memberId) {
@@ -216,5 +241,4 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
-
 }

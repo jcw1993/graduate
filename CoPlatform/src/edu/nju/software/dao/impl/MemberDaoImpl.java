@@ -43,8 +43,15 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@Override
 	public Member getByOpenId(String openId) {
-		return (Member) getHibernateTemplate().find(
-				"from Member where open_id = ?", openId).get(0);
+		@SuppressWarnings("unchecked")
+		List<Member> memberList = getHibernateTemplate().find(
+				"from Member where open_id = ?", openId);
+		if(memberList.isEmpty()){
+			return null;
+		}else {
+			return memberList.get(0);
+		}
+		
 	}
 
 	/*
@@ -56,8 +63,14 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@Override
 	public Member getByPhone(String phone) {
-		return (Member) getHibernateTemplate().find(
-				"from Member where phone = ?", phone).get(0);
+		@SuppressWarnings("unchecked")
+		List<Member> memberList = getHibernateTemplate().find(
+				"from Member where phone = ?", phone);
+		if(memberList.isEmpty()){
+			return null;
+		}else {
+			return memberList.get(0);
+		}
 	}
 
 }
