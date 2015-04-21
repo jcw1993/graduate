@@ -21,10 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-<<<<<<< HEAD
-import test.LoggerUtils;
-=======
->>>>>>> c16cd0d554a83eac74042d45005a6b0c50aad268
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
@@ -42,7 +38,7 @@ public class WechatTaskController {
 	private static Logger logger = LoggerFactory
 			.getLogger(WorkController.class);
 	
-	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
+//	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -55,7 +51,7 @@ public class WechatTaskController {
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openid");
-		log.info("task:openid= "+openId);
+//		log.info("task:openid= "+openId);
 		HttpSession session = request.getSession(true);
 
 		// 无效openid则转向错误界面，错误信息存入session
