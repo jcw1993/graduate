@@ -16,7 +16,7 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	@Override
 	public List<Member> getByCompany(int companyId) throws DataAccessException {
 		Company company = new Company(companyId);
-		return getHibernateTemplate().find("from Member where company = ?",
+		return getHibernateTemplate().find("from Member where company = ? order by id asc",
 				company);
 	}
 

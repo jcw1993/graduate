@@ -66,3 +66,19 @@ div.taskList {
 table.taskList-table {
 	margin-top: 10px;
 }
+
+div.nav-container {
+	background-color: #2d96ff;
+}
+
+div.nav-container .navbar-nav>li>a {
+	color: #ffffff;
+}
+
+.logo {
+	width: 200px;
+	height: 40px;
+	position: absolute;
+	left: 10px;
+	top: 0;
+}

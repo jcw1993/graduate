@@ -49,7 +49,19 @@
 		</tr>
 		<tr>
 			<td><label>当前状态</label></td>
-			<td><input id="taskStatus" name="status" type="text" value="${task.status.id}" /></td>
+			<td><!-- <input id="taskStatus" name="status" type="text" value="${task.status.id}" /> -->
+				<select id="taskStatus" name="status">
+					<option value="1"
+						<c:if test="${task.status.id == 1}">slected="selected"</c:if>
+					>未开始</option>
+					<option value="2"
+						<c:if test="${task.status.id == 2}">slected="selected"</c:if>>进行中</option>
+					<option value="3"
+						<c:if test="${task.status.id == 3}">slected="selected"</c:if>>已完成</option>
+					<option value="4"
+						<c:if test="${task.status.id == 4}">slected="selected"</c:if>>已失效</option>
+				</select>
+			</td>
 		</tr>
 	</table>
 </form>

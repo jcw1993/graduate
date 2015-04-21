@@ -10,7 +10,7 @@
 	<jsp:include page="navi.jsp" flush="true" />
 
 	<div class="container-body">
-		<h3>职员列表</h3>
+		<h3>职员列表<a id="memberCreate" href="#" class="btn btn-primary create-button">创建员工</a></h3>
 		<hr />
 		<table
 			class="table table-striped table-bordered table-hover table-responsive">
@@ -38,8 +38,6 @@
 				</tr>
 			</c:forEach>
 		</table>
-
-		<a id="memberCreate" href="#" class="btn btn-primary">创建员工</a>
 
 	</div>
 

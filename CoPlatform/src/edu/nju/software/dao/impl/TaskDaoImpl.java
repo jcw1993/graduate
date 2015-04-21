@@ -33,13 +33,13 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@Override
 	public List<Task> getByProject(int projectId) throws DataAccessException {
 		Project project = new Project(projectId);
-		return getHibernateTemplate().find("from Task where project = ?", project);
+		return getHibernateTemplate().find("from Task where project = ? order by id asc", project);
 	}
 
 	@Override
 	public Task getParent(int parentId) throws DataAccessException {
 		Task task = new Task(parentId);
-		return (Task) getHibernateTemplate().find("from Task where task = ?", task);
+		return (Task) getHibernateTemplate().find("from Task where task = ? order by id asc", task);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@Override
 	public List<Task> getTasksByMember(int memberId) {
 		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, Member as m where ta.task.id = t.id and "
-				+ "ta.member.id = m.id and m.id = " + memberId);
+				+ "ta.member.id = m.id and m.id = " + memberId + " order by t.id asc");
 		return query.list();
 	}
 
@@ -70,7 +70,7 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@Override
 	public List<Task> getTasksByOutEmployee(int companyId, int outEmployeeId) {
 		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, OutEmployee as oe where  ta.task.id = t.id and "
-				+ "ta.outEmployee.id = oe.id and t.project.company.id = " + companyId + " and oe.id = " + outEmployeeId);
+				+ "ta.outEmployee.id = oe.id and t.project.company.id = " + companyId + " and oe.id = " + outEmployeeId + " order by t.id asc");
 		return query.list();
 	}
 

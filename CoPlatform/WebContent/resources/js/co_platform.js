@@ -1,3 +1,9 @@
+/*constants*/
+/*task status related*/
+var TASK_STATUS_NOT_STARTED = 1;
+var TASK_STATUS_STARTED = 2;
+var TASK_STATUS_COMPLETED = 3;
+var TASK_STATUS_INVALID = 4;
 
 /*validate date format*/
 function validateDateFormat(dateStr) {

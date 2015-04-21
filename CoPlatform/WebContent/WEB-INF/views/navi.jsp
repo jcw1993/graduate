@@ -7,8 +7,9 @@
 <c:set value="${sessionScope.admin}" var="currentAdmin" />
 
 <nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container-fluid">
-
+	<div class="container-fluid nav-container">
+		<div class="row">
+			<div class="col-xs-3">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -17,9 +18,12 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">任务协同平台</a>
+			<a class="navbar-brand" href="Login"><!-- 任务协同平台 -->
+			<img alt="任务协同平台" class="logo" src="<c:url value="/resources/images/logo.png" />">
+			</a>
 		</div>
-
+	</div>
+<div class="col-xs-9">
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
@@ -40,9 +44,12 @@
 							href="ProjectLogList?companyId=${currentAdmin.company.id}">项目日志</a></li>
 						<li><a href="TaskLogList?taskId=1">任务日志</a></li>
 					</ul></li>
+				<li><a href="NewsList">新闻资讯</a></li>
 			</ul>
 
 		</div>
+	</div>
+	</div>
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid -->

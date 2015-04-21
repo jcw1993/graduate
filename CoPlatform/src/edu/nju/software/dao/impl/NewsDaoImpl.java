@@ -10,6 +10,7 @@ import edu.nju.software.pojo.News;
 @Repository
 public class NewsDaoImpl extends HibernateDaoBase implements NewsDao{
 	//最大图文链接条数
+	@SuppressWarnings("unused")
 	private static final int MAX_PIECES = 10;
 	
 	@Override
