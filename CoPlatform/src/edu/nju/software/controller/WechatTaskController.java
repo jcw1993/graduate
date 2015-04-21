@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import test.LoggerUtils;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
@@ -38,7 +39,7 @@ public class WechatTaskController {
 	private static Logger logger = LoggerFactory
 			.getLogger(WorkController.class);
 	
-//	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
+	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -51,7 +52,7 @@ public class WechatTaskController {
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openid");
-//		log.info("task:openid= "+openId);
+		log.info("task:openid= "+openId);
 		HttpSession session = request.getSession(true);
 
 		// 无效openid则转向错误界面，错误信息存入session
@@ -90,24 +91,19 @@ public class WechatTaskController {
 	}
 
 	// TODO
-	@RequestMapping(value = { "/wechat/taskInfo" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/wechat/taskinfo" }, method = RequestMethod.GET)
 	public ModelAndView wxTaskInfo(HttpServletRequest request,
 			HttpServletResponse response) {
-		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
-		int projectId = CoUtils.getRequestIntValue(request, "projectId", false);
+		int taskId = CoUtils.getRequestIntValue(request, "taskid", true);
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		GeneralResult<Task> taskResult = null;
-		if (projectId == 0) {
-			taskResult = workService.getTaskById(taskId);
-		} else {
-			taskResult = workService.getTaskByProjectAndId(projectId, taskId);
-		}
+		taskResult = workService.getTaskById(taskId);
 
 		if (taskResult.getResultCode() == ResultCode.NORMAL) {
-			model.put("task", taskResult.getData());
+			model.put("wxtask", taskResult.getData());
 		}
-		return new ModelAndView("taskInfo", "model", model);
+		return new ModelAndView("wechat/taskInfo", "model", model);
 	}
 
 	// TODO
@@ -116,38 +112,10 @@ public class WechatTaskController {
 	public NoDataJsonResult wxUpdateTask(HttpServletRequest request,
 			HttpServletResponse response) {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
-		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
-
-		String name = request.getParameter("name");
-		String description = request.getParameter("description");
-
-		String startDateStr = request.getParameter("startDate").trim();
-		String startTimeStr = request.getParameter("startTime").trim();
-		String endDateStr = request.getParameter("endDate").trim();
-		String endTimeStr = request.getParameter("endTime").trim();
-		Date startDate = null;
-		Date endDate = null;
-		try {
-			startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr,
-					DATE_FORMAT);
-			endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr,
-					DATE_FORMAT);
-		} catch (ParseException e) {
-			logger.error(e.getMessage());
-			return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
-		}
-
 		int status = CoUtils.getRequestIntValue(request, "status", true);
 
-		if (null != name) {
-			name = name.trim();
-		}
-		if (null != description) {
-			description = description.trim();
-		}
-
-		Task task = new Task(taskId, new Project(projectId), name, description,
-				null, new TaskStatus(status), startDate, endDate);
+		Task task = workService.getTaskById(taskId).getData();
+		task.setStatus(new TaskStatus(status));
 
 		NoDataResult result = workService.updateTask(task);
 		return new NoDataJsonResult(result);

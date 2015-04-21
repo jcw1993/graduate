@@ -42,7 +42,7 @@ public class WeChatProcessor extends WechatSupport {
 		String prefix = "njucowork.sinaapp.com";
 		String content = wechatRequest.getContent().trim();
 		String openID = wechatRequest.getFromUserName();
-		String parameter = "?openID=" + openID;
+		String parameter = "?openid=" + openID;
 
 		logger.info(content);
 

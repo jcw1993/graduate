@@ -5,7 +5,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!-- <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> -->
 
-<c:if test="${model.tasks != null}">
+<jsp:include page="header.jsp" flush="true" />
+
+<body>
+	<%-- <jsp:include page="navi.jsp" flush="true" /> --%>
+	
+<div class="container-body">
+<c:if test="${model.wxtasks != null}">
 	<table
 		class="table table-striped table-bordered table-hover table-responsive">
 		<tr>
@@ -16,9 +22,10 @@
 			<th>结束时间</th>
 			<th>当前状态</th>
 		</tr>
-		<c:forEach items="${model.tasks}" var="task">
+		<c:forEach items="${model.wxtasks}" var="task">
 			<tr>
-				<td>${task.name}</td>
+			<% String path = request.getContextPath()+"/wechat/taskinfo?taskid=";%> 
+				<td><a href="<%=path %>${task.id}">${task.name}</a></td>
 				<td>${task.description}</td>
 				<td>${task.project.id}</td>
 				<td><fmt:formatDate value="${task.startTime}"
@@ -30,6 +37,8 @@
 		</c:forEach>
 	</table>
 </c:if>
-<c:if test="${model.tasks == null}">
+<c:if test="${model.wxtasks == null}">
 	<h3>暂无任务</h3>
 </c:if>
+</div>
+</body>
