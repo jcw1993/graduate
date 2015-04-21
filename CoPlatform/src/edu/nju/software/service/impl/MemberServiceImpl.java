@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	private static final String MEMBER_CACHE_KEY = "member_%d";
 	
+	@SuppressWarnings("unused")
 	private static final String MEMBER_OPENID_CACHE_KEY = "member_openid";
 	
 	@Autowired

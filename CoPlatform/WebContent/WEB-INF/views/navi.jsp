@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<c:set value="${sessionScope.admin}" var="currentAdmin" />
+<c:set value="${model.admin}" var="currentAdmin" />
 
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid nav-container">

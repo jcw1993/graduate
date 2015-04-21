@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -64,5 +66,22 @@ public class CoUtils {
 	public static Date parseDate(String dateStr, String format) throws ParseException {
 		DateFormat formatter = new SimpleDateFormat(format);
 		return formatter.parse(dateStr);
+	}
+	
+	public static String getCookie(HttpServletRequest request, String name) {
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies) {
+			if(cookie.getName().equals(name)) {
+				return cookie.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+		Cookie cookie = new Cookie(name, value);
+		cookie.setMaxAge(maxAge);
+		cookie.setPath("/");
+		response.addCookie(cookie);
 	}
 }
