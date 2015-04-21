@@ -17,15 +17,15 @@
 		</tr>
 		<tr>
 			<td><label>任务名称</label></td>
-			<td><input name="name" type="text" value="${task.name}" /></td>
+			<td><input id="taskName" name="name" type="text" value="${task.name}" /></td>
 		</tr>
 		<tr>
 			<td><label>任务描述</label></td>
-			<td><input name="description" type="text"
+			<td><input id="taskDescription" name="description" type="text"
 				value="${task.description}" /></td>
 		</tr>
 		<tr>
-			<td><label>任务Id</label></td>
+			<td><label>项目Id</label></td>
 			<td><label>${task.project.id}</label></td>
 		</tr>
 		<tr>
@@ -49,7 +49,7 @@
 		</tr>
 		<tr>
 			<td><label>当前状态</label></td>
-			<td><input name="status" type="text" value="${task.status.id}" /></td>
+			<td><input id="taskStatus" name="status" type="text" value="${task.status.id}" /></td>
 		</tr>
 	</table>
 </form>

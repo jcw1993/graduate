@@ -17,11 +17,11 @@
 		</tr>
 		<tr>
 			<td><label>项目名称</label></td>
-			<td><input name="name" type="text" value="${project.name}" /></td>
+			<td><input id="projectName" name="name" type="text" value="${project.name}" /></td>
 		</tr>
 		<tr>
 			<td><label>项目描述</label></td>
-			<td><input name="description" type="text"
+			<td><input id="projectDescription" name="description" type="text"
 				value="${project.description}" /></td>
 		</tr>
 		<tr>
@@ -49,7 +49,7 @@
 		</tr>
 		<tr>
 			<td><label>当前进度</label></td>
-			<td><input name="progress" type="text"
+			<td><input id="projectProgress" name="progress" type="text"
 				value="${project.progress}" /></td>
 		</tr>
 	</table>

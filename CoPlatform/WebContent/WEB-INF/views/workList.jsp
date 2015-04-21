@@ -130,7 +130,7 @@
 				<div id="projectCreateContent" class="modal-body"></div>
 				<div class="modal-footer">
 					<button id="projectCreateSubmit" type="button"
-						class="btn btn-primary" data-dismiss="modal">创建</button>
+						class="btn btn-primary">创建</button>
 				</div>
 			</div>
 		</div>
@@ -144,8 +144,7 @@
 				</div>
 				<div id="taskCreateContent" class="modal-body"></div>
 				<div class="modal-footer">
-					<button id="taskCreateSubmit" type="button" class="btn btn-primary"
-						data-dismiss="modal">创建</button>
+					<button id="taskCreateSubmit" type="button" class="btn btn-primary">创建</button>
 				</div>
 			</div>
 		</div>
@@ -377,19 +376,29 @@
 			url = "UpdateProject";
 		}
 
-		$.ajax({
-			url: url,
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		var name = $("#projectName").val();
+		var desc = $("#projectDescription").val();
+		var startDate = $("#projectStartDate").val();
+		var startTime = $("#projectStartTime").val();
+		var endDate = $("#projectEndDate").val();
+		var endTime = $("#projectEndTime").val();
+		var progress = $("#projectProgress").val();
+		if(checkProjectParameters(name, desc, startDate, startTime, endDate, endTime, progress)) {
+			$.ajax({
+				url: url,
+				data: formData,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						console.log("success");
+						location.reload();
+					}else {
+						console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+					}
+				} 
+			});			
+		}
+
 	}
 
 	function saveTask($form, saveType) {
@@ -401,19 +410,29 @@
 			url = "UpdateTask";
 		}
 
-		$.ajax({
-			url: url,
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		var name = $("#taskName").val();
+		var desc = $("#taskDescription").val();
+		var startDate = $("#taskStartDate").val();
+		var startTime = $("#taskStartTime").val();
+		var endDate = $("#taskEndDate").val();
+		var endTime = $("#taskEndTime").val();
+		var status = $("#taskStatus").val();
+		if(checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status)) {
+			$.ajax({
+				url: url,
+				data: formData,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						console.log("success");
+						location.reload();
+					}else {
+						console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+					}
+				} 
+			});
+		}
+
 	}
 
 	function deleteTask(taskId) {

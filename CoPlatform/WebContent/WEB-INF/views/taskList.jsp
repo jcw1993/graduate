@@ -10,7 +10,7 @@
 		class="table table-striped table-bordered table-hover table-responsive">
 		<tr>
 			<th>任务名称</th>
-			<th>任务列表</th>
+			<th>任务描述</th>
 			<th>项目Id</th>
 			<th>开始时间</th>
 			<th>结束时间</th>
