@@ -1,4 +1,4 @@
-package test;
+package edu.nju.software.wechat;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
