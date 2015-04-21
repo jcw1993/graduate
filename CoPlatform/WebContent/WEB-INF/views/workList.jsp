@@ -11,61 +11,73 @@
 	<jsp:include page="navi.jsp" flush="true" />
 
 	<div class="container-body">
-		<h3>工作内容</h3>
+		<h3>项目列表<a id="projectCreate" href="#" class="btn btn-primary create-button">创建项目</a></h3>
 		<hr />
 
 		<div class="container-fluid">
-			<a id="projectCreate" href="#" class="btn btn-primary">创建项目</a>
 
 			<c:forEach items="${model.works}" var="work">
 				<c:set value="${work.key}" var="project" />
 				<c:set value="${work.value}" var="tasks" />
-
+				<div class="bottom-line project-item">
 				<div class="row">
-					<a class="projectInfo btn" projectId="${project.id}">${project.name}</a>
-					<a class="projectDelete" projectId="${project.id}">删除</a> <a
-						class="btn" data-toggle="collapse"
+					<div class="col-xs-6">
+						<a class="projectInfo btn" projectId="${project.id}">${project.name}</a>
+					</div>
+					<div class="col-xs-4">
+					<a class="projectDelete btn btn-danger btn-sm" projectId="${project.id}">删除</a> 
+					</div>	
+					<div class="col-xs-2">
+					<a
+						class="btn btn-info btn-sm" data-toggle="collapse"
 						href="#projectTaskArea${project.id}" aria-expanded="false"
-						aria-controls="collapseExample">展开/收起</a>
-					<div id="projectTaskArea${project.id}" class="collapse">
-						<a class="taskCreate btn btn-primary" href="#"
-							projectId="${project.id}">创建任务</a>
-						<c:if test="${tasks != null}">
-							<table
-								class="table table-striped table-bordered table-hover table-responsive">
-								<tr>
-									<th>任务名称</th>
-									<th>任务列表</th>
-									<th>项目Id</th>
-									<th>开始时间</th>
-									<th>结束时间</th>
-									<th>当前状态</th>
-									<th>操作</th>
-								</tr>
-								<c:forEach items="${tasks}" var="task">
-									<tr>
-										<td class="taskNameTd"><a class="taskInfo" href="#"
-											taskId="${task.id}">${task.name}</a> <span><a
-												class="taskDelete" href="#"><img
-													src="<c:url value='/resources/images/delete.png' />"></a></span>
-										</td>
-										<td>${task.description}</td>
-										<td>${task.project.id}</td>
-										<td><fmt:formatDate value="${task.startTime}"
-												pattern="yyyy-MM-dd HH:mm:ss" /></td>
-										<td><fmt:formatDate value="${task.endTime}"
-												pattern="yyyy-MM-dd HH:mm:ss" /></td>
-										<td>${task.status.id}</td>
-										<td><a class="taskAssign" href="#" taskId="${task.id}">分配任务</a></td>
-									</tr>
-								</c:forEach>
-							</table>
-						</c:if>
-						<c:if test="${tasks == null}">
-							<p>暂无任务</p>
-						</c:if>
+						aria-controls="collapseExample">查看相关任务</a>
 					</div>
 				</div>
+				<div id="projectTaskArea${project.id}" class="collapse taskList">
+					<div class="row">
+						<div class="col-xs-10"></div>
+							<div class="col-xs-2">
+								<a class="taskCreate btn btn-primary btn-xs" href="#"
+									projectId="${project.id}">创建任务</a>
+							</div>
+						</div>
+					<c:if test="${tasks != null}">
+						<table
+							class="table table-striped table-bordered table-hover table-responsive taskList-table">
+							<tr>
+								<th>任务名称</th>
+								<th>任务列表</th>
+								<th>项目Id</th>
+								<th>开始时间</th>
+								<th>结束时间</th>
+								<th>当前状态</th>
+								<th>操作</th>
+							</tr>
+							<c:forEach items="${tasks}" var="task">
+								<tr>
+									<td class="taskNameTd"><a class="taskInfo" href="#"
+										taskId="${task.id}">${task.name}</a> <span><a
+											class="taskDelete" href="#"><img
+												src="<c:url value='/resources/images/delete.png' />"></a></span>
+									</td>
+									<td>${task.description}</td>
+									<td>${task.project.id}</td>
+									<td><fmt:formatDate value="${task.startTime}"
+											pattern="yyyy-MM-dd HH:mm:ss" /></td>
+									<td><fmt:formatDate value="${task.endTime}"
+											pattern="yyyy-MM-dd HH:mm:ss" /></td>
+									<td>${task.status.id}</td>
+									<td><a class="taskAssign" href="#" taskId="${task.id}">分配任务</a></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:if>
+					<c:if test="${tasks == null}">
+						<p>暂无任务</p>
+					</c:if>
+				</div>
+			</div>
 			</c:forEach>
 		</div>
 	</div>
@@ -130,7 +142,7 @@
 				<div id="projectCreateContent" class="modal-body"></div>
 				<div class="modal-footer">
 					<button id="projectCreateSubmit" type="button"
-						class="btn btn-primary" data-dismiss="modal">创建</button>
+						class="btn btn-primary">创建</button>
 				</div>
 			</div>
 		</div>
@@ -144,8 +156,7 @@
 				</div>
 				<div id="taskCreateContent" class="modal-body"></div>
 				<div class="modal-footer">
-					<button id="taskCreateSubmit" type="button" class="btn btn-primary"
-						data-dismiss="modal">创建</button>
+					<button id="taskCreateSubmit" type="button" class="btn btn-primary">创建</button>
 				</div>
 			</div>
 		</div>
@@ -377,19 +388,29 @@
 			url = "UpdateProject";
 		}
 
-		$.ajax({
-			url: url,
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		var name = $("#projectName").val();
+		var desc = $("#projectDescription").val();
+		var startDate = $("#projectStartDate").val();
+		var startTime = $("#projectStartTime").val();
+		var endDate = $("#projectEndDate").val();
+		var endTime = $("#projectEndTime").val();
+		var progress = $("#projectProgress").val();
+		if(checkProjectParameters(name, desc, startDate, startTime, endDate, endTime, progress)) {
+			$.ajax({
+				url: url,
+				data: formData,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						console.log("success");
+						location.reload();
+					}else {
+						console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+					}
+				} 
+			});			
+		}
+
 	}
 
 	function saveTask($form, saveType) {
@@ -401,19 +422,29 @@
 			url = "UpdateTask";
 		}
 
-		$.ajax({
-			url: url,
-			data: formData,
-			method: "post",
-			success: function(result) {
-				if(result.resultCode == 0) {
-					console.log("success");
-					location.reload();
-				}else {
-					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
-				}
-			} 
-		});
+		var name = $("#taskName").val();
+		var desc = $("#taskDescription").val();
+		var startDate = $("#taskStartDate").val();
+		var startTime = $("#taskStartTime").val();
+		var endDate = $("#taskEndDate").val();
+		var endTime = $("#taskEndTime").val();
+		var status = $("#taskStatus").val();
+		if(checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status)) {
+			$.ajax({
+				url: url,
+				data: formData,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						console.log("success");
+						location.reload();
+					}else {
+						console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+					}
+				} 
+			});
+		}
+
 	}
 
 	function deleteTask(taskId) {
@@ -445,6 +476,103 @@
 		});
 	}
 
+	function checkProjectParameters(name, desc, startDate, startTime, endDate, endTime, progress) {
+		if(name == undefined || name.trim() == "") {
+			alert("项目名称不能为空");
+			return false;
+		}
+		if(desc == undefined || desc.trim() == "") {
+			alert("项目描述不能为空");
+			return false;
+		}
+		if(startDate == undefined || startDate.trim() == "") {
+			alert("开始日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(startDate)) {
+			alert("开始日期格式错误");
+			return false;
+		}
+		if(startTime == undefined || startTime.trim() == "") {
+			alert("开始时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(startTime)) {
+			alert("开始时间格式错误");
+			return false;
+		}
+		if(endDate == undefined || endDate.trim() == "") {
+			alert("结束日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(endDate)) {
+			alert("结束日期格式错误");
+			return false;
+		}
+
+		if(endTime == undefined || endTime.trim() == "") {
+			alert("结束时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(endTime)) {
+			alert("结束时间格式错误");
+			return false;
+		}
+		if(progress == undefined || progress.trim() == "") {
+			alert("进度不能为空");
+			return false;
+		}
+		return true;
+	}
+
+	function checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status) {
+		if(name == undefined || name.trim() == "") {
+			alert("任务名称不能为空");
+			return false;
+		}
+		if(desc == undefined || desc.trim() == "") {
+			alert("任务描述不能为空");
+			return false;
+		}
+		if(startDate == undefined || startDate.trim() == "") {
+			alert("开始日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(startDate)) {
+			alert("开始日期格式错误");
+			return false;
+		}
+		if(startTime == undefined || startTime.trim() == "") {
+			alert("开始时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(startTime)) {
+			alert("开始时间格式错误");
+			return false;
+		}
+		if(endDate == undefined || endDate.trim() == "") {
+			alert("结束日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(endDate)) {
+			alert("结束日期格式错误");
+			return false;
+		}
+
+		if(endTime == undefined || endTime.trim() == "") {
+			alert("结束时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(endTime)) {
+			alert("结束时间格式错误");
+			return false;
+		}
+		if(status == undefined || status.trim() == "") {
+			alert("任务状态不能为空");
+			return false;
+		}
+		return true;
+	}
 
 	$taskDeleteBtn.hide();
 

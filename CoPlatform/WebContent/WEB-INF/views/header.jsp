@@ -32,6 +32,8 @@
 	src="<c:url value="/resources/js/jquery.validate.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery.timepicker.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/co_platform.js" />"></script>
 
 <title>任务协同平台</title>
 </head>
