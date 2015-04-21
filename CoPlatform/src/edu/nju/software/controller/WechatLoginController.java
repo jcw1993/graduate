@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-//import test.LoggerUtils;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.util.GeneralResult;
@@ -22,7 +21,6 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class WechatLoginController {
-//	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatLoginController.class, "log1.txt", true);
 
 	@Autowired
 	private MemberService memberService;
@@ -30,10 +28,16 @@ public class WechatLoginController {
 	@RequestMapping(value = { "/wechat" }, method = RequestMethod.GET)
 	public ModelAndView wxLoginView(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		//url所带参数放入session
+		String openId = request.getParameter("openid");
 		HttpSession session = request.getSession(true);
-		String query[]=request.getQueryString().split("=");
-		session.setAttribute(query[0], query[1]);
+
+		// 无效openid则转向错误界面，错误信息存入session
+		if (null == openId || StringUtils.isBlank(openId)) {
+			session.setAttribute("errorMsg", "wxLogin: invalid openId.");
+			return new ModelAndView("wechat/error", null);
+		}
+
+		session.setAttribute("openid", openId);
 		return new ModelAndView("wechat/login", null);
 	}
 
@@ -42,24 +46,19 @@ public class WechatLoginController {
 			throws IOException, ServletException {
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
-		
+
 		HttpSession session = request.getSession(true);
 		String openId = (String) session.getAttribute("openid");
-		String redirectPath = null;
 
-		redirectPath = (null == redirectPath) ? "mytasks" : redirectPath;
-
-		
-//		log.info("phone" + phone + ", openid=" + openId);
+		String redirectPath = "mytasks";
+		// redirectPath = (null == redirectPath) ? "mytasks" : redirectPath;
 
 		if (StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
 			response.sendRedirect(request.getContextPath() + "/wechat");
 			return;
 		}
 
-		// TODO 验证openId，redirectPath，然后？
-
-		// 其他页面中，openid在数据库找不到，则转向wechat页面，即微信的login界面
+		// 其他页面中，openid在数据库找不到，则转向wechat的login界面
 		// 验证成功后，在session中存入member，将openid插入数据库，然后跳转
 		phone = phone.trim();
 		password = password.trim();
@@ -78,6 +77,12 @@ public class WechatLoginController {
 			return;
 		}
 
+	}
+
+	@RequestMapping(value = { "/wechat/error" }, method = RequestMethod.GET)
+	public ModelAndView error(HttpServletRequest request,
+			HttpServletResponse response) {
+		return new ModelAndView("/wechat/error", null);
 	}
 
 }
