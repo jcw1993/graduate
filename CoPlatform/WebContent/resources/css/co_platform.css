@@ -46,3 +46,23 @@ div.container-body {
 	margin-right: auto;
 	padding-top: 50px;
 }
+
+div.taskList {
+	padding: 20px 20px 0 20px;
+}
+
+.bottom-line {
+	border-bottom: 1px #dddddd solid;
+}
+
+.project-item {
+	padding-top: 10px;
+}
+
+.create-button {
+	float: right;
+}
+
+table.taskList-table {
+	margin-top: 10px;
+}
