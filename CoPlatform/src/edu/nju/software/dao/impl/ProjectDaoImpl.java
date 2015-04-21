@@ -36,7 +36,7 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	@Override
 	public List<Project> getByCompany(int companyId) {
 		Company company = new Company(companyId);
-		return getHibernateTemplate().find("from Project where company = ?", company);
+		return getHibernateTemplate().find("from Project where company = ? order by id asc", company);
 	}
 
 }

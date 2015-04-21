@@ -15,14 +15,14 @@ public class OutEmployeeDaoImpl extends HibernateDaoBase implements OutEmployeeD
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<OutEmployee> getByCompany(int companyId) {
-		Query query = getSession().createQuery("select oe from OutEmployee oe join oe.companies c where c.id = " + companyId);
+		Query query = getSession().createQuery("select oe from OutEmployee oe join oe.companies c where c.id = " + companyId + " order by oe.id asc");
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Company> getRelatedCompanies(int outEmployeeId) {
-		Query query = getSession().createQuery("select c from Company c join c.outEmployees oe where oe.id = " + outEmployeeId);
+		Query query = getSession().createQuery("select c from Company c join c.outEmployees oe where oe.id = " + outEmployeeId + " order by c.id asc");
 		return query.list();
 	}
 

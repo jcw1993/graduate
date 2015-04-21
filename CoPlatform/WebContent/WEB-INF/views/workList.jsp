@@ -67,7 +67,12 @@
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
 									<td><fmt:formatDate value="${task.endTime}"
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td>${task.status.id}</td>
+									<td>
+										<c:if test="${task.status.id == 1}">未开始</c:if>
+										<c:if test="${task.status.id == 2}">进行中</c:if>
+										<c:if test="${task.status.id == 3}">已完成</c:if>
+										<c:if test="${task.status.id == 4}">已失效</c:if>
+									</td>
 									<td><a class="taskAssign" href="#" taskId="${task.id}">分配任务</a></td>
 								</tr>
 							</c:forEach>
@@ -428,7 +433,8 @@
 		var startTime = $("#taskStartTime").val();
 		var endDate = $("#taskEndDate").val();
 		var endTime = $("#taskEndTime").val();
-		var status = $("#taskStatus").val();
+		var statusIndex = $("#taskStatus")[0].selectedIndex;
+		var status = $("#taskStatus").children().eq(statusIndex).val().trim();
 		if(checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status)) {
 			$.ajax({
 				url: url,
