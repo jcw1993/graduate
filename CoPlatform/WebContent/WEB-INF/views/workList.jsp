@@ -445,6 +445,103 @@
 		});
 	}
 
+	function checkProjectParameters(name, desc, startDate, startTime, endDate, endTime, progress) {
+		if(name == undefined || name.trim() == "") {
+			alert("项目名称不能为空");
+			return false;
+		}
+		if(desc == undefined || desc.trim() == "") {
+			alert("项目描述不能为空");
+			return false;
+		}
+		if(startDate == undefined || startDate.trim() == "") {
+			alert("开始日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(startDate)) {
+			alert("开始日期格式错误");
+			return false;
+		}
+		if(startTime == undefined || startTime.trim() == "") {
+			alert("开始时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(startTime)) {
+			alert("开始时间格式错误");
+			return false;
+		}
+		if(endDate == undefined || endDate.trim() == "") {
+			alert("结束日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(endDate)) {
+			alert("结束日期格式错误");
+			return false;
+		}
+
+		if(endTime == undefined || endTime.trim() == "") {
+			alert("结束时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(endTime)) {
+			alert("结束时间格式错误");
+			return false;
+		}
+		if(progress == undefined || progress.trim() == "") {
+			alert("进度不能为空");
+			return false;
+		}
+		return true;
+	}
+
+	function checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status) {
+		if(name == undefined || name.trim() == "") {
+			alert("任务名称不能为空");
+			return false;
+		}
+		if(desc == undefined || desc.trim() == "") {
+			alert("任务描述不能为空");
+			return false;
+		}
+		if(startDate == undefined || startDate.trim() == "") {
+			alert("开始日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(startDate)) {
+			alert("开始日期格式错误");
+			return false;
+		}
+		if(startTime == undefined || startTime.trim() == "") {
+			alert("开始时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(startTime)) {
+			alert("开始时间格式错误");
+			return false;
+		}
+		if(endDate == undefined || endDate.trim() == "") {
+			alert("结束日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(endDate)) {
+			alert("结束日期格式错误");
+			return false;
+		}
+
+		if(endTime == undefined || endTime.trim() == "") {
+			alert("结束时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(endTime)) {
+			alert("结束时间格式错误");
+			return false;
+		}
+		if(status == undefined || status.trim() == "") {
+			alert("任务状态不能为空");
+			return false;
+		}
+		return true;
+	}
 
 	$taskDeleteBtn.hide();
 
