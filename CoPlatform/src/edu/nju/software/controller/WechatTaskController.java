@@ -21,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+<<<<<<< HEAD
+import test.LoggerUtils;
+=======
+>>>>>>> c16cd0d554a83eac74042d45005a6b0c50aad268
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
@@ -37,6 +41,8 @@ import edu.nju.software.util.ResultCode;
 public class WechatTaskController {
 	private static Logger logger = LoggerFactory
 			.getLogger(WorkController.class);
+	
+	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -49,15 +55,18 @@ public class WechatTaskController {
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openid");
-		// TODO 验证openId，然后？
-
+		log.info("task:openid= "+openId);
 		HttpSession session = request.getSession(true);
+
+		// 无效openid则转向错误界面，错误信息存入session
+		if (null == openId || StringUtils.isBlank(openId)) {
+			session.setAttribute("errorMsg", "wxLogin: invalid openId.");
+			return new ModelAndView("wechat/error", null);
+		}
 		Member member = (Member) session.getAttribute("wechatMember");
-		String currentOpenId = member.getOpenId();
 
 		// 如果session中的用户不是当前用户
-		if (null == currentOpenId || StringUtils.isBlank(currentOpenId)
-				|| !currentOpenId.equals(openId)) {
+		if (null == member || null == member.getOpenId() || !member.getOpenId().equals(openId)) {
 			GeneralResult<Member> memberResult = memberService
 					.getByOpenId(openId);
 
@@ -84,7 +93,7 @@ public class WechatTaskController {
 		return new ModelAndView("wechat/taskList", "model", model);
 	}
 
-	//TODO
+	// TODO
 	@RequestMapping(value = { "/wechat/taskInfo" }, method = RequestMethod.GET)
 	public ModelAndView wxTaskInfo(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -105,7 +114,7 @@ public class WechatTaskController {
 		return new ModelAndView("taskInfo", "model", model);
 	}
 
-	//TODO
+	// TODO
 	@RequestMapping(value = { "/wechat/updatetask" }, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult wxUpdateTask(HttpServletRequest request,
