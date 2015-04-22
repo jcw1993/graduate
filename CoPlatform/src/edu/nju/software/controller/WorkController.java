@@ -25,6 +25,7 @@ import edu.nju.software.pojo.TaskStatus;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.service.WorkService;
+import edu.nju.software.util.CoHashMap;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.NoDataJsonResult;
@@ -50,7 +51,7 @@ public class WorkController {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", false);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<Project> projectResult = null;
 		if(companyId == 0) {
 			projectResult = workService.getProjectById(projectId);
@@ -67,7 +68,7 @@ public class WorkController {
 	@RequestMapping(value = {"/WorkList"}, method = RequestMethod.GET)
 	public ModelAndView getWorkList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Project>> projectResult = workService.getProjectsByCompany(companyId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
 			Map<Project, List<Task>> workMap = new HashMap<Project, List<Task>>();
@@ -85,16 +86,6 @@ public class WorkController {
 			model.put("works", workMap);
 		}
 		
-/*		GeneralResult<List<Member>> memberResult = memberService.getAllByCompany(companyId);
-		if(memberResult.getResultCode() == ResultCode.NORMAL) {
-			model.put("members", memberResult.getData());
-		}
-		
-		GeneralResult<List<OutEmployee>> outEmployeeResult = outEmployeeService.getByCompany(companyId);
-		if(outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
-			model.put("outEmployees", outEmployeeResult.getData());
-		}*/
-		
 		return new ModelAndView("workList", "model", model);
 	}
 	
@@ -102,7 +93,7 @@ public class WorkController {
 	public ModelAndView getProjectList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Project>> projectResult = workService.getProjectsByCompany(companyId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("projects", projectResult.getData());
@@ -179,7 +170,7 @@ public class WorkController {
 	public ModelAndView getTaskList(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Task>> taskResult = workService.getTasksByProject(projectId);
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("tasks", taskResult.getData());
@@ -193,7 +184,7 @@ public class WorkController {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", false);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<Task> taskResult = null;
 		if(projectId == 0) {
 			taskResult = workService.getTaskById(taskId);
@@ -297,7 +288,7 @@ public class WorkController {
 		Company company = new Company(companyId);
 		Project project = new Project();
 		project.setCompany(company);
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		model.put("project", project);
 		return new ModelAndView("projectInfo", "model", model);
 	}
@@ -345,7 +336,7 @@ public class WorkController {
 		Project project = new Project(projectId);
 		Task task = new Task();
 		task.setProject(project);
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		model.put("task", task);
 		return new ModelAndView("taskInfo", "model", model);
 	}

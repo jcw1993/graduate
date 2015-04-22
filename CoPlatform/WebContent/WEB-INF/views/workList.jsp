@@ -216,7 +216,7 @@
 	$projectInfoLink.click(function(e) {
 		var projectId = $(this).attr("projectId");
 		console.log("get project info, projectId: " + projectId);
-		$projectEditContent.load("GetProjectInfo?projectId=" + projectId + "&companyId=" + ${currentAdmin.company.id}, function(response, status, xhr) {
+		$projectEditContent.load("GetProjectInfo?projectId=" + projectId + "&companyId=" + ${model.admin.company.id}, function(response, status, xhr) {
 			if(status == "error") {
 				$projectEditContent.load("Error");
 			}
@@ -278,13 +278,13 @@
 	$taskAssignSubmit.click(function(e) {
 		var employeeIndex = $employeeListSelect[0].selectedIndex;
 		var employeeId = $employeeListSelect.children().eq(employeeIndex).val().trim();
-		var companyId = "${currentAdmin.company.id}";
+		var companyId = "${model.admin.company.id}";
 		assignTaskToEmployee(currentTaskId, employeeId, currentEmployeeType, companyId);
 	});
 
 	$projectCreateBtn.click(function(e) {
 		console.log("click create project");
-		var companyId = "${currentAdmin.company.id}";
+		var companyId = "${model.admin.company.id}";
 		$projectCreateContent.load("CreateProject?companyId=" + companyId, function(response, status, xhr) {
 			if(status == "error") {
 				$projectEditContent.load("Error");
@@ -327,7 +327,7 @@
 
 	/*functions*/
 	function loadEmployees(employeeType) {
-		var companyId = "${currentAdmin.company.id}";
+		var companyId = "${model.admin.company.id}";
 		var url;
 		if(employeeType == EMPLOYEE_TYPE_MEMBER) {
 			url = "GetMemberList?companyId=" + companyId;

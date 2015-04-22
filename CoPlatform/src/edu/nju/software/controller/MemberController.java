@@ -1,7 +1,6 @@
 package edu.nju.software.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.MemberService;
+import edu.nju.software.util.CoHashMap;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralJsonResult;
 import edu.nju.software.util.GeneralResult;
@@ -37,7 +37,7 @@ public class MemberController {
 			HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Member>> memberResult = memberService
 				.getAllByCompany(companyId);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
@@ -67,7 +67,7 @@ public class MemberController {
 			HttpServletResponse response) {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<Member> memberResult = memberService.getById(memberId);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("member", memberResult.getData());
@@ -134,7 +134,7 @@ public class MemberController {
 	public ModelAndView memberTaskList(HttpServletRequest request,
 			HttpServletResponse response) {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Task>> taskResult = memberService.getTasks(memberId);
 		if (taskResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("tasks", taskResult.getData());
@@ -150,7 +150,7 @@ public class MemberController {
 		Member member = new Member();
 		member.setCompany(company);
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		model.put("member", member);
 		return new ModelAndView("memberInfo", "model", model);
 	}

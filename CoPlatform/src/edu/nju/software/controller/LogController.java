@@ -1,6 +1,5 @@
 package edu.nju.software.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import edu.nju.software.pojo.Log;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.LogService;
+import edu.nju.software.util.CoHashMap;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
@@ -31,7 +31,7 @@ public class LogController {
 	public ModelAndView getProjectLogList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		// startTime and endTime set null for test
 		GeneralResult<Map<Project, List<Log>>> projectLogResult = logService.getProjectLogs(companyId, null, null);
 		if(projectLogResult.getResultCode() == ResultCode.NORMAL) {
@@ -46,7 +46,7 @@ public class LogController {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		// startTime and endTime set null for test
 		GeneralResult<Map<Task, List<Log>>> taskLogResult = logService.getTaskLogs(companyId, projectId, null, null);
 		if(taskLogResult.getResultCode() == ResultCode.NORMAL) {

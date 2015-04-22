@@ -1,6 +1,5 @@
 package edu.nju.software.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.OutEmployeeService;
+import edu.nju.software.util.CoHashMap;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralJsonResult;
 import edu.nju.software.util.GeneralResult;
@@ -32,7 +32,7 @@ public class OutEmployeeController {
 	public ModelAndView outEmployeeList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<OutEmployee>> outEmployeeResult = outEmployeeService.getByCompany(companyId);
 		if(outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("outEmployees",outEmployeeResult.getData());
@@ -58,7 +58,7 @@ public class OutEmployeeController {
 	public ModelAndView getOutEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
 		int outEmployeeId = CoUtils.getRequestIntValue(request, "outEmployeeId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<OutEmployee> outEmployeeResult = outEmployeeService.getById(outEmployeeId);
 		if(outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("outEmployee", outEmployeeResult.getData());
@@ -71,7 +71,7 @@ public class OutEmployeeController {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		int outEmployeeId = CoUtils.getRequestIntValue(request, "outEmployeeId", true);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Task>> taskResult = outEmployeeService.getTasks(companyId, outEmployeeId);
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("tasks", taskResult.getData());

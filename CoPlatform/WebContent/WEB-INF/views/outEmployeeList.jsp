@@ -82,7 +82,7 @@
 
 	$outEmployeeTaskLink.click(function(e) {
 		var outEmployeeId = $(this).attr("outEmployeeId");
-		var companyId = "${currentAdmin.company.id}";
+		var companyId = "${model.admin.company.id}";
 		console.log("outEmployeeTask click, outEmployeeId: " + outEmployeeId);
 		$outEmployeeTaskContent.load("GetOutEmployeeTasks?companyId=" + companyId + "&outEmployeeId=" + outEmployeeId, function(response, status, xhr) {
 			if(status == "error") {

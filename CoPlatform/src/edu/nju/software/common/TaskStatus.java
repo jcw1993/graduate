@@ -18,7 +18,7 @@ public class TaskStatus {
 	public static final int TASK_STATUS_COMPLETED = 3;
 	
 	/**
-	 * 已过期
+	 * 已失效
 	 */
 	public static final int TASK_STATUS_INVALID = 4;
 
