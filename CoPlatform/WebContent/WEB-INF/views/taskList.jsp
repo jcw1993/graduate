@@ -11,7 +11,7 @@
 		<tr>
 			<th>任务名称</th>
 			<th>任务描述</th>
-			<th>项目Id</th>
+			<th>所属项目</th>
 			<th>开始时间</th>
 			<th>结束时间</th>
 			<th>当前状态</th>
@@ -20,7 +20,7 @@
 			<tr>
 				<td>${task.name}</td>
 				<td>${task.description}</td>
-				<td>${task.project.id}</td>
+				<td>${task.project.name}</td>
 				<td><fmt:formatDate value="${task.startTime}"
 						pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td><fmt:formatDate value="${task.endTime}"

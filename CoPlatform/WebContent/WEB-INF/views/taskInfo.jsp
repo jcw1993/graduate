@@ -25,8 +25,8 @@
 				value="${task.description}" /></td>
 		</tr>
 		<tr>
-			<td><label>项目Id</label></td>
-			<td><label>${task.project.id}</label></td>
+			<td><label>所属项目</label></td>
+			<td><label>${task.project.name}</label></td>
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>

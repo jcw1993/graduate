@@ -48,7 +48,7 @@
 							<tr>
 								<th>任务名称</th>
 								<th>任务列表</th>
-								<th>项目Id</th>
+								<th>所属项目</th>
 								<th>开始时间</th>
 								<th>结束时间</th>
 								<th>当前状态</th>
@@ -62,7 +62,7 @@
 												src="<c:url value='/resources/images/delete.png' />"></a></span>
 									</td>
 									<td>${task.description}</td>
-									<td>${task.project.id}</td>
+									<td>${task.project.name}</td>
 									<td><fmt:formatDate value="${task.startTime}"
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
 									<td><fmt:formatDate value="${task.endTime}"
