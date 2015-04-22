@@ -16,7 +16,6 @@
 			class="table table-striped table-bordered table-hover table-responsive">
 			<tr>
 				<th>用户名</th>
-				<th>公司Id</th>
 				<th>工号</th>
 				<th>微信号</th>
 				<th>qq号</th>
@@ -29,7 +28,6 @@
 						memberId="${member.id}">${member.name}</a> <span><a
 							class="memberDelete" href="#"><img
 								src="<c:url value='/resources/images/delete.png' />"></a></span></td>
-					<td>${member.company.id}</td>
 					<td>${member.workId}</td>
 					<td>${member.wxNumber}</td>
 					<td>${member.qqNumber}</td>
