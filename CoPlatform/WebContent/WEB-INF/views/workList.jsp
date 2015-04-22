@@ -515,6 +515,10 @@
 			alert("结束日期格式错误");
 			return false;
 		}
+		if(!compareDate(startDate, startTime, endDate, endTime)) {
+			alert("结束时间不能早于开始时间");
+			return false;
+		}
 
 		if(endTime == undefined || endTime.trim() == "") {
 			alert("结束时间不能为空");
@@ -562,6 +566,10 @@
 		}
 		if(!validateDateFormat(endDate)) {
 			alert("结束日期格式错误");
+			return false;
+		}
+		if(!compareDate(startDate, startTime, endDate, endTime)) {
+			alert("结束时间不能早于开始时间");
 			return false;
 		}
 

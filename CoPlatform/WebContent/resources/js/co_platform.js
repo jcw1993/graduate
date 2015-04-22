@@ -37,3 +37,22 @@ function checkLength(str, minLength, maxLength) {
 
 	return true;
 }
+
+function compareDate(date1, time1, date2, time2) {
+	if(!date1 || !time1 || !date2 || !time2) {
+		return false;
+	}
+	
+	var dateTime1 = date1 + " " + time1;
+	var dateTime2 = date2 + " " + time2;
+
+	dateTime1 = new Date(Date.parse(dateTime1.replace("-", "/")));
+	dateTime2 = new Date(Date.parse(dateTime2.replace("-", "/")));
+
+	if(dateTime1 >= dateTime2) {
+		return false;
+	}else{
+		return true;
+	}
+
+}

@@ -219,29 +219,34 @@
 
 	function checkMemberParameters(name, workId, qqNumber, wxNumber, phone, password) {
 		if(name == undefined || name.trim() == "") {
-			showWarningMessage("用户名不能为空");
+			alert("用户名不能为空");
 			return false;
 		}
 
 		if(workId == undefined || workId.trim() == "") {
-			showWarningMessage("工号不能为空");
+			alert("工号不能为空");
 			return false;
 		} 
 
 		if((qqNumber == undefined || qqNumber.trim() == "")
 			&& (wxNumber == undefined || wxNumber.trim(0 == ""))) {
-			showWarningMessage("qq号与微信号不能同时为空");
+			alert("qq号与微信号不能同时为空");
 			return false;
 		}
 
 		if(phone == undefined || phone.trim() == "") {
-			showWarningMessage("手机号不能为空");
+			alert("手机号不能为空");
 			return false;
 		}
 
-console.log("password: " + password);
+		if(!isNumber(phone) || !checkLength(phone, 11, 11)) {
+			alert("手机号必须为11位数字");
+			return false;
+		}
+
+		console.log("password: " + password);	
 		if(password == undefined || password.trim() == "") {
-			showWarningMessage("密码不能为空");
+			alert("密码不能为空");
 			return false;
 		}
 
