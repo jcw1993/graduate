@@ -25,4 +25,7 @@ public interface TaskDao {
 	public List<Task> getTasksByMember(int memberId);
 	
 	public List<Task> getTasksByOutEmployee(int companyId, int outEmployeeId);
+	
+	public void deleteTaskAssign(int taskId);
+	
 }

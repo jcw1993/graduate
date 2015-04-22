@@ -100,6 +100,7 @@ public class WorkServiceImpl implements WorkService {
 	public NoDataResult deleteProject(Project project) {
 		NoDataResult result = new NoDataResult();
 		try {
+			projectDao.deleteTaskAssign(project.getId());
 			projectDao.delete(project);
 			taskDao.deleteAllByProject(project.getId());
 		}catch(DataAccessException e) {
@@ -199,6 +200,7 @@ public class WorkServiceImpl implements WorkService {
 	public NoDataResult deleteTask(Task task) {
 		NoDataResult result = new NoDataResult();
 		try {
+			taskDao.deleteTaskAssign(task.getId());
 			taskDao.delete(task);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());

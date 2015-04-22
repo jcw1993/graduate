@@ -2,6 +2,7 @@ package edu.nju.software.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +38,13 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	public List<Project> getByCompany(int companyId) {
 		Company company = new Company(companyId);
 		return getHibernateTemplate().find("from Project where company = ? order by id asc", company);
+	}
+
+	@Override
+	public void deleteTaskAssign(int projectId) {
+		Query query = getSession().createQuery("delete from TaskAssign where id > 0 and task.id in (select id from Task where project.id = "
+				+ projectId + ")");
+		query.executeUpdate();
 	}
 
 }

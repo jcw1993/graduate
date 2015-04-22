@@ -74,4 +74,10 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 		return query.list();
 	}
 
+	@Override
+	public void deleteTaskAssign(int taskId) {
+		Query query = getSession().createQuery("delete from TaskAssign where task.id = " + taskId);
+		query.executeUpdate();
+	}
+
 }
