@@ -17,6 +17,10 @@
 				value="${member.company.id}" /></td>
 		</tr>
 		<tr>
+			<td><label>所属公司</label></td>
+			<td><label>${member.company.name}</td>
+		</tr>
+		<tr>
 			<td><label>用户名</label></td>
 			<td><input id="name" name="name" type="text" value="${member.name}" /></td>
 		</tr>

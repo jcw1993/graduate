@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
+import edu.nju.software.service.CompanyService;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.util.CoHashMap;
 import edu.nju.software.util.CoUtils;
@@ -31,6 +32,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private CompanyService companyService;
 
 	@RequestMapping(value = { "/MemberList" }, method = RequestMethod.GET)
 	public ModelAndView memberList(HttpServletRequest request,
@@ -146,9 +150,13 @@ public class MemberController {
 	public ModelAndView createMemberGet(HttpServletRequest request,
 			HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		Company company = new Company(companyId);
+		
+		GeneralResult<Company> companyResult = companyService.getById(companyId);
 		Member member = new Member();
-		member.setCompany(company);
+		if(companyResult.getResultCode() == ResultCode.NORMAL) {
+			member.setCompany(companyResult.getData());	
+		}
+
 
 		Map<String, Object> model = new CoHashMap(request);
 		model.put("member", member);

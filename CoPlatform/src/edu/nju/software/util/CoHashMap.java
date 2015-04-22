@@ -38,7 +38,6 @@ public class CoHashMap extends HashMap<String, Object>{
 		try {
 			admin = gson.fromJson(URLDecoder.decode(CoUtils.getCookie(request, "currentAdmin"), "UTF-8"), Admin.class);
 			super.put("admin", admin);
-			System.out.println("put admin success");
 		} catch (JsonSyntaxException e) {
 			logger.error(e.getMessage());
 		} catch (UnsupportedEncodingException e) {

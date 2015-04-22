@@ -22,6 +22,7 @@ import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskStatus;
+import edu.nju.software.service.CompanyService;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.service.WorkService;
@@ -39,6 +40,8 @@ public class WorkController {
 	
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
+	@Autowired
+	private CompanyService companyService;
 	@Autowired
 	private WorkService workService;
 	@Autowired
@@ -285,9 +288,12 @@ public class WorkController {
 	public ModelAndView createProjectGet(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		
-		Company company = new Company(companyId);
+		GeneralResult<Company> companyResult = companyService.getById(companyId);
 		Project project = new Project();
-		project.setCompany(company);
+		if(companyResult.getResultCode() == ResultCode.NORMAL) {
+			project.setCompany(companyResult.getData());	
+		}
+		
 		Map<String, Object> model = new CoHashMap(request);
 		model.put("project", project);
 		return new ModelAndView("projectInfo", "model", model);
@@ -332,10 +338,20 @@ public class WorkController {
 	@RequestMapping(value = {"/CreateTask"}, method = RequestMethod.GET)
 	public ModelAndView createTaskGet(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
+		int companyId = CoUtils.getRequestIntValue(request, "companyId", false);
 		
-		Project project = new Project(projectId);
+		GeneralResult<Project> projectResult = workService.getProjectById(projectId);
+		if(companyId != 0) {
+			projectResult = workService.getProjectByCompanyAndId(companyId, projectId);
+		}else {
+			projectResult = workService.getProjectById(projectId);
+		}
+		
 		Task task = new Task();
-		task.setProject(project);
+		if(projectResult.getResultCode() == ResultCode.NORMAL) {
+			task.setProject(projectResult.getData());
+		}
+		
 		Map<String, Object> model = new CoHashMap(request);
 		model.put("task", task);
 		return new ModelAndView("taskInfo", "model", model);

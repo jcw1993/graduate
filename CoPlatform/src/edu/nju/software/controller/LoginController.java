@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import edu.nju.software.pojo.Admin;
-import edu.nju.software.pojo.Company;
 import edu.nju.software.service.AdminService;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
@@ -47,17 +46,8 @@ public class LoginController {
 		password = password.trim();
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
 		if(adminResult.getResultCode() == ResultCode.NORMAL) {
-//			HttpSession session = request.getSession(true);
-//			session.setAttribute("currentAdmin", adminResult.getData());
-//			session.setAttribute("adminId",  adminResult.getData().getId());
-//			session.setAttribute("adminName", adminResult.getData().getName());
-//			session.setAttribute("admin", adminResult.getData());
 			Gson gson = new Gson();
-			Admin admin = adminResult.getData();
-			Company company = new Company(admin.getCompany().getId());
-			admin.setCompany(company);
 			CoUtils.addCookie(response, "currentAdmin", URLEncoder.encode(gson.toJson(adminResult.getData()), "UTF-8"), 3600);
-//			request.getRequestDispatcher("MemberList?companyId=" + adminResult.getData().getCompany().getId()).forward(request, response);
 			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompany().getId());
 			return;
 		}else {

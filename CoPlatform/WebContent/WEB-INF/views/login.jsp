@@ -51,7 +51,7 @@
 						placeholder="密码" aria-describedby="basic-addon2" />
 				</div>
 				<div class="input-item">
-					<a id="login" class="btn btn-primary btn-lg login" href="#"> 登
+					<a id="login" class="btn btn-lg login btn-success" href="#"> 登
 						录 </a>
 				</div>
 			</form>

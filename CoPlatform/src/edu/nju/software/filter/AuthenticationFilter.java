@@ -42,7 +42,6 @@ public class AuthenticationFilter implements Filter {
 		if(!isValidURI(requestURI)) {
 			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
 			if(null == adminCookieValue) {
-				System.out.println("admin cookie = null");
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
 				return;
 			}

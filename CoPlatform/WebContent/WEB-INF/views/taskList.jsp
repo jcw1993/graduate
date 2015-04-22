@@ -25,7 +25,12 @@
 						pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td><fmt:formatDate value="${task.endTime}"
 						pattern="yyyy-MM-dd HH:mm:ss" /></td>
-				<td>${task.status.id}</td>
+				<td>
+					<c:if test="${task.status.id == 1}">未开始</c:if>
+					<c:if test="${task.status.id == 2}">进行中</c:if>
+					<c:if test="${task.status.id == 3}">已完成</c:if>
+					<c:if test="${task.status.id == 4}">已失效</c:if>
+				</td>
 			</tr>
 		</c:forEach>
 	</table>

@@ -25,8 +25,8 @@
 				value="${project.description}" /></td>
 		</tr>
 		<tr>
-			<td><label>公司Id</label></td>
-			<td><label>${project.company.id}</label></td>
+			<td><label>所属公司</label></td>
+			<td><label>${project.company.name}</label></td>
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>
