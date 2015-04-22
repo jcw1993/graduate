@@ -80,7 +80,12 @@
 	<!-- 定义事务 -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="*" propagation="NOT_SUPPORTED" />
+			  <tx:method name="get*" read-only="false" propagation="NOT_SUPPORTED"/>
+			   <tx:method name="find*" read-only="false" propagation="NOT_SUPPORTED"/>
+			   <tx:method name="save*" propagation="REQUIRED"/>
+			   <tx:method name="create*" propagation="REQUIRED"/>
+			   <tx:method name="update*" propagation="REQUIRED"/>
+			   <tx:method name="delete*" propagation="REQUIRED"/>
 		</tx:attributes>
 	</tx:advice>
 
@@ -92,8 +97,5 @@
 			expression="execution(* edu.nju.software.service.impl.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="services" />
 	</aop:config>
-
-	<bean
-		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-
+	
 </beans>

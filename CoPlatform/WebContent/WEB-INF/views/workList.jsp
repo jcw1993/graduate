@@ -132,7 +132,7 @@
 				</div>
 				<div class="modal-footer">
 					<button id="taskAssignSubmit" type="button" class="btn btn-primary"
-						data-dismiss="modal">确定</button>
+						>确定</button>
 				</div>
 			</div>
 		</div>
@@ -376,8 +376,9 @@
 			success: function(result) {
 				if(result.resultCode == 0) {
 					console.log("分配任务成功");
+					$taskAssignModal.modal("hide");
 				}else {
-					console.log("分配任务失败");
+					alert("失败，任务不能重复分配！");
 				}
 			}
 		});

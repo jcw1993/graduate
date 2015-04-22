@@ -15,7 +15,7 @@
         <many-to-one name="parent" column="parent_id" />
         <property name="startTime" type="timestamp" column="start_time" />
         <property name="endTime" type="timestamp" column="end_time" />
-        <many-to-one name="status" column="status_id" lazy="false" />
+        <many-to-one name="status" column="status_id" />
     </class>
 
 </hibernate-mapping>
