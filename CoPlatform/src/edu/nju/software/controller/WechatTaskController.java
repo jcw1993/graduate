@@ -1,8 +1,6 @@
 package edu.nju.software.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import test.LoggerUtils;
+import com.opensymphony.xwork2.util.logging.LoggerUtils;
+
 import edu.nju.software.pojo.Member;
-import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskStatus;
 import edu.nju.software.service.MemberService;
@@ -39,7 +37,7 @@ public class WechatTaskController {
 	private static Logger logger = LoggerFactory
 			.getLogger(WorkController.class);
 	
-	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
+//	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -52,7 +50,7 @@ public class WechatTaskController {
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openid");
-		log.info("task:openid= "+openId);
+//		log.info("task:openid= "+openId);
 		HttpSession session = request.getSession(true);
 
 		// 无效openid则转向错误界面，错误信息存入session

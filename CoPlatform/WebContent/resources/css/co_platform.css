@@ -82,3 +82,7 @@ div.nav-container .navbar-nav>li>a {
 	left: 10px;
 	top: 0;
 }
+
+.login-body {
+	background-color: #2d96ff;
+}

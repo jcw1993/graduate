@@ -15,6 +15,8 @@
 	href="<c:url value="/resources/css/bootstrap.min.css" />" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/bootstrap-theme.min.css" />" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/co_platform.css" />" />
 
 
 <script type="text/javascript"
@@ -28,10 +30,13 @@
 
 <title>南大任务协同平台-登录</title>
 </head>
-<body>
+<body class="login-body">
 	<div class="container center">
-		<h2>任务协同平台</h2>
-		<h4>登录</h4>
+		<!-- <h2>任务协同平台</h2>
+		<h4>登录</h4> -->
+		<div class="row">
+		<img src="<c:url value="/resources/images/login_logo.png" />" alt="任务协同平台" />
+		</div>
 		<div class="row col-xs-4"></div>
 		<div class="row col-xs-4">
 			<form id="loginForm" action="Login" method="post">
