@@ -27,10 +27,10 @@
 					<div style="float:right">
 					<div >
 					    <div class="col-xs-4">
-					<a class="projectDelete btn btn-warning btn-sm" projectId="${project.id}">删 除 项 目</a> 
+					<a class="projectDelete btn btn-default btn-sm" projectId="${project.id}">删 除 项 目</a> 
 					</div>	
 					<div class="col-xs-2">
-					<a
+					<a 
 						class="btn btn-info btn-sm" data-toggle="collapse"
 						href="#projectTaskArea${project.id}" aria-expanded="false"
 						aria-controls="collapseExample" style="margin-left:10px;">查 看 任 务</a>
