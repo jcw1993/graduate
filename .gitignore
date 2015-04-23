@@ -5,3 +5,6 @@ CoPlatform/.classpath
 RemoteSystemsTempFiles/
 Servers/
 .gitignore
+*.js
+*.css
+*/font*
