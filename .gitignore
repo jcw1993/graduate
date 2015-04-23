@@ -4,4 +4,6 @@ CoPlatform/.classpath
 .metadata/
 RemoteSystemsTempFiles/
 Servers/
+CoPlatform/.settings/org.eclipse.core.resources.prefs
+CoPlatform/WebContent/WEB-INF/jdbc.properties
 .gitignore

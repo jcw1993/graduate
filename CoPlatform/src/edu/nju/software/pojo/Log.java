@@ -82,4 +82,23 @@ public class Log {
 		this.creatorType = creatorType;
 	}
 	
+	public Log()
+	{
+		
+	}
+	
+	public Log(String title, String description, Project project, Task task, TaskStatus originStatus, 
+			TaskStatus currentStatus, Date createdTime, Company company, int creatorId,int creatorType)
+	{
+		this.title = title;
+		this.description = description;
+		this.project = project;
+		this.task = task;
+		this.originStatus = originStatus;
+		this.currentStatus = currentStatus;
+		this.createdTime = createdTime;
+		this.company = company;
+		this.creatorId = creatorId;
+		this.creatorType = creatorType;
+	}
 }
