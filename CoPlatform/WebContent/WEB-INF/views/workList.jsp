@@ -11,7 +11,7 @@
 	<jsp:include page="navi.jsp" flush="true" />
 
 	<div class="container-body">
-		<h3>项目列表<a id="projectCreate" href="#" class="btn btn-primary create-button">创建项目</a></h3>
+		<h3>项目列表<a id="projectCreate" href="#" class="btn btn-primary create-button" style="margin-right:50px;">创建项目</a></h3>
 		<hr />
 
 		<div class="container-fluid">
@@ -24,28 +24,26 @@
 					<div class="col-xs-6">
 						<a class="projectInfo btn" projectId="${project.id}">${project.name}</a>
 					</div>
-					<div class="col-xs-4">
-					<a class="projectDelete btn btn-danger btn-sm" projectId="${project.id}">删除</a> 
+					<div style="float:right">
+					<div >
+					    <div class="col-xs-4">
+					<a class="projectDelete btn btn-warning btn-sm" projectId="${project.id}">删 除 项 目</a> 
 					</div>	
 					<div class="col-xs-2">
 					<a
 						class="btn btn-info btn-sm" data-toggle="collapse"
 						href="#projectTaskArea${project.id}" aria-expanded="false"
-						aria-controls="collapseExample">查看相关任务</a>
+						aria-controls="collapseExample" style="margin-left:10px;">查 看 任 务</a>
 					</div>
+					</div>
+					</div>					
 				</div>
 				<div id="projectTaskArea${project.id}" class="collapse taskList">
 					<div class="row">
-						<div class="col-xs-10"></div>
-							<div class="col-xs-2">
-								<a class="taskCreate btn btn-primary btn-xs" href="#"
-									projectId="${project.id}">创建任务</a>
-							</div>
-						</div>
 					<c:if test="${tasks != null}">
 						<table
 							class="table table-striped table-bordered table-hover table-responsive taskList-table">
-							<tr>
+							<tr >
 								<th>任务名称</th>
 								<th>任务列表</th>
 								<th>所属项目</th>
@@ -79,8 +77,18 @@
 						</table>
 					</c:if>
 					<c:if test="${tasks == null}">
-						<p>暂无任务</p>
+						<p style="color:gray">&nbsp;&nbsp;暂无任务</p>
+						<br/>
 					</c:if>
+					
+					<div class="col-xs-10"></div>
+							<div class="col-xs-2" style="right:8px">
+								<a class="taskCreate btn btn-primary btn-xs" href="#"
+									projectId="${project.id}" style="float:right;margin-right:8px;">&nbsp;创 建  任 务&nbsp;</a>
+							</div>
+					</div>
+						
+					<br/>
 				</div>
 			</div>
 			</c:forEach>
