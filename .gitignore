@@ -4,6 +4,13 @@ CoPlatform/.classpath
 .metadata/
 RemoteSystemsTempFiles/
 Servers/
+<<<<<<< HEAD
+.gitignore
+*.js
+*.css
+*/font*
+=======
 CoPlatform/.settings/org.eclipse.core.resources.prefs
 CoPlatform/WebContent/WEB-INF/jdbc.properties
 .gitignore
+>>>>>>> f74f9af98b2fe1173b76d402240b38c1417f4ef2

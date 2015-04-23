@@ -1,0 +1,61 @@
+.container-body-mobile {
+	width: 100%;
+	max-width: 600px;
+}
+
+.taskItem {
+	width: 100%;
+	text-align: center;
+	background-color: #008dc8;
+	margin: 0 auto;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px #eeeeee solid;
+}
+
+.taskItem p {
+	color: #ffffff;
+}
+
+.login-body-mobile {
+	width: 100%;
+	max-width: 600px;
+	background-color: #2d96ff;
+	height: auto;
+}
+
+.login-logo-mobile {
+	width: 40%;
+	max-width: 240px;
+	min-width: 200px;
+}
+
+a.login {
+	width: 20%;
+	max-width: 120px;
+	min-width: 80px;
+}
+
+div.input-item-mobile {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-left: 0;
+	width: 50%;
+	min-width: 180px;
+	max-width: 300px;
+}
+
+
+.taskInfoTable>tbody>tr>td {
+	border-top: none;
+	background-color: #eeeeee;
+}
+
+.submitDiv {
+	text-align: center;
+}
+
+.seeDetail {
+	width: 5%; 
+	float: right
+}

@@ -9,35 +9,26 @@
 
 <body>
 	
-<div class="container-body">
-<c:if test="${model.wxtasks != null}">
-	<table
-		class="table table-striped table-bordered table-hover table-responsive">
-		<tr>
-			<th>任务名称</th>
-			<th>任务列表</th>
-			<th>所属项目</th>
-			<th>开始时间</th>
-			<th>结束时间</th>
-			<th>当前状态</th>
-		</tr>
-		<c:forEach items="${model.wxtasks}" var="task">
-			<tr>
-			<% String path = request.getContextPath()+"/wechat/TaskInfo?taskId=";%> 
-				<td><a href="<%=path %>${task.id}">${task.name}</a></td>
-				<td>${task.description}</td>
-				<td>${task.project.name}</td>
-				<td><fmt:formatDate value="${task.startTime}"
-						pattern="yyyy-MM-dd HH:mm:ss" /></td>
-				<td><fmt:formatDate value="${task.endTime}"
-						pattern="yyyy-MM-dd HH:mm:ss" /></td>
-				<td>${task.status.id}</td>
-			</tr>
-		</c:forEach>
-	</table>
+<div class="container-body-mobile">
+
+<c:if test="${model.tasks != null}">
+	<c:forEach items="${model.tasks}" var="task">
+	<div class="taskItem" taskId="${task.id}">
+		<p>${task.name}<img class="seeDetail" src="<c:url value="/resources/images/arrow-right.png" />" /></p>
+	</div>
+	</c:forEach>
 </c:if>
-<c:if test="${model.wxtasks == null}">
+<c:if test="${model.tasks == null}">
 	<h3>暂无任务</h3>
 </c:if>
 </div>
+
+<script type="text/javascript">
+	var $taskItem = $(".taskItem");
+	$taskItem.click(function(e) {
+		var taskId = $(this).attr("taskId");
+		window.location = "TaskInfo?taskId=" + taskId;
+	});
+</script>
+
 </body>
