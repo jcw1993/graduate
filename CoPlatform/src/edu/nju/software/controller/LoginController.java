@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,9 +64,12 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = {"/Logout", "/logout"})
-	public void logout(HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().invalidate();
-		response.addHeader("Cache-Control", "no-cache");
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Cookie cookie = new Cookie("currentAdmin", null);
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		response.sendRedirect(request.getContextPath() + "/Login");
 		return;
 	}
 }
