@@ -10,11 +10,11 @@
 	<jsp:include page="navi.jsp" flush="true" />
 
 	<div class="container-body">
-	<div class="title">
+	<div class="news_title">
 		<p>${model.news.title}</p>
-		<p>${model.news.createdTime}</p>
+		<p class="time">${model.news.createdTime}</p>
 	</div>
-	<div class="content">
+	<div class="news_content">
 		${model.news.content}
 	</div>
 	</div>
