@@ -55,16 +55,17 @@ public class WeChatProcessor extends WechatSupport {
 			viewTasksRsp.setDescription("查看任务");
 			viewTasksRsp.setUrl(prefix + "/wechat/MyTasks" + parameter); // TODO
 			viewTasksRsp
-					.setPicUrl("http://njucowork-pic.stor.sinaapp.com/01.jpg");
+					.setPicUrl("http://njucowork-pic.stor.sinaapp.com/assign.png");
 			tasksRsp.add(viewTasksRsp);
 
-			/*ArticleResponse modifyTasksRsp = new ArticleResponse();
-			modifyTasksRsp.setTitle("修改任务状态");
-			modifyTasksRsp.setDescription("修改任务状态");
-			modifyTasksRsp.setUrl("" + parameter); // TODO
-			modifyTasksRsp
-					.setPicUrl("http://njucowork-pic.stor.sinaapp.com/5.jpg");
-			tasksRsp.add(modifyTasksRsp);*/
+			/*
+			 * ArticleResponse modifyTasksRsp = new ArticleResponse();
+			 * modifyTasksRsp.setTitle("修改任务状态");
+			 * modifyTasksRsp.setDescription("修改任务状态"); modifyTasksRsp.setUrl(""
+			 * + parameter); // TODO modifyTasksRsp
+			 * .setPicUrl("http://njucowork-pic.stor.sinaapp.com/5.jpg");
+			 * tasksRsp.add(modifyTasksRsp);
+			 */
 
 			responseNews(tasksRsp);
 		}
@@ -79,12 +80,16 @@ public class WeChatProcessor extends WechatSupport {
 				List<News> newsList = result.getData();
 				List<ArticleResponse> newsRsps = new ArrayList<ArticleResponse>();
 
+				int index = 1;
 				for (News news : newsList) {
+
 					ArticleResponse newsRsp = new ArticleResponse();
 					newsRsp.setTitle(news.getTitle());
 					newsRsp.setDescription(news.getContent());
-					newsRsp.setPicUrl("http://njucowork-pic.stor.sinaapp.com/01.jpg");
+					newsRsp.setPicUrl("http://njucowork-pic.stor.sinaapp.com/number"
+							+ index + ".png");
 					newsRsps.add(newsRsp);
+					index++;
 				}
 
 				responseNews(newsRsps);
