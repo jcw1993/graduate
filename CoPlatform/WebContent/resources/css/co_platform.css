@@ -86,3 +86,7 @@ div.nav-container .navbar-nav>li>a {
 .login-body {
 	background-color: #2d96ff;
 }
+
+.submit-button {
+	margin-top: 20px;
+}

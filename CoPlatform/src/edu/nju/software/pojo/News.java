@@ -11,6 +11,7 @@ public class News implements Serializable{
 	private static final long serialVersionUID = -8115554939230798153L;
 
     private int id;
+    private Company company;
     private String title;
     private String content;
     private Date createdTime;
@@ -22,6 +23,15 @@ public class News implements Serializable{
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public Company getCompany() {
+		return company;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	public String getTitle() {
 		return title;
@@ -48,15 +58,19 @@ public class News implements Serializable{
 		this.publishTime = publishTime;
 	}
 	
-	public News(int id, String title, String content, Date createdTime,
-			Date publishTime) {
+	public News(int id, Company company, String title, String content) {
 		super();
 		this.id = id;
+		this.company = company;
 		this.title = title;
 		this.content = content;
-		this.createdTime = createdTime;
-		this.publishTime = publishTime;
 	}
 	
+	public News(Company company, String title, String content) {
+		super();
+		this.company = company;
+		this.title = title;
+		this.content = content;
+	}
 	
 }
