@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,16 @@ public class WeChatTaskController {
 	@RequestMapping(value = { "/wechat/MyTasks" }, method = RequestMethod.GET)
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+		String openId = request.getParameter("openId");
+		if(StringUtils.isBlank(openId)) {
+			response.sendRedirect(request.getContextPath() + "/Error");
+		}
 		
 		String memberCookieValue = CoUtils.getCookie(request, "currentMember");
 		if(null != memberCookieValue) {
 			@SuppressWarnings("deprecation")
 			Member member = new Gson().fromJson(URLDecoder.decode(memberCookieValue), Member.class);
-			if (null != member) {
+			if (null != member && StringUtils.isNotBlank(member.getOpenId())) {
 				Map<String, Object> model = new HashMap<String, Object>();
 				GeneralResult<List<Task>> taskResult = memberService.getTasks(member.getId());
 				if (taskResult.getResultCode() == ResultCode.NORMAL) {
@@ -60,11 +65,11 @@ public class WeChatTaskController {
 				}
 				return new ModelAndView("wechat/taskList", "model", model);
 			}else {
-				response.sendRedirect(request.getContextPath() + "/wechat");
+				response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
 				return null;
 			}
 		}else {
-			response.sendRedirect(request.getContextPath() + "/wechat");
+			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
 			return null;
 		}
 	}

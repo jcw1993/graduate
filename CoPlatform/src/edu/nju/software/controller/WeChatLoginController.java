@@ -36,7 +36,7 @@ public class WeChatLoginController {
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openId");
 		if (StringUtils.isBlank(openId)) {
-			response.sendRedirect(request.getContextPath() + "/wechat?openId=1");
+			response.sendRedirect(request.getContextPath() + "/Error");
 			return null;
 		}
 		
@@ -52,9 +52,14 @@ public class WeChatLoginController {
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
 		String openId = request.getParameter("openId");
+		
+		if(StringUtils.isBlank(openId)) {
+			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
+			return;
+		}
 
-		if (StringUtils.isBlank(phone) || StringUtils.isBlank(password) || StringUtils.isBlank(openId)) {
-			response.sendRedirect(request.getContextPath() + "/wechat");
+		if (StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
+			response.sendRedirect(request.getContextPath() + "/wechat/Error");
 			return;
 		}
 
@@ -65,8 +70,7 @@ public class WeChatLoginController {
 		GeneralResult<Member> memberResult = memberService.getByPhoneAndPassword(phone, password);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			Member member = memberResult.getData();
-			// use 1 for test
-			member.setOpenId("1");
+			member.setOpenId(openId);
 			memberService.update(member);
 			Gson gson = new Gson();
 			Company company = member.getCompany();
@@ -74,11 +78,10 @@ public class WeChatLoginController {
 			member.setCompany(company);
 			CoUtils.addCookie(response, "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
 			
-			response.sendRedirect(request.getContextPath() + "/wechat/"
-					+ "MyTasks");
+			response.sendRedirect(request.getContextPath() + "/wechat/MyTasks?openId=" + openId);
 			return;
 		} else {
-			response.sendRedirect(request.getContextPath() + "/wechat");
+			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
 			return;
 		}
 
