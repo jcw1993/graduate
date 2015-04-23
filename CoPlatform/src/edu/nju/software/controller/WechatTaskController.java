@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.opensymphony.xwork2.util.logging.LoggerUtils;
-
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskStatus;
@@ -34,11 +32,13 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class WechatTaskController {
+	@SuppressWarnings("unused")
 	private static Logger logger = LoggerFactory
 			.getLogger(WorkController.class);
 	
 //	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
 
+	@SuppressWarnings("unused")
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	@Autowired

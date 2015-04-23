@@ -70,7 +70,7 @@ public class WeChatProcessor extends WechatSupport {
 		}
 		// 回复资讯
 		else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
-			GeneralResult<List<News>> result = newsService.getLatestFewNews();
+			GeneralResult<List<News>> result = newsService.getLatestNews(1);
 
 			if (result == null || result.getData() == null
 					|| result.getData().isEmpty()) {

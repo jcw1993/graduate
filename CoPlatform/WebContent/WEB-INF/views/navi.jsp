@@ -42,7 +42,7 @@
 							href="ProjectLogList?companyId=${model.admin.company.id}">项目日志</a></li>
 						<li><a href="TaskLogList?taskId=1">任务日志</a></li>
 					</ul></li>
-				<li><a href="NewsList">新闻资讯</a></li>
+				<li><a href="NewsList?companyId=${model.admin.company.id}">新闻资讯</a></li>
 			</ul>
 
 		</div>

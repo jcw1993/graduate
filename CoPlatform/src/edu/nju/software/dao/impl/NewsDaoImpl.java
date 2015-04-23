@@ -11,13 +11,31 @@ import edu.nju.software.pojo.News;
 @Repository
 public class NewsDaoImpl extends HibernateDaoBase implements NewsDao{
 	//最大图文链接条数
-	@SuppressWarnings("unused")
 	private static final int MAX_PIECES = 10;
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<News> getLatestFewNews(int companyId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<News> getLatestNews(int companyId) {
+		Query query = getSession().createQuery("from News where company.id = " + companyId + " order by createdTime desc");
+//		List<News> newsList = query.list();
+//		if(null != newsList || !newsList.isEmpty()) {
+//			List<News> latestNewsList = new ArrayList<News>();
+//			int size = newsList.size() > MAX_PIECES ? MAX_PIECES : newsList.size();
+//			for(News news : newsList) {
+//				if(size > 0) {
+//					latestNewsList.add(news);
+//				}else {
+//					break;
+//				}
+//				size--;
+//			}
+//			return latestNewsList;
+//		}else {
+//			return null;
+//		}
+		query.setFirstResult(0);
+		query.setMaxResults(MAX_PIECES);
+		return query.list();
 	}
 
 	@Override
@@ -32,9 +50,14 @@ public class NewsDaoImpl extends HibernateDaoBase implements NewsDao{
 	}
 
 	@Override
-	public void delete(int newsId) {
-		Query query = getSession().createQuery("delete from News where id = " + newsId);
+	public void delete(int id) {
+		Query query = getSession().createQuery("delete from News where id = " + id);
 		query.executeUpdate();
+	}
+
+	@Override
+	public News getById(int id) {
+		return getHibernateTemplate().get(News.class, id);
 	}
 
 }

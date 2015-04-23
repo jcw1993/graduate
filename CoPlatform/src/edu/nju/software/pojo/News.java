@@ -58,19 +58,23 @@ public class News implements Serializable{
 		this.publishTime = publishTime;
 	}
 	
-	public News(int id, Company company, String title, String content) {
+	public News() {}
+	
+	public News(int id, Company company, String title, String content, Date createdTime) {
 		super();
 		this.id = id;
 		this.company = company;
 		this.title = title;
 		this.content = content;
+		this.createdTime = createdTime;
 	}
 	
-	public News(Company company, String title, String content) {
+	public News(Company company, String title, String content, Date createdTime) {
 		super();
 		this.company = company;
 		this.title = title;
 		this.content = content;
+		this.createdTime = createdTime;
 	}
 	
 }
