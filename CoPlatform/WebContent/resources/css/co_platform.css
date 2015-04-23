@@ -15,11 +15,12 @@ a.login {
 }
 
 .center {
-	text-align:center;
+	text-align: center;
 }
 
 div.header {
 	/*background-color: #3371B7;*/
+	
 }
 
 div.input-item {
@@ -73,6 +74,24 @@ div.nav-container {
 
 div.nav-container .navbar-nav>li>a {
 	color: #ffffff;
+}
+
+.nav-username {
+	color: rgb(215, 215, 215);
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+	padding-top: 15px;
+	padding-bottom: 15px;
+	line-height: 20px;
+	/* position: relative; */
+	/* display: block; */
+}
+
+.nav-logout {
+	padding-left: 0px;
+}
+
+.nav-rightblock{
+	float:right;
 }
 
 .logo {

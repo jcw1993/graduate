@@ -50,9 +50,25 @@
 				</div>
 			</div>
 			<div class="col-xs-2">
-				<ul class="nav navbar-nav">
-					<li><label>${model.admin.name}</label></li>
-					<li><a href="Logout">注销</a></li>
+				<ul class="nav-rightblock nav navbar-nav">
+				
+					<%-- <li class="dropdown">
+						<img
+						alt="任务协同平台" class="logo"
+						src="<c:url value="/resources/images/user21.png" />">
+						<a href="#" class="dropdown-toggle"	data-toggle="dropdown" role="button" aria-expanded="false">
+							${model.admin.name}
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li>
+								<a href="Logout">退出</a>
+							</li>
+						</ul>
+					</li> --%>
+				
+					<li class="nav-username">${model.admin.name}</li>
+					<li class="nav-username">&nbsp;&nbsp;|</li>
+					<li class="nav-logout"><a href="Logout">注销</a></li>
 				</ul>
 			</div>
 		</div>
