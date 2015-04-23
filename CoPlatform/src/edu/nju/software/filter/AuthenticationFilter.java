@@ -25,6 +25,8 @@ public class AuthenticationFilter implements Filter {
 	
 	private static final String[] VALID_URL_SUFFIX = {"Login", ".js", ".css", ".jpg", ".png"};
 	
+	private static final String WECHAT_URL_PREFIX = "/wechat";
+	
 	private Gson gson = null;
 
 	@Override
@@ -39,10 +41,19 @@ public class AuthenticationFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpServletRequest.getRequestURI();
-		if(!isValidURI(requestURI)) {
+		String contextPath = httpServletRequest.getContextPath();
+		if(!isValidURI(requestURI) && !requestURI.startsWith(contextPath + WECHAT_URL_PREFIX)) {
 			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
 			if(null == adminCookieValue) {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
+				return;
+			}
+		}
+		
+		if(requestURI.startsWith(contextPath + WECHAT_URL_PREFIX) && !requestURI.equals(contextPath + WECHAT_URL_PREFIX)) {
+			String memberCookieValue = CoUtils.getCookie(httpServletRequest, "currentMember");
+			if(null == memberCookieValue) {
+				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + WECHAT_URL_PREFIX);
 				return;
 			}
 		}

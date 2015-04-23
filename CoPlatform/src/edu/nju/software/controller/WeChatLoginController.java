@@ -36,7 +36,8 @@ public class WeChatLoginController {
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openId");
 		if (StringUtils.isBlank(openId)) {
-			return new ModelAndView("wechat/error", null);
+			response.sendRedirect(request.getContextPath() + "/wechat?openId=1");
+			return null;
 		}
 		
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -74,7 +75,7 @@ public class WeChatLoginController {
 			CoUtils.addCookie(response, "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
 			
 			response.sendRedirect(request.getContextPath() + "/wechat/"
-					+ "myTasks");
+					+ "MyTasks");
 			return;
 		} else {
 			response.sendRedirect(request.getContextPath() + "/wechat");
@@ -83,7 +84,7 @@ public class WeChatLoginController {
 
 	}
 
-	@RequestMapping(value = { "/wechat/error" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/wechat/Error" }, method = RequestMethod.GET)
 	public ModelAndView error(HttpServletRequest request,
 			HttpServletResponse response) {
 		return new ModelAndView("/wechat/error", null);

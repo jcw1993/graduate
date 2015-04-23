@@ -28,10 +28,13 @@
 
 <title>南大任务协同平台-登录</title>
 </head>
-<body>
+<body class="login-body">
 	<div class="container center">
-		<h2>任务协同平台</h2>
-		<h4>登录</h4>
+<!-- 		<h2>任务协同平台</h2>
+		<h4>登录</h4> -->
+		<div class="row">
+			<img src="<c:url value="/resources/images/login_logo.png" />" alt="任务协同平台" />
+		</div>
 		<div class="row col-xs-4"></div>
 		<div class="row col-xs-4">
 			<form id="loginForm" action="wechat" method="post">
@@ -47,7 +50,7 @@
 						placeholder="密码" aria-describedby="basic-addon2" />
 				</div>
 				<div class="input-item">
-					<a id="login" class="btn btn-primary btn-lg login" href="#"> 登
+					<a id="login" class="btn btn-success btn-lg login" href="#"> 登
 						录 </a>
 				</div>
 			</form>

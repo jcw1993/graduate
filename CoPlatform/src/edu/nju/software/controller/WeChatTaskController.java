@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class WeChatTaskController {
 	@Autowired
 	private WorkService workService;
 
-	@RequestMapping(value = { "/wechat/myTasks" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/wechat/MyTasks" }, method = RequestMethod.GET)
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		
@@ -71,7 +70,7 @@ public class WeChatTaskController {
 	}
 
 	// TODO
-	@RequestMapping(value = { "/wechat/taskInfo" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/wechat/TaskInfo" }, method = RequestMethod.GET)
 	public ModelAndView wxTaskInfo(HttpServletRequest request,
 			HttpServletResponse response) {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
@@ -87,7 +86,7 @@ public class WeChatTaskController {
 	}
 
 	// TODO
-	@RequestMapping(value = { "/wechat/updateTask" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/wechat/UpdateTask" }, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult wxUpdateTask(HttpServletRequest request,
 			HttpServletResponse response) {

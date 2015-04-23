@@ -28,7 +28,7 @@
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery.timepicker.js" />"></script>
 
-<title>南大任务协同平台-登录</title>
+<title>南大任务协同平台-用户登录</title>
 </head>
 <body class="login-body">
 	<div class="container center">

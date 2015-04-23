@@ -8,18 +8,11 @@
 <jsp:include page="header.jsp" flush="true" />
 
 <body>
-	<%-- <jsp:include page="navi.jsp" flush="true" /> --%>
-	
 <div class="container-body">
-
-
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">任务信息</h4>
 				</div>
-				
-
-
 
 <form id="taskEditForm">
 	<table class="table table-responsive">
@@ -33,39 +26,51 @@
 		</tr>
 		<tr>
 			<td><label>任务名称</label></td>
-			<td><input name="name" type="text" value="${task.name}" style="border:0px"/></td>
+			<td><input name="name" type="text" value="${task.name}" /></td>
 		</tr>
 		<tr>
 			<td><label>任务描述</label></td>
 			<td><input name="description" type="text"
-				value="${task.description}" style="border:0px"/></td>
+				value="${task.description}" /></td>
 		</tr>
 		<tr>
-			<td><label>任务Id</label></td>
-			<td><label>${task.project.id}</label></td>
+			<td><label>所属项目</label></td>
+			<td><label>${task.project.name}</label></td>
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>
 			<td><input id="taskStartDate" name="startDate" type="text"
 				placeholder="yyyy-MM-dd"
-				value="<fmt:formatDate value='${task.startTime}' pattern='yyyy-MM-dd' />" style="border:0px"/>
+				value="<fmt:formatDate value='${task.startTime}' pattern='yyyy-MM-dd' />" />
 				<input id="taskStartTime" name="startTime" type="text"
 				placeholder="HH:mm:ss"
-				value="<fmt:formatDate value='${task.startTime}' pattern='HH:mm:ss' />" style="border:0px"/>
+				value="<fmt:formatDate value='${task.startTime}' pattern='HH:mm:ss' />" />
 			</td>
 		<tr>
 			<td><label>结束时间</label></td>
 			<td><input id="taskEndDate" name="endDate" type="text"
 				placeholder="yyyy-MM-dd"
-				value="<fmt:formatDate value='${task.endTime}' pattern='yyyy-MM-dd' />" style="border:0px"/>
+				value="<fmt:formatDate value='${task.endTime}' pattern='yyyy-MM-dd' />" />
 				<input id="taskEndTime" name="endTime" type="text"
 				placeholder="HH:mm:ss"
-				value="<fmt:formatDate value='${task.endTime}' pattern='HH:mm:ss' />" style="border:0px"/>
+				value="<fmt:formatDate value='${task.endTime}' pattern='HH:mm:ss' />" />
 			</td>
 		</tr>
 		<tr>
 			<td><label>当前状态</label></td>
-			<td><input name="status" type="text" value="${task.status.id}" /></td>
+			<td>
+				<select id="taskStatus" name="status">
+					<option value="1"
+						<c:if test="${task.status.id == 1}">slected="selected"</c:if>
+					>未开始</option>
+					<option value="2"
+						<c:if test="${task.status.id == 2}">slected="selected"</c:if>>进行中</option>
+					<option value="3"
+						<c:if test="${task.status.id == 3}">slected="selected"</c:if>>已完成</option>
+					<option value="4"
+						<c:if test="${task.status.id == 4}">slected="selected"</c:if>>已失效</option>
+				</select>
+			</td>
 		</tr>
 	</table>
 </form>
@@ -91,7 +96,7 @@
 	
 	$taskEditSubmit.click(function(e) {
 		
-		var url = "/wechat/updateTask";
+		var url = "/wechat/UpdateTask";
 		var status = $("#status").val();
 		var form = $("#taskEditForm");
 		
