@@ -61,7 +61,8 @@ public class WeChatTaskController {
 				Map<String, Object> model = new HashMap<String, Object>();
 				GeneralResult<List<Task>> taskResult = memberService.getTasks(member.getId());
 				if (taskResult.getResultCode() == ResultCode.NORMAL) {
-					model.put("wxtasks", taskResult.getData());
+					model.put("openId", openId);
+					model.put("tasks", taskResult.getData());
 				}
 				return new ModelAndView("wechat/taskList", "model", model);
 			}else {
@@ -90,7 +91,6 @@ public class WeChatTaskController {
 		return new ModelAndView("wechat/taskInfo", "model", model);
 	}
 
-	// TODO
 	@RequestMapping(value = { "/wechat/UpdateTask" }, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult wxUpdateTask(HttpServletRequest request,
@@ -98,11 +98,17 @@ public class WeChatTaskController {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
 		int status = CoUtils.getRequestIntValue(request, "status", true);
 
-		Task task = workService.getTaskById(taskId).getData();
-		task.setStatus(new TaskStatus(status));
-
-		NoDataResult result = workService.updateTask(task);
-		return new NoDataJsonResult(result);
+		GeneralResult<Task> taskResult = workService.getTaskById(taskId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			Task task = taskResult.getData();
+			task.setStatus(new TaskStatus(status));
+			NoDataResult result = workService.updateTask(task);
+			return new NoDataJsonResult(result);
+		}else {
+			return new NoDataJsonResult(taskResult);
+		}
+		
+		
 	}
 
 }

@@ -70,6 +70,10 @@ public class CoUtils {
 	
 	public static String getCookie(HttpServletRequest request, String name) {
 		Cookie[] cookies = request.getCookies();
+		if(null == cookies || cookies.length == 0) {
+			return null;
+		}
+		
 		for(Cookie cookie : cookies) {
 			if(cookie.getName().equals(name)) {
 				return cookie.getValue();

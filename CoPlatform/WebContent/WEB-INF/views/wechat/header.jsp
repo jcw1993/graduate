@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/bootstrap.min.css" />" />
@@ -19,6 +20,8 @@
 	href="<c:url value="/resources/css/ui_lightness/jquery-ui.min.css" />" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/co_platform.css" />" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/co_platform_wx.css" />" />
 
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
