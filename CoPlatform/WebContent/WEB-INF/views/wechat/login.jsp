@@ -35,6 +35,7 @@
 		<div class="row col-xs-4"></div>
 		<div class="row col-xs-4">
 			<form id="loginForm" action="wechat" method="post">
+				<input type="hidden" name="openId" value="${model.openId}" />
 				<div class="input-group input-item">
 					<span class="input-group-addon">手机</span> <input type="text"
 						class="form-control" id="phone" name="phone" placeholder="手机"

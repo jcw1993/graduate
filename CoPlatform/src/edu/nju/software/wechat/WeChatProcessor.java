@@ -42,7 +42,7 @@ public class WeChatProcessor extends WechatSupport {
 		String prefix = "njucowork.sinaapp.com";
 		String content = wechatRequest.getContent().trim();
 		String openID = wechatRequest.getFromUserName();
-		String parameter = "?openid=" + openID;
+		String parameter = "?openId=" + openID;
 
 		logger.info(content);
 
@@ -53,7 +53,7 @@ public class WeChatProcessor extends WechatSupport {
 			ArticleResponse viewTasksRsp = new ArticleResponse();
 			viewTasksRsp.setTitle("查看任务");
 			viewTasksRsp.setDescription("查看任务");
-			viewTasksRsp.setUrl(prefix + "/wechat/mytasks" + parameter); // TODO
+			viewTasksRsp.setUrl(prefix + "/wechat/myTasks" + parameter); // TODO
 			viewTasksRsp
 					.setPicUrl("http://njucowork-pic.stor.sinaapp.com/01.jpg");
 			tasksRsp.add(viewTasksRsp);

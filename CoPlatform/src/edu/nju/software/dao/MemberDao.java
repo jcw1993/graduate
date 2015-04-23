@@ -12,7 +12,7 @@ public interface MemberDao {
 	
 	public Member getByOpenId(String openId);
 	
-	public Member getByPhone(String phone);
+	public Member getByPhoneAndPassword(String phone, String password);
 	
 	public int create(Member member);
 	

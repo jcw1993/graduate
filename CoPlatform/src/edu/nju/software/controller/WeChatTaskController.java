@@ -1,13 +1,13 @@
 package edu.nju.software.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
@@ -31,13 +33,10 @@ import edu.nju.software.util.NoDataResult;
 import edu.nju.software.util.ResultCode;
 
 @Controller
-public class WechatTaskController {
+public class WeChatTaskController {
 	@SuppressWarnings("unused")
-	private static Logger logger = LoggerFactory
-			.getLogger(WorkController.class);
+	private static Logger logger = LoggerFactory.getLogger(WorkController.class);
 	
-//	org.apache.log4j.Logger log=LoggerUtils.getLogger(WechatTaskController.class, "log1.txt", true);
-
 	@SuppressWarnings("unused")
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -46,53 +45,36 @@ public class WechatTaskController {
 	@Autowired
 	private WorkService workService;
 
-	@RequestMapping(value = { "/wechat/mytasks" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/wechat/myTasks" }, method = RequestMethod.GET)
 	public ModelAndView wxMemberTaskList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		String openId = request.getParameter("openid");
-//		log.info("task:openid= "+openId);
-		HttpSession session = request.getSession(true);
-
-		// 无效openid则转向错误界面，错误信息存入session
-		if (null == openId || StringUtils.isBlank(openId)) {
-			session.setAttribute("errorMsg", "wxLogin: invalid openId.");
-			return new ModelAndView("wechat/error", null);
-		}
-		Member member = (Member) session.getAttribute("wechatMember");
-
-		// 如果session中的用户不是当前用户
-		if (null == member || null == member.getOpenId() || !member.getOpenId().equals(openId)) {
-			GeneralResult<Member> memberResult = memberService
-					.getByOpenId(openId);
-
-			// 如果用户记录过openid，则放入session；否则转到微信登陆界面，并附带重定向路径
-			if (memberResult.getResultCode() == ResultCode.NORMAL) {
-				member = memberResult.getData();
-				session.setAttribute("wechatMember", member);
-			} else {
-				String redirectPath = "mytasks";
-				// TODO 是返回null还是什么？？
-				response.sendRedirect(request.getContextPath()
-						+ "/wechat?openid=" + openId + "&redirectpath="
-						+ redirectPath);
+		
+		String memberCookieValue = CoUtils.getCookie(request, "currentMember");
+		if(null != memberCookieValue) {
+			@SuppressWarnings("deprecation")
+			Member member = new Gson().fromJson(URLDecoder.decode(memberCookieValue), Member.class);
+			if (null != member) {
+				Map<String, Object> model = new HashMap<String, Object>();
+				GeneralResult<List<Task>> taskResult = memberService.getTasks(member.getId());
+				if (taskResult.getResultCode() == ResultCode.NORMAL) {
+					model.put("wxtasks", taskResult.getData());
+				}
+				return new ModelAndView("wechat/taskList", "model", model);
+			}else {
+				response.sendRedirect(request.getContextPath() + "/wechat");
 				return null;
 			}
+		}else {
+			response.sendRedirect(request.getContextPath() + "/wechat");
+			return null;
 		}
-
-		int memberId = member.getId();
-		Map<String, Object> model = new HashMap<String, Object>();
-		GeneralResult<List<Task>> taskResult = memberService.getTasks(memberId);
-		if (taskResult.getResultCode() == ResultCode.NORMAL) {
-			model.put("wxtasks", taskResult.getData());
-		}
-		return new ModelAndView("wechat/taskList", "model", model);
 	}
 
 	// TODO
-	@RequestMapping(value = { "/wechat/taskinfo" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/wechat/taskInfo" }, method = RequestMethod.GET)
 	public ModelAndView wxTaskInfo(HttpServletRequest request,
 			HttpServletResponse response) {
-		int taskId = CoUtils.getRequestIntValue(request, "taskid", true);
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		GeneralResult<Task> taskResult = null;
@@ -105,7 +87,7 @@ public class WechatTaskController {
 	}
 
 	// TODO
-	@RequestMapping(value = { "/wechat/updatetask" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/wechat/updateTask" }, method = RequestMethod.POST)
 	@ResponseBody
 	public NoDataJsonResult wxUpdateTask(HttpServletRequest request,
 			HttpServletResponse response) {

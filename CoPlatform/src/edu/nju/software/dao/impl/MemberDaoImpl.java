@@ -2,6 +2,7 @@ package edu.nju.software.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -55,14 +56,14 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	}
 
 	@Override
-	public Member getByPhone(String phone) {
+	public Member getByPhoneAndPassword(String phone, String password) {
+		Query query = getSession().createQuery("from Member where phone = " + phone + " and password = " + password);
 		@SuppressWarnings("unchecked")
-		List<Member> memberList = getHibernateTemplate().find(
-				"from Member where phone = ?", phone);
-		if(memberList.isEmpty()){
-			return null;
-		}else {
+		List<Member> memberList = query.list();
+		if(null != memberList && !memberList.isEmpty()) {
 			return memberList.get(0);
+		}else {
+			return null;
 		}
 	}
 

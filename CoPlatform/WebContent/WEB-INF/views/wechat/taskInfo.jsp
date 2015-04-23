@@ -91,7 +91,7 @@
 	
 	$taskEditSubmit.click(function(e) {
 		
-		var url = "/wechat/updatetask";
+		var url = "/wechat/updateTask";
 		var status = $("#status").val();
 		var form = $("#taskEditForm");
 		

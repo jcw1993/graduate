@@ -28,8 +28,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	private static final String MEMBER_CACHE_KEY = "member_%d";
 	
-	@SuppressWarnings("unused")
-	private static final String MEMBER_OPENID_CACHE_KEY = "member_openid";
+	private static final String MEMBER_OPENID_CACHE_KEY = "member_openid_%d";
 	
 	@Autowired
 	private MemberDao memberDao;
@@ -182,14 +181,14 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public GeneralResult<Member> getByOpenId(String openId) {
 		GeneralResult<Member> result = new GeneralResult<Member>();
-		Member member = (Member) CoCacheManager.get(MEMBER_CACHE_KEY + openId);
+		Member member = (Member) CoCacheManager.get(MEMBER_OPENID_CACHE_KEY + openId);
 		if(null != member) {
 			result.setData(member);
 		}else {
 			try {
 				member = memberDao.getByOpenId(openId);
 				result.setData(member);
-				CoCacheManager.put(MEMBER_CACHE_KEY + openId, member);
+				CoCacheManager.put(MEMBER_OPENID_CACHE_KEY + openId, member);
 			}catch(DataAccessException e) {
 				logger.error(e.getMessage());
 				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
@@ -228,15 +227,13 @@ public class MemberServiceImpl implements MemberService {
 			return result;
 		}
 		
-		Member member = memberDao.getByPhone(phone);
+		Member member = memberDao.getByPhoneAndPassword(phone, password);
 		
 		if(null == member){
 			result.setResultCode(ResultCode.E_NO_DATA);
-		}else if(member.getPassword().equals(password)){
-			result.setData(member);
-			result.setResultCode(ResultCode.NORMAL);
+			result.setMessage("error, no member, phone: " + phone + ", password: " + password);
 		}else {
-			result.setResultCode(ResultCode.E_PSW_ERROR);
+			result.setData(member);
 		}
 		
 		return result;

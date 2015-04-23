@@ -24,7 +24,7 @@
 		</tr>
 		<c:forEach items="${model.wxtasks}" var="task">
 			<tr>
-			<% String path = request.getContextPath()+"/wechat/taskinfo?taskid=";%> 
+			<% String path = request.getContextPath()+"/wechat/taskInfo?taskId=";%> 
 				<td><a href="<%=path %>${task.id}">${task.name}</a></td>
 				<td>${task.description}</td>
 				<td>${task.project.id}</td>
