@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" style="">
 	<div class="container-fluid nav-container">
 		<div class="row">
 			<div class="col-xs-2">
@@ -22,10 +22,10 @@
 					</a>
 				</div>
 			</div>
-			<div class="col-xs-8">
+			<div class="col-xs-10">
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav" style="width: 100%">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-expanded="false">员工管理
 						</a>
@@ -45,32 +45,53 @@
 								<li><a href="TaskLogList?taskId=1">任务日志</a></li>
 							</ul></li>
 						<li><a href="NewsList?companyId=${model.admin.company.id}">新闻资讯</a></li>
+						<li style="float: right">
+
+							<ul class="nav-rightblock nav navbar-nav">
+
+								<li class="dropdown"><a href="#" class="dropdown-toggle"
+									data-toggle="dropdown" role="button" aria-expanded="false">
+										<span style="padding-right: 45px;"><img alt="用户" class="navi-user-pic"
+											src="/resources/images/user21.png" style="  margin-top: 5px;"></span><span>${model.admin.name}</span>
+								</a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="Logout">退出</a></li>
+									</ul></li>
+
+								<%-- <li class="nav-username">${model.admin.name}</li>
+					<li class="nav-username">&nbsp;&nbsp;|</li>
+					<li class="nav-logout"><a href="Logout">注销</a></li> --%>
+							</ul>
+						</li>
 					</ul>
+					<!-- 	<div style="margin-top: 4px;">
+					<img alt="用户" class="navi-user-pic" src="/resources/images/user21.png">
+				</div> -->
 
 				</div>
 			</div>
-			<div class="col-xs-2">
-				<ul class="nav-rightblock nav navbar-nav">
+			<%-- <div class="col-xs-2 row">
+
+				<div class="col-xs-2" style="margin-top: 4px;">
+					<img alt="用户" class="navi-user-pic" src="/resources/images/user21.png">
+				</div>
 				
-					<%-- <li class="dropdown">
-						<img
-						alt="任务协同平台" class="logo"
-						src="<c:url value="/resources/images/user21.png" />">
-						<a href="#" class="dropdown-toggle"	data-toggle="dropdown" role="button" aria-expanded="false">
-							${model.admin.name}
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li>
-								<a href="Logout">退出</a>
-							</li>
-						</ul>
-					</li> --%>
-				
-					<li class="nav-username">${model.admin.name}</li>
+				<div class="col-xs-10">
+					<ul class="nav-rightblock nav navbar-nav">
+	
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-expanded="false">
+								${model.admin.name} </a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="Logout">退出</a></li>
+							</ul></li>
+
+						<li class="nav-username">${model.admin.name}</li>
 					<li class="nav-username">&nbsp;&nbsp;|</li>
 					<li class="nav-logout"><a href="Logout">注销</a></li>
-				</ul>
-			</div>
+					</ul>
+				</div>
+			</div> --%>
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>

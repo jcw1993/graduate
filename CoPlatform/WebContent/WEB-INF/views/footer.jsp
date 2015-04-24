@@ -19,7 +19,7 @@
 	clear: both;
 	position: absolute;
 	bottom: 0px;
-	width: 100%;
+	width: 93%;
 }
 
 .footer {
@@ -36,7 +36,9 @@
 	<div id="footerbox" >
 		<div class="footer"
 			style="margin: 0 auto; border: 0 none;">
-			<div class="copyright" style="background-color: rgb(244, 242, 242);">© 2015, Co-Work Platform, BY Software
+			<!-- <div class="copyright" style="background-color: rgb(244, 242, 242);">© 2015, Co-Work Platform, BY Software
+				Institute, Nanjing University</div> -->
+				<div class="copyright" >© 2015, Co-Work Platform, BY Software
 				Institute, Nanjing University</div>
 		</div>
 	</div>
