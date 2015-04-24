@@ -10,7 +10,7 @@
             <generator class="increment" />
         </id>
         <property name="name" type="string" column="name" />
-        <many-to-one name="company" column="company_id" lazy="false" />
+        <property name="companyId" type="integer" column="company_id" />
         <property name="workId" type="string" column="work_id" />
         <property name="password" type="string" column="password" />
         <property name="wxNumber" type="string" column="wx_number" />

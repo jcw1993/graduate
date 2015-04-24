@@ -118,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(COMPANY_MEMBER_CACHE_KEY, member.getCompany().getId()));
+		CoCacheManager.remove(String.format(COMPANY_MEMBER_CACHE_KEY, member.getCompanyId()));
 		return result;
 	}
 
@@ -134,25 +134,30 @@ public class MemberServiceImpl implements MemberService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(COMPANY_MEMBER_CACHE_KEY, member.getCompany().getId()));
+		CoCacheManager.remove(String.format(COMPANY_MEMBER_CACHE_KEY, member.getCompanyId()));
 		CoCacheManager.remove(String.format(MEMBER_CACHE_KEY, member.getId()));
 		return result;
 	}
 
 	@Override
-	public NoDataResult delete(Member member) {
+	public NoDataResult delete(int id) {
 		NoDataResult result = new NoDataResult();
+		
+		GeneralResult<Member> memberResult = getById(id);
+		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+			CoCacheManager.remove(String.format(COMPANY_MEMBER_CACHE_KEY, memberResult.getData().getCompanyId()));
+		}
+		CoCacheManager.remove(String.format(MEMBER_CACHE_KEY, id));
+		
 		try {
-			memberDao.delete(member);
+			memberDao.delete(id);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
 			result.setMessage(e.getMessage());
 			return result;
 		}
-		
-		CoCacheManager.remove(String.format(COMPANY_MEMBER_CACHE_KEY, member.getCompany().getId()));
-		CoCacheManager.remove(String.format(MEMBER_CACHE_KEY, member.getId()));
+
 		return result;
 	}
 

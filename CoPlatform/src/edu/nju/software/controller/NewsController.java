@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.News;
 import edu.nju.software.service.NewsService;
 import edu.nju.software.util.CoHashMap;
@@ -63,7 +62,7 @@ public class NewsController {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		
-		News news = new News(new Company(companyId), title, content, new Date());
+		News news = new News(companyId, title, content, new Date());
 		GeneralResult<Integer> createResult = newsService.create(news);
 		return new NoDataJsonResult(createResult);
 	}

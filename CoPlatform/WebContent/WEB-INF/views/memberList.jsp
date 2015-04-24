@@ -124,7 +124,7 @@
 	});
 
 	$memberCreateBtn.click(function(e) {
-		var companyId = "${model.admin.company.id}";
+		var companyId = "${model.admin.companyId}";
 		$memberCreateContent.load("CreateMember?companyId=" + companyId, function(response, status, xhr) {
 			if(status == "error") {
 				$memberEditContent.load("Error");

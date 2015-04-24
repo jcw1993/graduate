@@ -60,16 +60,16 @@
 												src="<c:url value='/resources/images/delete.png' />"></a></span>
 									</td>
 									<td>${task.description}</td>
-									<td>${task.project.name}</td>
+									<td>${task.projectId}</td>
 									<td><fmt:formatDate value="${task.startTime}"
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
 									<td><fmt:formatDate value="${task.endTime}"
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
 									<td>
-										<c:if test="${task.status.id == 1}">未开始</c:if>
-										<c:if test="${task.status.id == 2}">进行中</c:if>
-										<c:if test="${task.status.id == 3}">已完成</c:if>
-										<c:if test="${task.status.id == 4}">已失效</c:if>
+										<c:if test="${task.status == 1}">未开始</c:if>
+										<c:if test="${task.status == 2}">进行中</c:if>
+										<c:if test="${task.status == 3}">已完成</c:if>
+										<c:if test="${task.status == 4}">已失效</c:if>
 									</td>
 									<td><a class="taskAssign" href="#" taskId="${task.id}">分配任务</a></td>
 								</tr>
@@ -224,7 +224,7 @@
 	$projectInfoLink.click(function(e) {
 		var projectId = $(this).attr("projectId");
 		console.log("get project info, projectId: " + projectId);
-		$projectEditContent.load("GetProjectInfo?projectId=" + projectId + "&companyId=" + ${model.admin.company.id}, function(response, status, xhr) {
+		$projectEditContent.load("GetProjectInfo?projectId=" + projectId + "&companyId=" + ${model.admin.companyId}, function(response, status, xhr) {
 			if(status == "error") {
 				$projectEditContent.load("Error");
 			}
@@ -286,13 +286,13 @@
 	$taskAssignSubmit.click(function(e) {
 		var employeeIndex = $employeeListSelect[0].selectedIndex;
 		var employeeId = $employeeListSelect.children().eq(employeeIndex).val().trim();
-		var companyId = "${model.admin.company.id}";
+		var companyId = "${model.admin.companyId}";
 		assignTaskToEmployee(currentTaskId, employeeId, currentEmployeeType, companyId);
 	});
 
 	$projectCreateBtn.click(function(e) {
 		console.log("click create project");
-		var companyId = "${model.admin.company.id}";
+		var companyId = "${model.admin.companyId}";
 		$projectCreateContent.load("CreateProject?companyId=" + companyId, function(response, status, xhr) {
 			if(status == "error") {
 				$projectEditContent.load("Error");
@@ -335,7 +335,7 @@
 
 	/*functions*/
 	function loadEmployees(employeeType) {
-		var companyId = "${model.admin.company.id}";
+		var companyId = "${model.admin.companyId}";
 		var url;
 		if(employeeType == EMPLOYEE_TYPE_MEMBER) {
 			url = "GetMemberList?companyId=" + companyId;

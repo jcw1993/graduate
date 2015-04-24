@@ -22,7 +22,7 @@ public interface MemberService {
 
 	public NoDataResult update(Member member);
 
-	public NoDataResult delete(Member member);
+	public NoDataResult delete(int id);
 
 	public GeneralResult<List<Task>> getTasks(int memberId);
 

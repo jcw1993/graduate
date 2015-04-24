@@ -14,11 +14,11 @@
 			</c:if>
 
 			<td><input name="companyId" type="hidden"
-				value="${member.company.id}" /></td>
+				value="${member.companyId}" /></td>
 		</tr>
 		<tr>
 			<td><label>所属公司</label></td>
-			<td><label>${member.company.name}</td>
+			<td><label>${member.companyId}</td>
 		</tr>
 		<tr>
 			<td><label>用户名</label></td>

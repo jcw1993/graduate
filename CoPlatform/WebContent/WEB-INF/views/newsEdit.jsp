@@ -17,7 +17,7 @@
 	<!-- 加载编辑器的容器 -->
 	<form id="newsForm" action="CreateNews" method="post">
 	<input name="companyId" type="hidden"
-				value="${model.admin.company.id}" />
+				value="${model.admin.companyId}" />
 	<div>
 		<label for="title">标题：</label>
 		<input type="text" name="title" />

@@ -8,8 +8,8 @@ public class Log {
 	private String description;
 	private Project project;
 	private Task task;
-	private TaskStatus originStatus;
-	private TaskStatus currentStatus;
+	private int originStatus;
+	private int currentStatus;
 	private Date createdTime;
 	private Company company;
 	private int creatorId;
@@ -45,16 +45,16 @@ public class Log {
 	public void setTask(Task task) {
 		this.task = task;
 	}
-	public TaskStatus getOriginStatus() {
+	public int getOriginStatus() {
 		return originStatus;
 	}
-	public void setOriginStatus(TaskStatus originStatus) {
+	public void setOriginStatus(int originStatus) {
 		this.originStatus = originStatus;
 	}
-	public TaskStatus getCurrentStatus() {
+	public int getCurrentStatus() {
 		return currentStatus;
 	}
-	public void setCurrentStatus(TaskStatus currentStatus) {
+	public void setCurrentStatus(int currentStatus) {
 		this.currentStatus = currentStatus;
 	}
 	public Date getCreatedTime() {
@@ -82,13 +82,10 @@ public class Log {
 		this.creatorType = creatorType;
 	}
 	
-	public Log()
-	{
-		
-	}
+	public Log() {}
 	
-	public Log(String title, String description, Project project, Task task, TaskStatus originStatus, 
-			TaskStatus currentStatus, Date createdTime, Company company, int creatorId,int creatorType)
+	public Log(String title, String description, Project project, Task task, int originStatus, 
+			int currentStatus, Date createdTime, Company company, int creatorId,int creatorType)
 	{
 		this.title = title;
 		this.description = description;

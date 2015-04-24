@@ -21,13 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
-import edu.nju.software.pojo.TaskStatus;
 import edu.nju.software.service.CompanyService;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.service.WorkService;
 import edu.nju.software.util.CoHashMap;
 import edu.nju.software.util.CoUtils;
+import edu.nju.software.util.GeneralJsonResult;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.NoDataJsonResult;
 import edu.nju.software.util.NoDataResult;
@@ -136,7 +136,7 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Project project = new Project(projectId, new Company(companyId), name, description, startDate, endDate, progress);
+		Project project = new Project(projectId, companyId, name, description, startDate, endDate, progress);
 		
 		NoDataResult result = workService.updateProject(project);
 		return new NoDataJsonResult(result);
@@ -146,25 +146,7 @@ public class WorkController {
 	@ResponseBody
 	public NoDataJsonResult deleteProject(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
-		int companyId = CoUtils.getRequestIntValue(request, "companyId", false);
-		
-		Company company = null;
-		if(companyId == 0) {
-			GeneralResult<Project> projectResult = workService.getProjectById(projectId);
-			if(projectResult.getResultCode() == ResultCode.NORMAL) {
-				company = projectResult.getData().getCompany();
-			}else {
-				throw new IllegalArgumentException();
-			}
-		}else {
-			company = new Company(companyId);
-		}
-		
-		
-		Project project = new Project(projectId);
-		project.setCompany(company);
-		
-		NoDataResult result = workService.deleteProject(project);
+		NoDataResult result = workService.deleteProject(projectId);
 		return new NoDataJsonResult(result);
 	}
 	
@@ -233,7 +215,7 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Task task = new Task(taskId, new Project(projectId), name, description, null ,new TaskStatus(status), 1, startDate, endDate);
+		Task task = new Task(taskId, projectId, name, description, 0 ,status, 1, startDate, endDate);
 		
 		NoDataResult result = workService.updateTask(task);
 		return new NoDataJsonResult(result);
@@ -243,23 +225,7 @@ public class WorkController {
 	@ResponseBody
 	public NoDataJsonResult deleteTask(HttpServletRequest request, HttpServletResponse response) {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
-		int projectId = CoUtils.getRequestIntValue(request, "projectId", false);
-		
-		Project project = null;
-		if(projectId == 0) {
-			GeneralResult<Task> taskResult = workService.getTaskById(taskId);
-			if(taskResult.getResultCode() == ResultCode.NORMAL) {
-				project = taskResult.getData().getProject();
-			}else {
-				throw new IllegalArgumentException();
-			}
-		}else {
-			project = new Project(projectId);
-		}
-		
-		Task task = new Task(taskId);
-		task.setProject(project);
-		NoDataResult result = workService.deleteTask(task);
+		NoDataResult result = workService.deleteTask(taskId);
 		return new NoDataJsonResult(result);
 	}
 	
@@ -291,7 +257,9 @@ public class WorkController {
 		GeneralResult<Company> companyResult = companyService.getById(companyId);
 		Project project = new Project();
 		if(companyResult.getResultCode() == ResultCode.NORMAL) {
-			project.setCompany(companyResult.getData());	
+			project.setCompanyId(companyId);	
+		}else {
+			throw new IllegalArgumentException();
 		}
 		
 		Map<String, Object> model = new CoHashMap(request);
@@ -329,7 +297,7 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Project project = new Project(new Company(companyId), name, description, startDate, endDate, progress);
+		Project project = new Project(companyId, name, description, startDate, endDate, progress);
 		
 		GeneralResult<Integer> createResult = workService.createProject(project);
 		return new NoDataJsonResult(createResult);
@@ -349,7 +317,9 @@ public class WorkController {
 		
 		Task task = new Task();
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
-			task.setProject(projectResult.getData());
+			task.setProjectId(projectId);
+		}else {
+			throw new IllegalArgumentException();
 		}
 		
 		Map<String, Object> model = new CoHashMap(request);
@@ -388,7 +358,7 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Task task = new Task(new Project(projectId), name, description, null ,new TaskStatus(status), 1, startDate, endDate);
+		Task task = new Task(projectId, name, description, 0 ,status, 1, startDate, endDate);
 		
 		GeneralResult<Integer> result = workService.createTask(task);
 		return new NoDataJsonResult(result);
@@ -397,16 +367,10 @@ public class WorkController {
 	
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = {"/GetTaskTree"}, method = RequestMethod.GET)
-	public ModelAndView getTaskTree(HttpServletRequest request, HttpServletResponse response) {
+	@ResponseBody
+	public GeneralJsonResult<HashMap> getTaskTree(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
-		
-		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<HashMap> taskResult = workService.getTasksWithChildrenByProject(projectId);
-		if(taskResult.getResultCode() == ResultCode.NORMAL) {
-
-			model.put("taskTree", taskResult.getData());
-		}
-		
-		return new ModelAndView("taskTree", "model", model);
+		return new GeneralJsonResult<HashMap>(taskResult);
 	}
 }

@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
-import edu.nju.software.pojo.TaskStatus;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.service.WorkService;
 import edu.nju.software.util.CoUtils;
@@ -93,7 +92,7 @@ public class WeChatTaskController {
 		GeneralResult<Task> taskResult = workService.getTaskById(taskId);
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
 			Task task = taskResult.getData();
-			task.setStatus(new TaskStatus(status));
+			task.setStatus(status);
 			NoDataResult result = workService.updateTask(task);
 			return new NoDataJsonResult(result);
 		}else {

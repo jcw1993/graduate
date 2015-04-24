@@ -9,13 +9,13 @@
         <id name="id" column="id">
             <generator class="increment" />
         </id>
-        <many-to-one name="project" column="project_id" lazy="false" />
+        <property name="projectId" type="integer" column="project_id" />
         <property name="name" type="string" column="name" />
         <property name="description" type="string" column="description" />
-        <many-to-one name="parent" column="parent_id" />
+        <property name="parentId" type="integer" column="parent_id" />
         <property name="startTime" type="timestamp" column="start_time" />
         <property name="endTime" type="timestamp" column="end_time" />
-        <many-to-one name="status" column="status_id" />
+        <property name="status" type="integer" column="status_id" />
         <property name="depth" type="integer" column="depth" />
     </class>
 

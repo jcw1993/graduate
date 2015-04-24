@@ -13,10 +13,6 @@
         <property name="description" type="string" column="description" />
         <property name="phone" type="string" column="phone" />
         <property name="address" type="string" column="address" />
-        <set name="outEmployees" table="company_out_employee">
-        	<key column="company_id" />
-        	<many-to-many  class="OutEmployee" column="out_employee_id" />
-        </set>
     </class>
 
 </hibernate-mapping>

@@ -5,9 +5,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class TaskAssign {
 	private int id;
-	private Task task;
-	private Member member;
-	private OutEmployee outEmployee;
+	private int taskId;
+	private int memberId;
+	private int outEmployeeId;
 	
 	public int getId() {
 		return id;
@@ -15,34 +15,33 @@ public class TaskAssign {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Task getTask() {
-		return task;
+	public int getTaskId() {
+		return taskId;
 	}
-	public void setTask(Task task) {
-		this.task = task;
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
 	}
-	public Member getMember() {
-		return member;
+	public int getMemberId() {
+		return memberId;
 	}
-	public void setMember(Member member) {
-		this.member = member;
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
 	}
-	public OutEmployee getOutEmployee() {
-		return outEmployee;
+	public int getOutEmployeeId() {
+		return outEmployeeId;
 	}
-	public void setOutEmployee(OutEmployee outEmployee) {
-		this.outEmployee = outEmployee;
+	public void setOutEmployeeId(int outEmployeeId) {
+		this.outEmployeeId = outEmployeeId;
 	}
-	
 	public TaskAssign() {}
 	
 	public TaskAssign(int id) {
 		this.id = id;
 	}
 	
-	public TaskAssign(Task task, Member member, OutEmployee outEmployee) {
-		this.task = task;
-		this.member = member;
-		this.outEmployee = outEmployee;
+	public TaskAssign(int taskId, int memberId, int outEmployeeId) {
+		this.taskId = taskId;
+		this.memberId = memberId;
+		this.outEmployeeId = outEmployeeId;
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.ProjectDao;
-import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Project;
 
 @Repository
@@ -29,20 +28,21 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	}
 
 	@Override
-	public void delete(Project project)  throws DataAccessException {
+	public void delete(int id)  throws DataAccessException {
+		Project project = new Project(id);
 		getHibernateTemplate().delete(project);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Project> getByCompany(int companyId) {
-		Company company = new Company(companyId);
-		return getHibernateTemplate().find("from Project where company = ? order by id asc", company);
+		Query query = getSession().createQuery("from Project where companyId = " + companyId + " order by id asc");
+		return query.list();
 	}
 
 	@Override
 	public void deleteTaskAssign(int projectId) {
-		Query query = getSession().createQuery("delete from TaskAssign where id > 0 and task.id in (select id from Task where project.id = "
+		Query query = getSession().createQuery("delete from TaskAssign where id > 0 and taskId in (select id from Task where projectId = "
 				+ projectId + ")");
 		query.executeUpdate();
 	}

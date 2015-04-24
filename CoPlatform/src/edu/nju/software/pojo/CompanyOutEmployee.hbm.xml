@@ -5,11 +5,12 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="edu.nju.software.pojo">
-    <class name="TaskStatus" table="task_status">
+    <class name="CompanyOutEmployee" table="company_out_employee">
         <id name="id" column="id">
             <generator class="increment" />
         </id>
-        <property name="name" type="string" column="name" />
+        <property name="companyId" type="integer" column="company_id" />
+        <property name="outEmployeeId" type="integer" column="out_employee_id" />
     </class>
 
 </hibernate-mapping>

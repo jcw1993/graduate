@@ -12,13 +12,11 @@ public interface TaskDao {
 	
 	public void update(Task task);
 	
-	public void delete(Task task);
+	public void delete(int taskId);
 	
 	public void deleteAllByProject(int projectId);
 	
 	public List<Task> getByProject(int projectId);
-	
-	public Task getParent(int parentId);
 	
 	public Task getById(int id);
 	

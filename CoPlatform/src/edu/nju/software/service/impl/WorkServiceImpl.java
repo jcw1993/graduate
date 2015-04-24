@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import edu.nju.software.dao.ProjectDao;
 import edu.nju.software.dao.TaskDao;
 import edu.nju.software.pojo.Member;
-import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskAssign;
@@ -80,7 +79,7 @@ public class WorkServiceImpl implements WorkService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, project.getCompany().getId()));
+		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, project.getCompanyId()));
 		return result;
 	}
 
@@ -96,28 +95,35 @@ public class WorkServiceImpl implements WorkService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, project.getCompany().getId()));
+		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, project.getCompanyId()));
 		CoCacheManager.remove(String.format(PROJECT_CACHE_KEY_FOMAT, project.getId()));
 		return result;
 	}
 
 	@Transactional
 	@Override
-	public NoDataResult deleteProject(Project project) {
+	public NoDataResult deleteProject(int projectId) {
 		NoDataResult result = new NoDataResult();
+		
+		GeneralResult<Project> projectResult = getProjectById(projectId);
+		if(projectResult.getResultCode() == ResultCode.NORMAL) {
+			CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, projectResult.getData().getCompanyId()));
+		} 
+		
+		CoCacheManager.remove(String.format(PROJECT_CACHE_KEY_FOMAT, projectId));
+		
+		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, projectId));
+		
 		try {
-			projectDao.deleteTaskAssign(project.getId());
-			projectDao.delete(project);
-			taskDao.deleteAllByProject(project.getId());
+			projectDao.deleteTaskAssign(projectId);
+			projectDao.delete(projectId);
+			taskDao.deleteAllByProject(projectId);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
 			result.setMessage(e.getMessage());
 		}		
-		CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, project.getCompany().getId()));
-		CoCacheManager.remove(String.format(PROJECT_CACHE_KEY_FOMAT, project.getId()));
-		
-		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, project.getId()));
+
 		return result;
 	}
 
@@ -181,7 +187,7 @@ public class WorkServiceImpl implements WorkService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, task.getProject().getId()));
+		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, task.getProjectId()));
 		return result;
 	}
 
@@ -197,17 +203,24 @@ public class WorkServiceImpl implements WorkService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, task.getProject().getId()));
+		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, task.getProjectId()));
 		CoCacheManager.remove(String.format(TASK_CACHE_KEY_FORMAT, task.getId()));
 		return result;
 	}
 
 	@Override
-	public NoDataResult deleteTask(Task task) {
+	public NoDataResult deleteTask(int taskId) {
 		NoDataResult result = new NoDataResult();
+		
+		GeneralResult<Task> taskResult = getTaskById(taskId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, taskResult.getData().getProjectId()));
+		}
+		CoCacheManager.remove(String.format(TASK_CACHE_KEY_FORMAT, taskId));
+		
 		try {
-			taskDao.deleteTaskAssign(task.getId());
-			taskDao.delete(task);
+			taskDao.deleteTaskAssign(taskId);
+			taskDao.delete(taskId);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
@@ -215,8 +228,6 @@ public class WorkServiceImpl implements WorkService {
 			return result;
 		}
 		
-		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, task.getProject().getId()));
-		CoCacheManager.remove(String.format(TASK_CACHE_KEY_FORMAT, task.getId()));
 		return result;
 	}
 
@@ -288,27 +299,11 @@ public class WorkServiceImpl implements WorkService {
 	}
 
 	@Override
-	public GeneralResult<Task> getParentTask(int parentId) {
-		GeneralResult<Task> result = new GeneralResult<Task>();
-		try {
-			Task task = taskDao.getParent(parentId);
-			result.setData(task);
-		}catch(DataAccessException e) {
-			logger.error(e.getMessage());
-			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
-			result.setMessage(e.getMessage());
-		}
-		return result;
-	}
-
-	@Override
 	public NoDataResult assignTaskToMember(int taskId, int memberId) {
 		NoDataResult result = new NoDataResult();
 		if(!checkTaskAssigned(taskId, memberId, 0, 0)) {
-			Task task = new Task(taskId);
-			Member member = new Member(memberId);
 			try {
-				taskDao.assignTask(new TaskAssign(task, member, null));
+				taskDao.assignTask(new TaskAssign(taskId, memberId, 0));
 			}catch(DataAccessException e) {
 				logger.error(e.getMessage());
 				result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
@@ -325,10 +320,8 @@ public class WorkServiceImpl implements WorkService {
 	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId, int companyId) {
 		NoDataResult result = new NoDataResult();
 		if(!checkTaskAssigned(taskId, 0, outEmployeeId, companyId)) {
-			Task task = new Task(taskId);
-			OutEmployee outEmployee = new OutEmployee(outEmployeeId);
 			try {
-				taskDao.assignTask(new TaskAssign(task, null, outEmployee));
+				taskDao.assignTask(new TaskAssign(taskId, 0, outEmployeeId));
 			}catch(DataAccessException e) {
 				logger.error(e.getMessage());
 				result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
@@ -374,7 +367,8 @@ public class WorkServiceImpl implements WorkService {
 		try {
 			LinkedHashMap taskTree = taskDao.getTasksWithChildrenByProject(projectId);
 			if(null != taskTree && !taskTree.isEmpty()) {
-				result.setData(convertToTaskForest(taskTree));
+				result.setData(taskTree);
+//				result.setData(convertToTaskForest(taskTree));
 			}else {
 				result.setResultCode(ResultCode.E_NO_DATA);
 				result.setMessage("no tasks, projectId: " + projectId);
@@ -406,18 +400,19 @@ public class WorkServiceImpl implements WorkService {
 		return result;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	private HashMap convertToTaskForest(LinkedHashMap taskTree) {
 		HashMap taskForest = new HashMap();
 		for (Iterator iterator = taskTree.keySet().iterator(); iterator
 				.hasNext();) {
 			Object key = (Integer) iterator.next();
 			Task task = (Task) taskTree.get(key);
-			if (null == task.getParent()) {
+			if (0 == task.getParentId()) {
 				System.out.println("root task: " + task.getName());
 				taskForest.put(task, new LinkedHashMap());
 			} else {
-				Task parent = task.getParent();
+				int parentId = task.getParentId();
+				Task parent = (Task) taskTree.get(parentId);
 				System.out.println("child task: " + task.getName());
 				System.out.println("parent task: " + parent.getName());
 				LinkedHashMap parentValue = (LinkedHashMap) findNode(taskForest, parent);

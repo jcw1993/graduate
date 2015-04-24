@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.MemberDao;
-import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
 
 @Repository
@@ -16,9 +15,8 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Member> getByCompany(int companyId) throws DataAccessException {
-		Company company = new Company(companyId);
-		return getHibernateTemplate().find("from Member where company = ? order by id asc",
-				company);
+		Query query = getSession().createQuery("from Member where companyId = " + companyId + " order by id asc");
+		return query.list();
 	}
 
 	@Override
@@ -33,8 +31,8 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	}
 
 	@Override
-	public void delete(Member member) throws DataAccessException {
-		getHibernateTemplate().delete(member);
+	public void delete(int id) throws DataAccessException {
+		getHibernateTemplate().delete(new Member(id));
 	}
 
 	@Override
@@ -47,10 +45,10 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 		@SuppressWarnings("unchecked")
 		List<Member> memberList = getHibernateTemplate().find(
 				"from Member where openId = ?", openId);
-		if(memberList.isEmpty()){
-			return null;
-		}else {
+		if(null != memberList && !memberList.isEmpty()) {
 			return memberList.get(0);
+		}else {
+			return null;
 		}
 		
 	}

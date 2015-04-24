@@ -58,11 +58,6 @@ public class MemberController {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		GeneralResult<List<Member>> memberResult = memberService
 				.getAllByCompany(companyId);
-		if (memberResult.getResultCode() == ResultCode.NORMAL) {
-			for (Member member : memberResult.getData()) {
-				member.setCompany(new Company(companyId));
-			}
-		}
 		return new GeneralJsonResult<List<Member>>(memberResult);
 	}
 
@@ -112,7 +107,7 @@ public class MemberController {
 			password = password.trim();
 		}
 
-		Member member = new Member(id, name, new Company(companyId), workId,  password,
+		Member member = new Member(id, name, companyId, workId,  password,
 				qqNumber, wxNumber, phone, null);
 
 		NoDataResult result = memberService.update(member);
@@ -126,7 +121,7 @@ public class MemberController {
 		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
 		GeneralResult<Member> memberResult = memberService.getById(memberId);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
-			NoDataResult result = memberService.delete(memberResult.getData());
+			NoDataResult result = memberService.delete(memberId);
 			return new NoDataJsonResult(result);
 		} else {
 			return new NoDataJsonResult(memberResult.getResultCode(),
@@ -154,9 +149,10 @@ public class MemberController {
 		GeneralResult<Company> companyResult = companyService.getById(companyId);
 		Member member = new Member();
 		if(companyResult.getResultCode() == ResultCode.NORMAL) {
-			member.setCompany(companyResult.getData());	
+			member.setCompanyId(companyId);	
+		}else {
+			throw new IllegalArgumentException();
 		}
-
 
 		Map<String, Object> model = new CoHashMap(request);
 		model.put("member", member);
@@ -198,7 +194,7 @@ public class MemberController {
 			password = phone.substring(phone.length() - 6);
 		}
 		
-		Member member = new Member(name, new Company(companyId), workId,
+		Member member = new Member(name, companyId, workId,
 				password, qqNumber, wxNumber, phone, null);
 
 		GeneralResult<Integer> result = memberService.create(member);

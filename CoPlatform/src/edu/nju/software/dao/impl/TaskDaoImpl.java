@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.TaskDao;
 import edu.nju.software.pojo.Member;
-import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskAssign;
 
@@ -27,21 +26,15 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	}
 
 	@Override
-	public void delete(Task task) throws DataAccessException {
-		getHibernateTemplate().delete(task);
+	public void delete(int taskId) throws DataAccessException {
+		getHibernateTemplate().delete(new Task(taskId));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Task> getByProject(int projectId) throws DataAccessException {
-		Project project = new Project(projectId);
-		return getHibernateTemplate().find("from Task where project = ? order by id asc", project);
-	}
-
-	@Override
-	public Task getParent(int parentId) throws DataAccessException {
-		Task task = new Task(parentId);
-		return (Task) getHibernateTemplate().find("from Task where parent = ? order by id asc", task);
+		Query query = getSession().createQuery("from Task where projectId = " + projectId + " order by id asc");
+		return query.list();
 	}
 
 	@Override
@@ -51,41 +44,44 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 
 	@Override
 	public void deleteAllByProject(int projectId) {
-		Query query = getSession().createQuery("delete from Task where project.id = " + projectId);
+		Query query = getSession().createQuery("delete from Task where projectId = " + projectId);
 		query.executeUpdate();
 	}
 
 	@Override
 	public void assignTask(TaskAssign taskAssign) {
-		getHibernateTemplate().saveOrUpdate(taskAssign);
+		getHibernateTemplate().save(taskAssign);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Task> getTasksByMember(int memberId) {
-		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, Member as m where ta.task.id = t.id and "
-				+ "ta.member.id = m.id and m.id = " + memberId + " order by t.id asc");
+		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, Member as m where ta.taskId = t.id and "
+				+ "ta.memberId = m.id and m.id = " + memberId + " order by t.id asc");
 		return query.list();
 	}
 
+	// bug, outEmployee and company
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Task> getTasksByOutEmployee(int companyId, int outEmployeeId) {
-		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, OutEmployee as oe where  ta.task.id = t.id and "
-				+ "ta.outEmployee.id = oe.id and t.project.company.id = " + companyId + " and oe.id = " + outEmployeeId + " order by t.id asc");
+//		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, OutEmployee as oe where  ta.taskId = t.id and "
+//				+ "ta.outEmployeeId = oe.id and t.project.company.id = " + companyId + " and oe.id = " + outEmployeeId + " order by t.id asc");
+		Query query = getSession().createQuery("select t from TaskAssign as ta, Task as t, OutEmployee as oe where  ta.taskId = t.id and "
+				+ "ta.outEmployeeId = oe.id and oe.id = " + outEmployeeId + " order by t.id asc");
 		return query.list();
 	}
 
 	@Override
 	public void deleteTaskAssign(int taskId) {
-		Query query = getSession().createQuery("delete from TaskAssign where task.id = " + taskId);
+		Query query = getSession().createQuery("delete from TaskAssign where taskId = " + taskId);
 		query.executeUpdate();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public LinkedHashMap getTasksWithChildrenByProject(int projectId) {
-		Query query = getSession().createQuery("select t from Task as t where project.id = " + projectId + " order by t.depth asc");
+		Query query = getSession().createQuery("select t from Task as t where projectId = " + projectId + " order by t.depth asc");
 		List<Task> taskList = query.list();
 		LinkedHashMap<Integer, Task> taskTree = new LinkedHashMap<Integer,Task>();
 		for(Task task : taskList) {
@@ -98,7 +94,7 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Member> getRelatedMembers(int taskId) {
-		Query query = getSession().createQuery("select m from TaskAssign as ts, Member as m where ts.member.id = m.id and ts.task.id = " + taskId);
+		Query query = getSession().createQuery("select m from TaskAssign as ts, Member as m where ts.memberId = m.id and ts.taskId = " + taskId);
 		return query.list();
 	}
 

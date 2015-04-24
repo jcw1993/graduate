@@ -31,9 +31,7 @@ public class AdminDaoImpl extends HibernateDaoBase implements AdminDao {
 
 	@Override
 	public void delete(int id) throws DataAccessException {
-		Admin admin = new Admin();
-		admin.setId(id);
-		getHibernateTemplate().delete(admin);
+		getHibernateTemplate().delete(new Admin(id));
 	}
 
 	

@@ -13,12 +13,12 @@
         <property name="description" type="string" column="description" />
         <many-to-one name="project" column="project_id" lazy="false" />
         <many-to-one name="task" column="task_id" lazy="false" />
-        <many-to-one name="originStatus" column="origin_status" lazy="false" />
-        <many-to-one name="currentStatus" column="current_status" lazy="false" />
-        <property name="createdTime" type="timestamp" column="created_time" />
+        <property name="originStatus" type="integer" column="origin_status" />
+        <property name="currentStatus" type="integer" column="current_status" />
+        <property name="createdTime" type="date" column="created_time" />
         <many-to-one name="company" column="company_id" lazy="false" />
         <property name="creatorId" type="integer" column="creator_id" />
-        <property name="creatorType" type="int" column="creator_type" />
+        <property name="creatorType" type="integer" column="creator_type" />
     </class>
 
 </hibernate-mapping>

@@ -1,6 +1,5 @@
 package edu.nju.software.pojo;
 
-import java.util.Set;
 
 public class OutEmployee {
 	private int id;
@@ -8,7 +7,6 @@ public class OutEmployee {
 	private String wxNumber;
 	private String qqNumber;
 	private String phone;
-	private Set<Company> companies;
 	
 	public int getId() {
 		return id;
@@ -39,12 +37,6 @@ public class OutEmployee {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-	public Set<Company> getCompanies() {
-		return companies;
-	}
-	public void setCompanies(Set<Company> companies) {
-		this.companies = companies;
 	}
 	
 	public OutEmployee() {}

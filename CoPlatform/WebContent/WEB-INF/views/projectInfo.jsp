@@ -13,7 +13,7 @@
 					<input name="projectId" type="hidden" value="${project.id}" />
 				</c:if></td>
 			<td><input name="companyId" type="hidden"
-				value="${project.company.id}" /></td>
+				value="${project.companyId}" /></td>
 		</tr>
 		<tr>
 			<td><label>项目名称</label></td>
@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<td><label>所属公司</label></td>
-			<td><label>${project.company.name}</label></td>
+			<td><label>${project.companyId}</label></td>
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>

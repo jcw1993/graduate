@@ -20,22 +20,19 @@ public interface WorkService {
 	
 	public NoDataResult updateProject(Project project);
 	
-	public NoDataResult deleteProject(Project project);
-	
+	public NoDataResult deleteProject(int projectId);
 	
 	public GeneralResult<Integer> createTask(Task task);
 	
 	public NoDataResult updateTask(Task task);
 	
-	public NoDataResult deleteTask(Task task);
+	public NoDataResult deleteTask(int taskId);
 	
 	public GeneralResult<List<Task>> getTasksByProject(int projectId);
 	
 	public GeneralResult<Task> getTaskByProjectAndId(int projectId, int taskId);
 	
 	public GeneralResult<Task> getTaskById(int id);
-	
-	public GeneralResult<Task> getParentTask(int parentId);
 	
 	public NoDataResult assignTaskToMember(int taskId, int memberId);
 	

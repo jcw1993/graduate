@@ -20,16 +20,16 @@
 			<tr>
 				<td>${task.name}</td>
 				<td>${task.description}</td>
-				<td>${task.project.name}</td>
+				<td>${task.projectId}</td>
 				<td><fmt:formatDate value="${task.startTime}"
 						pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td><fmt:formatDate value="${task.endTime}"
 						pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				<td>
-					<c:if test="${task.status.id == 1}">未开始</c:if>
-					<c:if test="${task.status.id == 2}">进行中</c:if>
-					<c:if test="${task.status.id == 3}">已完成</c:if>
-					<c:if test="${task.status.id == 4}">已失效</c:if>
+					<c:if test="${task.status == 1}">未开始</c:if>
+					<c:if test="${task.status == 2}">进行中</c:if>
+					<c:if test="${task.status == 3}">已完成</c:if>
+					<c:if test="${task.status == 4}">已失效</c:if>
 				</td>
 			</tr>
 		</c:forEach>

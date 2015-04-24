@@ -31,8 +31,8 @@
 						<td>${log.title}</td>
 						<td>${log.description}</td>
 						<td>${log.task.id}</td>
-						<td>${log.originStatus.id}</td>
-						<td>${log.currentStatus.id}</td>
+						<td>${log.originStatus}</td>
+						<td>${log.currentStatus}</td>
 						<td>${log.createdTime}</td>
 					</tr>
 				</c:forEach>

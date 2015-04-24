@@ -29,7 +29,7 @@
 		</tr>
 		<tr>
 			<td><label>所属项目</label></td>
-			<td><p>${task.project.name}</p></td>
+			<td><p>${task.projectId}</p></td>
 		</tr>
 		<tr>
 			<td><label>开始时间</label></td>
@@ -51,14 +51,14 @@
 			<td>
 				<select id="taskStatus" name="status">
 					<option value="1"
-						<c:if test="${task.status.id == 1}">selected="selected"</c:if>
+						<c:if test="${task.status == 1}">selected="selected"</c:if>
 					>未开始</option>
 					<option value="2"
-						<c:if test="${task.status.id == 2}">selected="selected"</c:if>>进行中</option>
+						<c:if test="${task.status == 2}">selected="selected"</c:if>>进行中</option>
 					<option value="3"
-						<c:if test="${task.status.id == 3}">selected="selected"</c:if>>已完成</option>
+						<c:if test="${task.status == 3}">selected="selected"</c:if>>已完成</option>
 					<option value="4"
-						<c:if test="${task.status.id == 4}">selected="selected"</c:if>>已失效</option>
+						<c:if test="${task.status == 4}">selected="selected"</c:if>>已失效</option>
 				</select>
 			</td>
 		</tr>

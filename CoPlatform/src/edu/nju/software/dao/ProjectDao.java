@@ -13,7 +13,7 @@ public interface ProjectDao {
 	
 	public void update(Project project);
 	
-	public void delete(Project project);
+	public void delete(int id);
 	
 	public void deleteTaskAssign(int projectId);
 }

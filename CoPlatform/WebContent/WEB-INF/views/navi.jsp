@@ -31,20 +31,20 @@
 						</a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a
-									href="MemberList?companyId=${model.admin.company.id}">公司职员</a></li>
+									href="MemberList?companyId=${model.admin.companyId}">公司职员</a></li>
 								<li><a
-									href="OutEmployeeList?companyId=${model.admin.company.id}">外聘人员</a></li>
+									href="OutEmployeeList?companyId=${model.admin.companyId}">外聘人员</a></li>
 							</ul></li>
-						<li><a href="WorkList?companyId=${model.admin.company.id}">工作管理</a></li>
+						<li><a href="WorkList?companyId=${model.admin.companyId}">工作管理</a></li>
 						<!-- <li><a href="TaskList?projectId=1">任务管理</a></li> -->
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-expanded="false">日志管理</a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a
-									href="ProjectLogList?companyId=${model.admin.company.id}">项目日志</a></li>
+									href="ProjectLogList?companyId=${model.admin.companyId}">项目日志</a></li>
 								<li><a href="TaskLogList?taskId=1">任务日志</a></li>
 							</ul></li>
-						<li><a href="NewsList?companyId=${model.admin.company.id}">新闻资讯</a></li>
+						<li><a href="NewsList?companyId=${model.admin.companyId}">新闻资讯</a></li>
 						<li style="float: right">
 
 							<ul class="nav-rightblock nav navbar-nav">

@@ -46,11 +46,6 @@ public class OutEmployeeController {
 	public GeneralJsonResult<List<OutEmployee>> getOutEmployeeList(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
 		GeneralResult<List<OutEmployee>> outEmployeResult = outEmployeeService.getByCompany(companyId);
-		if(outEmployeResult.getResultCode() == ResultCode.NORMAL) {
-			for(OutEmployee outEmployee : outEmployeResult.getData()) {
-				outEmployee.setCompanies(null);
-			}
-		}
 		return new GeneralJsonResult<List<OutEmployee>>(outEmployeResult);
 	}
 	

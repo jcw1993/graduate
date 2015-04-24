@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Project {
 	private int id;
-	private Company company;
+	private int companyId;
 	private String name;
 	private String description;
 	private Date startTime;
@@ -17,11 +17,11 @@ public class Project {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Company getCompany() {
-		return company;
+	public int getCompanyId() {
+		return companyId;
 	}
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 	public String getName() {
 		return name;
@@ -60,8 +60,8 @@ public class Project {
 		this.id = id;
 	}
 	
-	public Project(Company company, String name, String description, Date startTime, Date endTime, double progress) {
-		this.company = company;
+	public Project(int companyId, String name, String description, Date startTime, Date endTime, double progress) {
+		this.companyId = companyId;
 		this.name = name;
 		this.description = description;
 		this.startTime = startTime;
@@ -69,9 +69,9 @@ public class Project {
 		this.progress = progress;
 	}
 	
-	public Project(int id, Company company, String name, String description, Date startTime, Date endTime, double progress) {
+	public Project(int id, int companyId, String name, String description, Date startTime, Date endTime, double progress) {
 		this.id = id;
-		this.company = company;
+		this.companyId = companyId;
 		this.name = name;
 		this.description = description;
 		this.startTime = startTime;

@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class Task {
 	private int id;
-	private Project project;
+	private int projectId;
 	private String name;
 	private String description;
-	private Task parent;
+	private int parentId;
 	private int depth;
-	private TaskStatus status;
+	private int status;
 	private Date startTime;
 	private Date endTime;
 
@@ -19,11 +19,11 @@ public class Task {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Project getProject() {
-		return project;
+	public int getProjectId() {
+		return projectId;
 	}
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
 	}
 	public String getName() {
 		return name;
@@ -37,11 +37,11 @@ public class Task {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Task getParent() {
-		return parent;
+	public int getParentId() {
+		return parentId;
 	}
-	public void setParent(Task parent) {
-		this.parent = parent;
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
 	}
 	public int getDepth() {
 		return depth;
@@ -49,10 +49,10 @@ public class Task {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	public TaskStatus getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(TaskStatus status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 	public Date getStartTime() {
@@ -74,23 +74,23 @@ public class Task {
 		this.id = id;
 	}
 	
-	public Task(Project project, String name, String description, Task parent, TaskStatus status, int depth, Date startTime, Date endTime) {
-		this.project = project;
+	public Task(int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime) {
+		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
-		this.parent = parent;
+		this.parentId = parentId;
 		this.status = status;
 		this.depth = depth;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
 	
-	public Task(int id, Project project, String name, String description, Task parent, TaskStatus status, int depth, Date startTime, Date endTime) {
+	public Task(int id, int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime) {
 		this.id = id;
-		this.project = project;
+		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
-		this.parent = parent;
+		this.parentId = parentId;
 		this.status = status;
 		this.depth = depth;
 		this.startTime = startTime;

@@ -3,7 +3,7 @@ package edu.nju.software.pojo;
 public class Member {
 	private int id;
 	private String name;
-	private Company company;
+	private int companyId;
 	private String workId;
 	private String password;
 	private String wxNumber;
@@ -27,12 +27,12 @@ public class Member {
 		this.name = name;
 	}
 
-	public Company getCompany() {
-		return company;
+	public int getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getWorkId() {
@@ -90,10 +90,10 @@ public class Member {
 		this.id = id;
 	}
 
-	public Member(String name, Company company, String workId, String password, String qqNumber,
+	public Member(String name, int companyId, String workId, String password, String qqNumber,
 			String wxNumber, String phone) {
 		this.name = name;
-		this.company = company;
+		this.companyId = companyId;
 		this.workId = workId;
 		this.password = password;
 		this.qqNumber = qqNumber;
@@ -101,11 +101,11 @@ public class Member {
 		this.phone = phone;
 	}
 	
-	public Member(int id, String name, Company company, String workId,
+	public Member(int id, String name, int companyId, String workId,
 			String qqNumber, String wxNumber, String phone) {
 		this.id = id;
 		this.name = name;
-		this.company = company;
+		this.companyId = companyId;
 		this.workId = workId;
 		this.qqNumber = qqNumber;
 		this.wxNumber = wxNumber;
@@ -122,11 +122,11 @@ public class Member {
 	 * @param phone
 	 * @param openId
 	 */
-	public Member(String name, Company company, String workId,
+	public Member(String name, int companyId, String workId,
 			String password, String wxNumber, String qqNumber, String phone,
 			String openId) {
 		this.name = name;
-		this.company = company;
+		this.companyId = companyId;
 		this.workId = workId;
 		this.password = password;
 		this.wxNumber = wxNumber;
@@ -147,12 +147,12 @@ public class Member {
 	 * @param phone
 	 * @param openId
 	 */
-	public Member(int id, String name, Company company, String workId,
+	public Member(int id, String name, int companyId, String workId,
 			String password, String wxNumber, String qqNumber, String phone,
 			String openId) {
 		this.id = id;
 		this.name = name;
-		this.company = company;
+		this.companyId = companyId;
 		this.workId = workId;
 		this.password = password;
 		this.wxNumber = wxNumber;

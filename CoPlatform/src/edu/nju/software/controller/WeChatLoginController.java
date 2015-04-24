@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
-import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.util.CoUtils;
@@ -73,9 +72,6 @@ public class WeChatLoginController {
 			member.setOpenId(openId);
 			memberService.update(member);
 			Gson gson = new Gson();
-			Company company = member.getCompany();
-			company.setOutEmployees(null);
-			member.setCompany(company);
 			CoUtils.addCookie(response, "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
 			
 			response.sendRedirect(request.getContextPath() + "/wechat/MyTasks?openId=" + openId);
