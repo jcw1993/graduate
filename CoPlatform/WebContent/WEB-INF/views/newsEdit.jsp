@@ -55,3 +55,5 @@
 	</script>
 	</body>
 </html>
+
+<jsp:include page="footer.jsp"></jsp:include>

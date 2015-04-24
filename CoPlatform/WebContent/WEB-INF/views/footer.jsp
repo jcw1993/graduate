@@ -33,10 +33,10 @@
 </head>
 <body>
 
-	<div id="footerbox">
+	<div id="footerbox" >
 		<div class="footer"
-			style="width: 1200px; margin: 0 auto; border: 0 none;">
-			<div class="copyright">© 2015, Co-Work Platform, BY Software
+			style="margin: 0 auto; border: 0 none;">
+			<div class="copyright" style="background-color: rgb(244, 242, 242);">© 2015, Co-Work Platform, BY Software
 				Institute, Nanjing University</div>
 		</div>
 	</div>
