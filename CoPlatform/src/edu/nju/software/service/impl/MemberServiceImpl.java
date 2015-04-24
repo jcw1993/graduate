@@ -187,8 +187,12 @@ public class MemberServiceImpl implements MemberService {
 		}else {
 			try {
 				member = memberDao.getByOpenId(openId);
-				result.setData(member);
-				CoCacheManager.put(MEMBER_OPENID_CACHE_KEY + openId, member);
+				if(null != member) {
+					result.setData(member);
+					CoCacheManager.put(MEMBER_OPENID_CACHE_KEY + openId, member);
+				}else {
+					result.setResultCode(ResultCode.E_NO_DATA);
+				}
 			}catch(DataAccessException e) {
 				logger.error(e.getMessage());
 				result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
