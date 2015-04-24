@@ -26,4 +26,8 @@
 		</c:forEach>
 	</table>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 086b6134dc66cefedadb25826ef0434c91670619

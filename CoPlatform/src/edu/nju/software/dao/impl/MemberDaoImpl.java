@@ -46,7 +46,7 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	public Member getByOpenId(String openId) {
 		@SuppressWarnings("unchecked")
 		List<Member> memberList = getHibernateTemplate().find(
-				"from Member where open_id = ?", openId);
+				"from Member where openId = ?", openId);
 		if(memberList.isEmpty()){
 			return null;
 		}else {
