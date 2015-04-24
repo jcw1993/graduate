@@ -8,6 +8,7 @@ public class Task {
 	private String name;
 	private String description;
 	private Task parent;
+	private int depth;
 	private TaskStatus status;
 	private Date startTime;
 	private Date endTime;
@@ -42,6 +43,12 @@ public class Task {
 	public void setParent(Task parent) {
 		this.parent = parent;
 	}
+	public int getDepth() {
+		return depth;
+	}
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
 	public TaskStatus getStatus() {
 		return status;
 	}
@@ -67,23 +74,25 @@ public class Task {
 		this.id = id;
 	}
 	
-	public Task(Project project, String name, String description, Task parent, TaskStatus status, Date startTime, Date endTime) {
+	public Task(Project project, String name, String description, Task parent, TaskStatus status, int depth, Date startTime, Date endTime) {
 		this.project = project;
 		this.name = name;
 		this.description = description;
 		this.parent = parent;
 		this.status = status;
+		this.depth = depth;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
 	
-	public Task(int id, Project project, String name, String description, Task parent, TaskStatus status, Date startTime, Date endTime) {
+	public Task(int id, Project project, String name, String description, Task parent, TaskStatus status, int depth, Date startTime, Date endTime) {
 		this.id = id;
 		this.project = project;
 		this.name = name;
 		this.description = description;
 		this.parent = parent;
 		this.status = status;
+		this.depth = depth;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}

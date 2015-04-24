@@ -1,7 +1,9 @@
 package edu.nju.software.service;
 
+import java.util.HashMap;
 import java.util.List;
 
+import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.util.GeneralResult;
@@ -39,4 +41,8 @@ public interface WorkService {
 	
 	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId, int companyId);
 	
+	@SuppressWarnings("rawtypes")
+	public GeneralResult<HashMap> getTasksWithChildrenByProject(int projectId);
+	
+	public GeneralResult<List<Member>> getRelatedMembers(int taskId);
 }

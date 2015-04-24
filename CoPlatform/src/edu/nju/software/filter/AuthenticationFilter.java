@@ -53,7 +53,7 @@ public class AuthenticationFilter implements Filter {
 //		if(requestURI.startsWith(contextPath + WECHAT_URL_PREFIX) && !requestURI.equals(contextPath + WECHAT_URL_PREFIX)) {
 //			String memberCookieValue = CoUtils.getCookie(httpServletRequest, "currentMember");
 //			if(null == memberCookieValue) {
-//				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + WECHAT_URL_PREFIX);
+//				httpServletResponse.sendRedirect(httpServletRequest.nadeigetContextPath() + WECHAT_URL_PREFIX);
 //				return;
 //			}
 //		}

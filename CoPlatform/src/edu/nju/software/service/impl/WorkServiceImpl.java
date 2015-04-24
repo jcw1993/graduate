@@ -1,5 +1,8 @@
 package edu.nju.software.service.impl;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -32,6 +35,9 @@ public class WorkServiceImpl implements WorkService {
 	private static final String PROJECT_TASK_CACHE_KEY_FOMAT = "projct_task_%d";
 	
 	private static final String TASK_CACHE_KEY_FORMAT = "task_%d";
+	
+	@SuppressWarnings("unused")
+	private static final int MAX_TREE_DEPTH = 3;
 	
 	private static Logger logger = LoggerFactory.getLogger(WorkServiceImpl.class);
 	
@@ -358,5 +364,91 @@ public class WorkServiceImpl implements WorkService {
 			}
 		}
 		return false;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public GeneralResult<HashMap> getTasksWithChildrenByProject(
+			int projectId) {
+		GeneralResult<HashMap> result = new GeneralResult<HashMap>();
+		try {
+			LinkedHashMap taskTree = taskDao.getTasksWithChildrenByProject(projectId);
+			if(null != taskTree && !taskTree.isEmpty()) {
+				result.setData(convertToTaskForest(taskTree));
+			}else {
+				result.setResultCode(ResultCode.E_NO_DATA);
+				result.setMessage("no tasks, projectId: " + projectId);
+			}
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public GeneralResult<List<Member>> getRelatedMembers(int taskId) {
+		GeneralResult<List<Member>> result = new GeneralResult<List<Member>>();
+		try {
+			List<Member> memberList = taskDao.getRelatedMembers(taskId);
+			if(null != memberList && !memberList.isEmpty()) {
+				result.setData(memberList);
+			}else {
+				result.setResultCode(ResultCode.E_NO_DATA);
+				result.setMessage("no related member, memberId: " + taskId);
+			}
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private HashMap convertToTaskForest(LinkedHashMap taskTree) {
+		HashMap taskForest = new HashMap();
+		for (Iterator iterator = taskTree.keySet().iterator(); iterator
+				.hasNext();) {
+			Object key = (Integer) iterator.next();
+			Task task = (Task) taskTree.get(key);
+			if (null == task.getParent()) {
+				System.out.println("root task: " + task.getName());
+				taskForest.put(task, new LinkedHashMap());
+			} else {
+				Task parent = task.getParent();
+				System.out.println("child task: " + task.getName());
+				System.out.println("parent task: " + parent.getName());
+				LinkedHashMap parentValue = (LinkedHashMap) findNode(taskForest, parent);
+				if(null != parentValue) {
+					parentValue.put(task, new LinkedHashMap());
+				}
+				
+			}
+		}
+		return taskForest;
+	}
+	
+	@SuppressWarnings("rawtypes" )
+	private HashMap findNode(HashMap taskTree, Task task) {
+		if(null == taskTree || taskTree.isEmpty() || null == task) {
+			return null;
+		}
+		
+		if(taskTree.keySet().contains(task)) {
+			return (HashMap) taskTree.get(task);
+		}else {
+			for (Iterator iterator = taskTree.keySet().iterator(); iterator
+					.hasNext();) {
+				Task key = (Task) iterator.next();
+				HashMap value = (HashMap) taskTree.get(key);
+				HashMap result = findNode(value, task);
+				if(result != null) {
+					return result;
+				}
+			}
+			return null;
+		}
 	}
 }

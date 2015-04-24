@@ -1,5 +1,6 @@
 package edu.nju.software.dao.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -7,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.TaskDao;
+import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskAssign;
@@ -39,7 +41,7 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@Override
 	public Task getParent(int parentId) throws DataAccessException {
 		Task task = new Task(parentId);
-		return (Task) getHibernateTemplate().find("from Task where task = ? order by id asc", task);
+		return (Task) getHibernateTemplate().find("from Task where parent = ? order by id asc", task);
 	}
 
 	@Override
@@ -78,6 +80,26 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	public void deleteTaskAssign(int taskId) {
 		Query query = getSession().createQuery("delete from TaskAssign where task.id = " + taskId);
 		query.executeUpdate();
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public LinkedHashMap getTasksWithChildrenByProject(int projectId) {
+		Query query = getSession().createQuery("select t from Task as t where project.id = " + projectId + " order by t.depth asc");
+		List<Task> taskList = query.list();
+		LinkedHashMap<Integer, Task> taskTree = new LinkedHashMap<Integer,Task>();
+		for(Task task : taskList) {
+			taskTree.put(task.getId(), task);
+		}
+		
+		return taskTree;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Member> getRelatedMembers(int taskId) {
+		Query query = getSession().createQuery("select m from TaskAssign as ts, Member as m where ts.member.id = m.id and ts.task.id = " + taskId);
+		return query.list();
 	}
 
 }

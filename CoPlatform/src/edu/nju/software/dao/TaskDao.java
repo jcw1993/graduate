@@ -1,7 +1,9 @@
 package edu.nju.software.dao;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.pojo.TaskAssign;
 
@@ -27,5 +29,10 @@ public interface TaskDao {
 	public List<Task> getTasksByOutEmployee(int companyId, int outEmployeeId);
 	
 	public void deleteTaskAssign(int taskId);
+	
+	@SuppressWarnings("rawtypes")
+	public LinkedHashMap getTasksWithChildrenByProject(int projectId);
+	
+	public List<Member> getRelatedMembers(int taskId);
 	
 }

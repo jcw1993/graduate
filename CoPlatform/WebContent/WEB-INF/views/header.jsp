@@ -18,6 +18,8 @@
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/ui_lightness/jquery-ui.min.css" />" />
 <link rel="stylesheet"
+	href="<c:url value="/resources/css/bootstrap-treeview.css" />" />
+<link rel="stylesheet"
 	href="<c:url value="/resources/css/co_platform.css" />" />
 
 <script type="text/javascript"
@@ -28,6 +30,8 @@
 	src="<c:url value="/resources/js/datepicker-zh-CN.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/js/bootstrap-treeview.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery.validate.js" />"></script>
 <script type="text/javascript"

@@ -233,7 +233,7 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Task task = new Task(taskId, new Project(projectId), name, description, null ,new TaskStatus(status), startDate, endDate);
+		Task task = new Task(taskId, new Project(projectId), name, description, null ,new TaskStatus(status), 1, startDate, endDate);
 		
 		NoDataResult result = workService.updateTask(task);
 		return new NoDataJsonResult(result);
@@ -388,9 +388,25 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Task task = new Task(new Project(projectId), name, description, null ,new TaskStatus(status), startDate, endDate);
+		Task task = new Task(new Project(projectId), name, description, null ,new TaskStatus(status), 1, startDate, endDate);
 		
 		GeneralResult<Integer> result = workService.createTask(task);
 		return new NoDataJsonResult(result);
+	}
+	
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = {"/GetTaskTree"}, method = RequestMethod.GET)
+	public ModelAndView getTaskTree(HttpServletRequest request, HttpServletResponse response) {
+		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
+		
+		Map<String, Object> model = new CoHashMap(request);
+		GeneralResult<HashMap> taskResult = workService.getTasksWithChildrenByProject(projectId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+
+			model.put("taskTree", taskResult.getData());
+		}
+		
+		return new ModelAndView("taskTree", "model", model);
 	}
 }
