@@ -81,7 +81,7 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public LinkedHashMap getTasksWithChildrenByProject(int projectId) {
-		Query query = getSession().createQuery("select t from Task as t where projectId = " + projectId + " order by t.depth asc");
+		Query query = getSession().createQuery("select t from Task as t where projectId = " + projectId + " order by t.depth asc, id asc");
 		List<Task> taskList = query.list();
 		LinkedHashMap<Integer, Task> taskTree = new LinkedHashMap<Integer,Task>();
 		for(Task task : taskList) {
