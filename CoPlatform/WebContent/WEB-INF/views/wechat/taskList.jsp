@@ -14,7 +14,11 @@
 <c:if test="${model.tasks != null}">
 	<c:forEach items="${model.tasks}" var="task">
 	<div class="taskItem" taskId="${task.id}">
-		<p>${task.name}<img class="seeDetail" src="<c:url value="/resources/images/arrow-right.png" />" /></p>
+		<p class="title">${task.name}<img class="seeDetail" src="<c:url value="/resources/images/arrow-right.png" />" /></p>
+		<p class="desc">${task.description}</p>
+		<p class="date">
+		<fmt:formatDate value="${task.startTime}" pattern="yyyy-MM-dd HH:mm:ss" />~
+		<fmt:formatDate value="${task.endTime}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
 	</div>
 	</c:forEach>
 </c:if>
