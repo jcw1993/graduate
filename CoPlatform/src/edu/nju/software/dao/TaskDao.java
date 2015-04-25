@@ -1,6 +1,5 @@
 package edu.nju.software.dao;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import edu.nju.software.pojo.Member;
@@ -28,8 +27,7 @@ public interface TaskDao {
 	
 	public void deleteTaskAssign(int taskId);
 	
-	@SuppressWarnings("rawtypes")
-	public LinkedHashMap getTasksWithChildrenByProject(int projectId);
+	public List<Task> getTasksWithChildrenByProject(int projectId);
 	
 	public List<Member> getRelatedMembers(int taskId);
 	

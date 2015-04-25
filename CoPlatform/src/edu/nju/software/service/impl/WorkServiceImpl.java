@@ -359,16 +359,14 @@ public class WorkServiceImpl implements WorkService {
 		return false;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public GeneralResult<HashMap> getTasksWithChildrenByProject(
+	public GeneralResult<List<Task>> getTasksWithChildrenByProject(
 			int projectId) {
-		GeneralResult<HashMap> result = new GeneralResult<HashMap>();
+		GeneralResult<List<Task>> result = new GeneralResult<List<Task>>();
 		try {
-			LinkedHashMap taskTree = taskDao.getTasksWithChildrenByProject(projectId);
-			if(null != taskTree && !taskTree.isEmpty()) {
-				result.setData(taskTree);
-//				result.setData(convertToTaskForest(taskTree));
+			List<Task> taskList = taskDao.getTasksWithChildrenByProject(projectId);
+			if(null != taskList && !taskList.isEmpty()) {
+				result.setData(taskList);
 			}else {
 				result.setResultCode(ResultCode.E_NO_DATA);
 				result.setMessage("no tasks, projectId: " + projectId);

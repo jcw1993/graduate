@@ -365,12 +365,18 @@ public class WorkController {
 	}
 	
 	
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = {"/GetTaskTree"}, method = RequestMethod.GET)
 	@ResponseBody
-	public GeneralJsonResult<HashMap> getTaskTree(HttpServletRequest request, HttpServletResponse response) {
+	public GeneralJsonResult<List<Task>> getTaskTree(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
-		GeneralResult<HashMap> taskResult = workService.getTasksWithChildrenByProject(projectId);
-		return new GeneralJsonResult<HashMap>(taskResult);
+		GeneralResult<List<Task>> taskResult = workService.getTasksWithChildrenByProject(projectId);
+		return new GeneralJsonResult<List<Task>>(taskResult);
+	}
+	
+	@RequestMapping(value = {"/TaskTree"}, method = RequestMethod.GET)
+	public ModelAndView taskTree(HttpServletRequest request, HttpServletResponse response) {
+		HashMap<String, Object> model = new CoHashMap();
+
+		return new ModelAndView("taskTree", "model", model);
 	}
 }

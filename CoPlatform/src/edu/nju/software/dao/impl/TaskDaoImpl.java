@@ -1,6 +1,5 @@
 package edu.nju.software.dao.impl;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -78,17 +77,18 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 		query.executeUpdate();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	@Override
-	public LinkedHashMap getTasksWithChildrenByProject(int projectId) {
+	public List<Task> getTasksWithChildrenByProject(int projectId) {
 		Query query = getSession().createQuery("select t from Task as t where projectId = " + projectId + " order by t.depth asc, id asc");
-		List<Task> taskList = query.list();
-		LinkedHashMap<Integer, Task> taskTree = new LinkedHashMap<Integer,Task>();
-		for(Task task : taskList) {
-			taskTree.put(task.getId(), task);
-		}
-		
-		return taskTree;
+//		List<Task> taskList = query.list();
+//		LinkedHashMap<Integer, Task> taskTree = new LinkedHashMap<Integer,Task>();
+//		for(Task task : taskList) {
+//			taskTree.put(task.getId(), task);
+//		}
+//		
+//		return taskTree;
+		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
