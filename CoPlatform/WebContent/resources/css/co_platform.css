@@ -102,6 +102,13 @@ div.nav-container .navbar-nav>li>a {
 	top: 0;
 }
 
+.navi-user-pic {
+	height: 40px;
+	position: absolute;
+	left: 10px;
+	top: 0;
+}
+
 .login-body {
 	background-color: #2d96ff;
 }
