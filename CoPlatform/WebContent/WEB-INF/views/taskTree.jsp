@@ -21,13 +21,13 @@
 				</div>
 				<div style="float:right">
 				<div class="col-xs-4">
-					<a class="projectDelete btn btn-default btn-sm" projectId="${project.id}">删 除 项 目</a> 
+					<a class="projectDelete btn btn-default btn-sm" projectId="${project.id}">删除项目</a> 
 				</div>	
 				<div class="col-xs-2">
 					<a 
 					class="btn btn-info btn-sm taskListBtn" data-toggle="collapse"
 					href="#projectTaskArea${project.id}" aria-expanded="false"
-					aria-controls="collapseExample" projectId="${project.id}" style="margin-left:10px;">查 看 任 务</a>
+					aria-controls="collapseExample" projectId="${project.id}" style="margin-left:10px;">查看任务</a>
 				</div>
 				</div>					
 			</div>
@@ -51,6 +51,12 @@ $taskListBtn.click(function(e) {
 	console.log("see project tasks, projectId:" + projectId);
 	if(!projectTaskMap.get(projectId)) {
 		loadData(projectId);
+	}
+
+	if($(this).text() == "查看任务") {
+		$(this).text("隐藏任务");
+	}else {
+		$(this).text("查看任务");
 	}
 });
 

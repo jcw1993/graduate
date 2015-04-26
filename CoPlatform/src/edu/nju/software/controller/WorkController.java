@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Company;
+import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
 import edu.nju.software.service.CompanyService;
@@ -179,6 +180,11 @@ public class WorkController {
 	
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("task", taskResult.getData());
+		}
+		
+		GeneralResult<List<Member>> memberResult = workService.getRelatedMembers(taskId);
+		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("members", memberResult.getData());
 		}
 		return new ModelAndView("taskInfo", "model", model);
 	}
