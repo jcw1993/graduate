@@ -66,6 +66,13 @@
 	</table>
 </form>
 
+<c:if test="${model.members != null}">
+	<p>任务分配情况：</p>
+	<c:forEach items="${model.members}" var="member">
+		${member.name}
+	</c:forEach>
+</c:if>
+
 <script type="text/javascript">
 	$taskStartDatePicker = $("#taskStartDate");
 	$taskStartTimePicker = $("#taskStartTime");
