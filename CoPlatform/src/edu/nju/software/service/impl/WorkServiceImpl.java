@@ -1,5 +1,6 @@
 package edu.nju.software.service.impl;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -13,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import edu.nju.software.dao.LogDao;
 import edu.nju.software.dao.ProjectDao;
 import edu.nju.software.dao.TaskDao;
+import edu.nju.software.pojo.Log;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.Project;
 import edu.nju.software.pojo.Task;
@@ -46,6 +49,9 @@ public class WorkServiceImpl implements WorkService {
 	@Autowired
 	private TaskDao taskDao;
 	
+	@Autowired
+	private LogDao logDao;
+	
 	@Override
 	public GeneralResult<Project> getProjectById(int id) {
 		GeneralResult<Project> result = new GeneralResult<Project>();
@@ -72,6 +78,12 @@ public class WorkServiceImpl implements WorkService {
 		try {
 			int outId = projectDao.create(project);
 			result.setData(outId);
+			long time = System.currentTimeMillis();
+			Date date = new Date(time);
+			Log log = new Log("创建项目" + project.getName(),"创建项目" + project.getName(),
+					project, null, 1, 1, date, project.getCompanyId(),1,1);
+			logDao.create(log);
+			
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
@@ -88,6 +100,11 @@ public class WorkServiceImpl implements WorkService {
 		NoDataResult result = new NoDataResult();
 		try {
 			projectDao.update(project);
+			long time = System.currentTimeMillis();
+			Date date = new Date(time);
+			Log log = new Log("修改项目" + project.getName(),"修改项目" + project.getName() + "状态到" + project.getProgress(),
+					project, null, 1, 1, date, project.getCompanyId(),1,1);
+			logDao.create(log);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_UPDATE_ERROR);
@@ -107,6 +124,13 @@ public class WorkServiceImpl implements WorkService {
 		
 		GeneralResult<Project> projectResult = getProjectById(projectId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
+			
+			long time = System.currentTimeMillis();
+			Date date = new Date(time);
+			Log log = new Log("删除项目" + projectResult.getData().getName(),"删除项目" + projectResult.getData().getName(),
+					 projectResult.getData(), null, 1, 1, date,  projectResult.getData().getCompanyId(),1,1);
+			logDao.create(log);
+			
 			CoCacheManager.remove(String.format(COMPANY_PROJECT_CACHE_KEY_FORMAT, projectResult.getData().getCompanyId()));
 		} 
 		
@@ -115,6 +139,7 @@ public class WorkServiceImpl implements WorkService {
 		CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, projectId));
 		
 		try {
+			
 			projectDao.deleteTaskAssign(projectId);
 			projectDao.delete(projectId);
 			taskDao.deleteAllByProject(projectId);
@@ -180,6 +205,15 @@ public class WorkServiceImpl implements WorkService {
 		try {
 			int outId = taskDao.create(task);
 			result.setData(outId);
+			
+			long time = System.currentTimeMillis();
+			Date date = new Date(time);
+			
+			GeneralResult<Project> projectResult = getProjectById(task.getProjectId());
+			Log log = new Log("创建任务" + task.getName(),"创建任务" + task.getName(),
+					projectResult.getData(), task, task.getStatus(), task.getStatus(), date, projectResult.getData().getCompanyId(),1,1);
+			logDao.create(log);
+			
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_INSERT_ERROR);
@@ -196,6 +230,31 @@ public class WorkServiceImpl implements WorkService {
 		NoDataResult result = new NoDataResult();
 		try {
 			taskDao.update(task);
+			long time = System.currentTimeMillis();
+			Date date = new Date(time);
+			GeneralResult<Project> projectResult = getProjectById(task.getProjectId());
+			String statusStr;
+			switch (task.getStatus()) {
+			case 1:
+				statusStr = "未开始";
+				break;
+			case 2:
+				statusStr = "进行中";
+				break;
+			case 3:
+				statusStr = "已完成";
+				break;
+			case 4:
+				statusStr = "已失效";
+				break;
+			default:
+				statusStr = "未开始";
+				break;
+			}
+			Log log = new Log("修改任务" + task.getName(),"修改任务" + task.getName() + "状态到" + statusStr,
+					projectResult.getData(), task, task.getStatus(), task.getStatus(), date, projectResult.getData().getCompanyId(),1,1);
+			logDao.create(log);
+			
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
 			result.setResultCode(ResultCode.E_DATABASE_UPDATE_ERROR);
@@ -214,11 +273,21 @@ public class WorkServiceImpl implements WorkService {
 		
 		GeneralResult<Task> taskResult = getTaskById(taskId);
 		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			
+			long time = System.currentTimeMillis();
+			Date date = new Date(time);
+			Task task = taskResult.getData();
+			GeneralResult<Project> projectResult = getProjectById(task.getProjectId());
+
+			Log log = new Log("删除任务" + task.getName(),"删除任务" + task.getName(),
+					projectResult.getData(), task, task.getStatus(), task.getStatus(), date, projectResult.getData().getCompanyId(),1,1);
+			logDao.create(log);
 			CoCacheManager.remove(String.format(PROJECT_TASK_CACHE_KEY_FOMAT, taskResult.getData().getProjectId()));
 		}
 		CoCacheManager.remove(String.format(TASK_CACHE_KEY_FORMAT, taskId));
 		
 		try {
+			
 			taskDao.deleteTaskAssign(taskId);
 			taskDao.delete(taskId);
 		}catch(DataAccessException e) {

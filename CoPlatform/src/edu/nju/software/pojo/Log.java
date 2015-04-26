@@ -11,7 +11,7 @@ public class Log {
 	private int originStatus;
 	private int currentStatus;
 	private Date createdTime;
-	private Company company;
+	private int companyId;
 	private int creatorId;
 	private int creatorType;
 	
@@ -63,11 +63,11 @@ public class Log {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
-	public Company getCompany() {
-		return company;
+	public int getCompanyId() {
+		return companyId;
 	}
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 	public int getCreatorId() {
 		return creatorId;
@@ -85,7 +85,7 @@ public class Log {
 	public Log() {}
 	
 	public Log(String title, String description, Project project, Task task, int originStatus, 
-			int currentStatus, Date createdTime, Company company, int creatorId,int creatorType)
+			int currentStatus, Date createdTime, int companyId, int creatorId,int creatorType)
 	{
 		this.title = title;
 		this.description = description;
@@ -94,7 +94,7 @@ public class Log {
 		this.originStatus = originStatus;
 		this.currentStatus = currentStatus;
 		this.createdTime = createdTime;
-		this.company = company;
+		this.companyId = companyId;
 		this.creatorId = creatorId;
 		this.creatorType = creatorType;
 	}
