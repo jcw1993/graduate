@@ -85,7 +85,8 @@ public class CoUtils {
 	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setMaxAge(maxAge);
-		cookie.setPath("/");
+//		cookie.setPath("/");
+		cookie.setPath("/1/njucowork");
 		response.addCookie(cookie);
 	}
 }
