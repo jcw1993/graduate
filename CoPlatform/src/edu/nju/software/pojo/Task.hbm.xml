@@ -17,6 +17,7 @@
         <property name="endTime" type="timestamp" column="end_time" />
         <property name="status" type="integer" column="status_id" />
         <property name="depth" type="integer" column="depth" />
+        <property name="path" type="string" column="path" />
     </class>
 
 </hibernate-mapping>

@@ -12,6 +12,7 @@ public class Task {
 	private int status;
 	private Date startTime;
 	private Date endTime;
+	private String path;
 
 	public int getId() {
 		return id;
@@ -67,6 +68,12 @@ public class Task {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
 	
 	public Task() {}
 	
@@ -74,7 +81,7 @@ public class Task {
 		this.id = id;
 	}
 	
-	public Task(int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime) {
+	public Task(int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime, String path) {
 		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
@@ -83,9 +90,10 @@ public class Task {
 		this.depth = depth;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.path = path;
 	}
 	
-	public Task(int id, int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime) {
+	public Task(int id, int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime, String path) {
 		this.id = id;
 		this.projectId = projectId;
 		this.name = name;
@@ -95,6 +103,7 @@ public class Task {
 		this.depth = depth;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.path = path;
 	}
 
 	@Override

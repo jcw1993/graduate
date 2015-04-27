@@ -41,6 +41,10 @@ public class WorkController {
 	
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
+	private static final int TASK_DEPTH_STEP = 1;
+	
+	private static final String TASK_PATH_SEPARATOR = "";
+	
 	@Autowired
 	private CompanyService companyService;
 	@Autowired
@@ -221,7 +225,17 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Task task = new Task(taskId, projectId, name, description, 0 ,status, 1, startDate, endDate);
+		int depth = CoUtils.getRequestIntValue(request, "depth", false);
+		if(depth == 0) {
+			depth += TASK_DEPTH_STEP;
+		}
+		
+		String path = request.getParameter("path");
+		if(null != path) {
+			path = path.trim();
+		}
+		
+		Task task = new Task(taskId, projectId, name, description, 0 ,status, depth, startDate, endDate, path);
 		
 		NoDataResult result = workService.updateTask(task);
 		return new NoDataJsonResult(result);
@@ -313,6 +327,7 @@ public class WorkController {
 	public ModelAndView createTaskGet(HttpServletRequest request, HttpServletResponse response) {
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", false);
+		int parentId = CoUtils.getRequestIntValue(request, "parentId", false);
 		
 		GeneralResult<Project> projectResult = workService.getProjectById(projectId);
 		if(companyId != 0) {
@@ -322,6 +337,7 @@ public class WorkController {
 		}
 		
 		Task task = new Task();
+		task.setParentId(parentId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
 			task.setProjectId(projectId);
 		}else {
@@ -364,7 +380,26 @@ public class WorkController {
 			description = description.trim();
 		}
 		
-		Task task = new Task(projectId, name, description, 0 ,status, 1, startDate, endDate);
+		int depth = CoUtils.getRequestIntValue(request, "depth", false);
+		if(depth == 0) {
+			depth += TASK_DEPTH_STEP;
+		}
+		
+		String path = null;
+		int parentId = CoUtils.getRequestIntValue(request, "parentId", false);
+		// root task
+		if(parentId == 0) {
+			
+		}else {
+			GeneralResult<Task> taskResult = workService.getTaskByProjectAndId(projectId, parentId);
+			if(taskResult.getResultCode() == ResultCode.NORMAL) {
+				Task task = taskResult.getData();
+				depth = task.getDepth() + TASK_DEPTH_STEP;
+				path = task.getPath() + TASK_PATH_SEPARATOR + task.getId();
+			}
+		}
+		
+		Task task = new Task(projectId, name, description, 0 ,status, depth, startDate, endDate, path);
 		
 		GeneralResult<Integer> result = workService.createTask(task);
 		return new NoDataJsonResult(result);

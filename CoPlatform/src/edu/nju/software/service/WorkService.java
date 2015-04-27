@@ -27,6 +27,8 @@ public interface WorkService {
 	
 	public NoDataResult deleteTask(int taskId);
 	
+	public NoDataResult deleteSubTasks(int projectId,int taskId);
+	
 	public GeneralResult<List<Task>> getTasksByProject(int projectId);
 	
 	public GeneralResult<Task> getTaskByProjectAndId(int projectId, int taskId);

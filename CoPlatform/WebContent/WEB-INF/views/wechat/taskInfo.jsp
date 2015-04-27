@@ -17,6 +17,12 @@
 			<c:if test="${task.id != null && task.id != 0}">
 				<input name="taskId" type="hidden" value="${task.id}" />
 			</c:if>
+			<c:if test="task.depth != null && task.id != 0">
+				<input name="depth" type="hidden" value="${task.depth}" />
+			</c:if>			
+			<c:if test="task.path != null">
+				<input name="path" type="hidden" value="${task.path}" />
+			</c:if>			
 		<input name="projectId" type="hidden"
 				value="${task.project.id}" />
 		<tr>

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class WorkServiceImpl implements WorkService {
 	private static final String PROJECT_TASK_CACHE_KEY_FOMAT = "projct_task_%d";
 	
 	private static final String TASK_CACHE_KEY_FORMAT = "task_%d";
+	
+	private static final String TASK_PATH_SEPARATOR = "_";
 	
 	@SuppressWarnings("unused")
 	private static final int MAX_TREE_DEPTH = 3;
@@ -299,6 +302,23 @@ public class WorkServiceImpl implements WorkService {
 		
 		return result;
 	}
+	
+	@Override
+	public NoDataResult deleteSubTasks(int projectId, int taskId) {
+		NoDataResult result = new NoDataResult(ResultCode.NORMAL);
+		GeneralResult<List<Task>> taskResult = getTasksByProject(projectId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			for(Task task : taskResult.getData()) {
+				if(inPath(task.getPath(), taskId)) {
+					NoDataResult deleteResult = deleteTask(task.getId());
+					if(deleteResult.getResultCode() != ResultCode.NORMAL) {
+						result.setResultCode(deleteResult.getResultCode());
+					}
+				}
+			}
+		}
+		return result;
+	}
 
 	@Override
 	public GeneralResult<List<Task>> getTasksByProject(int projectId) {
@@ -512,5 +532,24 @@ public class WorkServiceImpl implements WorkService {
 			}
 			return null;
 		}
+	}
+	
+	private boolean inPath(String path, int id) {
+		if(StringUtils.isBlank(path) || id == 0) {
+			return false;
+		}
+		String[] nodes = path.split(TASK_PATH_SEPARATOR);
+		if(nodes.length == 0) {
+			return false;
+		}
+		
+		String idStr = String.valueOf(id);
+		for(String node : nodes) {
+			if(node.equals(idStr)) {
+				return true;
+			}
+		}
+		return false;
+		
 	}
 }

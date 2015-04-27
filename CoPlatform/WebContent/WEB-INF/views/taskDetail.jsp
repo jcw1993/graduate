@@ -17,12 +17,18 @@
 		<form id="taskEditForm">
 			<table class="table table-responsive">
 				<c:set value="${model.task}" var="task" />
-				<tr>
-					<td><c:if test="${task.id != null && task.id != 0}">
+
+					<c:if test="${task.id != null && task.id != 0}">
 							<input name="taskId" type="hidden" value="${task.id}" />
-						</c:if></td>
-					<td><input name="projectId" type="hidden"
-						value="${task.projectId}" /></td>
+						</c:if>
+						<c:if test="task.path != null">
+							<input name="path" type="hidden" value="${task.path}" />
+						</c:if>
+						<c:if test="task.depth != null && task.id != 0">
+							<input name="depth" type="hidden" value="${task.depth}" />
+						</c:if>						
+					<input name="projectId" type="hidden"
+						value="${task.projectId}" />
 				</tr>
 				<tr>
 					<td><label>任务名称</label></td>
@@ -77,21 +83,24 @@
 
 		<c:if test="${model.members != null}">
 		<h3>相关人员</h3>
+		<hr/>
 		<c:forEach items="${model.members}" var="member">
-			${member.name}
+			<span class="taskEmployee">${member.name}</span>
 		</c:forEach>
 		</c:if>
 
 	<h3>任务分配</h3>
+	<hr/>
 	<div id="taskAssignContent">
 		<label>类型</label> <select id="employeeTypeSelect">
 			<option value="0">公司职员</option>
 			<option value="1">外聘人员</option>
 		</select> <label>人员</label> <select id="employeeList">
 		</select>
+		<button id="taskAssignSubmit" type="button" class="btn btn-info btn-sm">确定</button>
 	</div>
 
-	<button id="taskAssignSubmit" type="button" class="btn btn-info">确定</button>
+
 
 
 	</div>
@@ -114,6 +123,9 @@
 	var $employeeTypeSelect = $("#employeeTypeSelect");
 	var $employeeListSelect = $("#employeeList");
 	var $taskAssignSubmit = $("#taskAssignSubmit");
+
+	var $taskDeleteBtn = $("#taskDelete");
+	var $subTaskCreateBtn = $("#subTaskCreate");
 
 	/*variables*/
 	var members;
@@ -139,6 +151,14 @@
 		var companyId = "${model.admin.companyId}";
 		console.log("xxx");
 		assignTaskToEmployee(${model.task.id}, employeeId, currentEmployeeType, companyId);
+	});
+
+	$taskDeleteBtn.click(function(e) {
+		console.log("task delete click");
+	});
+
+	$subTaskCreateBtn.click(function(e){
+		console.log("subTask create click");
 	});
 
 	/*functions*/
