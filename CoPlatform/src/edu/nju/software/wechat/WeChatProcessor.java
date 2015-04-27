@@ -275,11 +275,13 @@ public class WeChatProcessor extends WechatSupport {
 	 */
 	@Override
 	protected void subscribe() {
-		String result = "感谢您关注南大任务协同平台，若需查询任务或修改任务状态请发送" + WeChatInstruct.TASKS
-				+ ",若需获取最新资讯请发送" + WeChatInstruct.NEWS + ",若需要帮助请发送"
-				+ WeChatInstruct.HELP + "。祝您工作愉快↖(^ω^)↗";
+		String openID = wechatRequest.getFromUserName();
+//		String result = "感谢您关注南大任务协同平台，若需查询任务或修改任务状态请发送" + WeChatInstruct.TASKS
+//				+ ",若需获取最新资讯请发送" + WeChatInstruct.NEWS + ",若需要帮助请发送"
+//				+ WeChatInstruct.HELP + "。祝您工作愉快↖(^ω^)↗";
 
-		responseText(result);
+//		responseText(result);
+		responseText(openID);
 	}
 
 	/**

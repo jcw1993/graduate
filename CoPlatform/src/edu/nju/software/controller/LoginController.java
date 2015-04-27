@@ -25,42 +25,49 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private AdminService adminService;
-	
-	@RequestMapping(value = {"/", "/Login"}, method = RequestMethod.GET)
-	public ModelAndView loginView(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+	@RequestMapping(value = { "/", "/Login" }, method = RequestMethod.GET)
+	public ModelAndView loginView(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 		return new ModelAndView("login", null);
 	}
-	
-	@RequestMapping(value = {"/Login"}, method = RequestMethod.POST)
-	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+	@RequestMapping(value = { "/Login" }, method = RequestMethod.POST)
+	public void login(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		String mail = request.getParameter("mail");
 		String password = request.getParameter("password");
-		if(StringUtils.isBlank(mail) || StringUtils.isBlank(password)) {
+		if (StringUtils.isBlank(mail) || StringUtils.isBlank(password)) {
 			response.sendRedirect(request.getContextPath() + "/Login");
 			return;
 		}
-		
+
 		mail = mail.trim();
 		password = password.trim();
-		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(mail, password);
-		if(adminResult.getResultCode() == ResultCode.NORMAL) {
+		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(
+				mail, password);
+		if (adminResult.getResultCode() == ResultCode.NORMAL) {
 			Gson gson = new Gson();
 			Admin admin = adminResult.getData();
-			CoUtils.addCookie(response, "currentAdmin", URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);
-			response.sendRedirect(request.getContextPath() + "/" + "MemberList?companyId=" + adminResult.getData().getCompanyId());
+			CoUtils.addCookie(request, response, "currentAdmin",
+					URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);
+			response.sendRedirect(request.getContextPath() + "/"
+					+ "MemberList?companyId="
+					+ adminResult.getData().getCompanyId());
 			return;
-		}else {
+		} else {
 			response.sendRedirect(request.getContextPath() + "/Login");
 			return;
 		}
-		
+
 	}
 
-	@RequestMapping(value = {"/Logout", "/logout"})
-	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@RequestMapping(value = { "/Logout", "/logout" })
+	public void logout(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		Cookie cookie = new Cookie("currentAdmin", null);
 		cookie.setMaxAge(0);
 		cookie.setPath("/");

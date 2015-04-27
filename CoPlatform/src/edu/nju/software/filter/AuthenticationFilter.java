@@ -42,13 +42,14 @@ public class AuthenticationFilter implements Filter {
 		
 		String requestURI = httpServletRequest.getRequestURI();
 		String contextPath = httpServletRequest.getContextPath();
-		if(!isValidURI(requestURI) && !requestURI.startsWith(contextPath + WECHAT_URL_PREFIX)) {
+//		if(!isValidURI(requestURI) && !requestURI.startsWith(contextPath + WECHAT_URL_PREFIX)) {
+		/*if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX)) {
 			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
 			if(null == adminCookieValue) {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
 				return;
 			}
-		}
+		}*/
 		
 //		if(requestURI.startsWith(contextPath + WECHAT_URL_PREFIX) && !requestURI.equals(contextPath + WECHAT_URL_PREFIX)) {
 //			String memberCookieValue = CoUtils.getCookie(httpServletRequest, "currentMember");

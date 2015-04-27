@@ -38,10 +38,10 @@ public class WeChatLoginController {
 			response.sendRedirect(request.getContextPath() + "/Error");
 			return null;
 		}
-		
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("openId", openId.trim());
-		
+
 		return new ModelAndView("wechat/login", "model", model);
 	}
 
@@ -51,9 +51,10 @@ public class WeChatLoginController {
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
 		String openId = request.getParameter("openId");
-		
-		if(StringUtils.isBlank(openId)) {
-			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
+
+		if (StringUtils.isBlank(openId)) {
+			response.sendRedirect(request.getContextPath() + "/wechat?openId="
+					+ openId);
 			return;
 		}
 
@@ -65,19 +66,23 @@ public class WeChatLoginController {
 		phone = phone.trim();
 		password = password.trim();
 		openId = openId.trim();
-		
-		GeneralResult<Member> memberResult = memberService.getByPhoneAndPassword(phone, password);
+
+		GeneralResult<Member> memberResult = memberService
+				.getByPhoneAndPassword(phone, password);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			Member member = memberResult.getData();
 			member.setOpenId(openId);
 			memberService.update(member);
 			Gson gson = new Gson();
-			CoUtils.addCookie(response, "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
-			
-			response.sendRedirect(request.getContextPath() + "/wechat/MyTasks?openId=" + openId);
+			CoUtils.addCookie(request, response, "currentMember",
+					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
+
+			response.sendRedirect(request.getContextPath()
+					+ "/wechat/MyTasks?openId=" + openId);
 			return;
 		} else {
-			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
+			response.sendRedirect(request.getContextPath() + "/wechat?openId="
+					+ openId);
 			return;
 		}
 
