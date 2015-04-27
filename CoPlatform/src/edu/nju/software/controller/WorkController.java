@@ -389,4 +389,28 @@ public class WorkController {
 		}
 		return new ModelAndView("taskTree", "model", model);
 	}
+	
+	@RequestMapping(value = {"/TaskDetail"}, method = RequestMethod.GET)
+	public ModelAndView taskDetail(HttpServletRequest request, HttpServletResponse response) {
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
+		int projectId = CoUtils.getRequestIntValue(request, "projectId", false);
+		
+		Map<String, Object> model = new CoHashMap(request);
+		GeneralResult<Task> taskResult = null;
+		if(projectId == 0) {
+			taskResult = workService.getTaskById(taskId);
+		}else {
+			taskResult = workService.getTaskByProjectAndId(projectId, taskId);
+		}
+	
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("task", taskResult.getData());
+		}
+		
+		GeneralResult<List<Member>> memberResult = workService.getRelatedMembers(taskId);
+		if(memberResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("members", memberResult.getData());
+		}
+		return new ModelAndView("taskDetail", "model", model);
+	}
 }

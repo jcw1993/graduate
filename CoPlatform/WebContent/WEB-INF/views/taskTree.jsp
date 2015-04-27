@@ -39,10 +39,30 @@
 	</div>
 	</div>
 </div>
-<div id="tree"></div>
+
+<div id="taskEditModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">任务信息</h4>
+			</div>
+			<div id="taskEditContent" class="modal-body"></div>
+			<div class="modal-footer">
+				<button id="taskEditSubmit" type="button" class="btn btn-primary"
+					data-dismiss="modal">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 
 var $taskListBtn = $(".taskListBtn");
+
+var $taskInfoLink = $(".taskInfo");
+var $taskEditModal = $("#taskEditModal");
+var $taskEditContent = $("#taskEditContent");
+var $taskEditSubmit = $("#taskEditSubmit");
 
 var projectTaskMap = new Map();
 
@@ -76,7 +96,10 @@ function loadData(projectId) {
 					data: viewData,
 					enableLinks: true,
 					color: "#428bca",
-				    icon: "glyphicon glyphicon-stop",
+				    icon: "glyphicon glyphicon-time",
+				    state: {
+				    	expanded: false
+				    },
 				    // expandIcon: 'glyphicon glyphicon-chevron-right',
 				    // collapseIcon: 'glyphicon glyphicon-chevron-down',
 					// nodeIcon: 'glyphicon glyphicon-bookmark',
@@ -131,6 +154,8 @@ function findNode(taskTree, id) {
 	// 	});
 	// 	return result;
 	// }
+
+	// bug: cannot break in forEach, need to be fixed
 	var result;
 	if(taskTree.get(id) != undefined) {
 		result = taskTree.get(id);
@@ -172,7 +197,8 @@ function convertToNodes(taskTree, taskList) {
 		var taskNode = {};
 		
 		taskNode["text"] = task.name;
-		taskNode["href"] = "GetTaskInfo?taskId=" + taskId;
+		taskNode["href"] = "TaskDetail?taskId=" + taskId;
+		// taskNode["icon"] = "glyphicon glyphicon-time";
 		if(value) {
 			var subData = convertToNodes(value, taskList);
 			if(subData) {

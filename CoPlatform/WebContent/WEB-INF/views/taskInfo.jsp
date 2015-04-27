@@ -74,13 +74,14 @@
 </c:if>
 
 <script type="text/javascript">
-	$taskStartDatePicker = $("#taskStartDate");
-	$taskStartTimePicker = $("#taskStartTime");
-	$taskEndDatePicker = $("#taskEndDate");
-	$taskEndTimePicker = $("#taskEndTime");
+	var $taskStartDatePicker = $("#taskStartDate");
+	var $taskStartTimePicker = $("#taskStartTime");
+	var $taskEndDatePicker = $("#taskEndDate");
+	var $taskEndTimePicker = $("#taskEndTime");
 
 	$taskStartDatePicker.datepicker();
 	$taskStartTimePicker.timepicker({ "timeFormat": "H:i:s" });
 	$taskEndDatePicker.datepicker();
-	$taskEndTimePicker.timepicker({ "timeFormat": "H:i:s" });		
+	$taskEndTimePicker.timepicker({ "timeFormat": "H:i:s" });	
+
 </script>

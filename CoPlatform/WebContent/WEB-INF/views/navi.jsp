@@ -52,7 +52,7 @@
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
 									data-toggle="dropdown" role="button" aria-expanded="false">
 										<span style="padding-right: 45px;"><img alt="用户" class="navi-user-pic"
-											src="/resources/images/user21.png" style="  margin-top: 5px;"></span><span>${model.admin.name}</span>
+											src="<c:url value="/resources/images/user_default.png" />"style="  margin-top: 5px;"></span><span>${model.admin.name}</span>
 								</a>
 									<ul class="dropdown-menu" role="menu">
 										<li><a href="Logout">退出</a></li>
