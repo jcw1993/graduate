@@ -43,7 +43,7 @@ public class WorkController {
 	
 	private static final int TASK_DEPTH_STEP = 1;
 	
-	private static final String TASK_PATH_SEPARATOR = "";
+	private static final String TASK_PATH_SEPARATOR = "_";
 	
 	@Autowired
 	private CompanyService companyService;
@@ -359,7 +359,12 @@ public class WorkController {
 		
 		Map<String, Object> model = new CoHashMap(request);
 		model.put("task", task);
-		return new ModelAndView("taskInfo", "model", model);
+		if(parentId == 0) {
+			return new ModelAndView("taskInfo", "model", model);
+		}else {
+			return new ModelAndView("subTaskInfo", "model", model);
+		}
+
 	}
 	
 	@RequestMapping(value = {"/CreateTask"}, method = RequestMethod.POST)
@@ -401,9 +406,7 @@ public class WorkController {
 		String path = null;
 		int parentId = CoUtils.getRequestIntValue(request, "parentId", false);
 		// root task
-		if(parentId == 0) {
-			
-		}else {
+		if(parentId != 0) {
 			GeneralResult<Task> taskResult = workService.getTaskByProjectAndId(projectId, parentId);
 			if(taskResult.getResultCode() == ResultCode.NORMAL) {
 				Task task = taskResult.getData();
@@ -412,12 +415,11 @@ public class WorkController {
 			}
 		}
 		
-		Task task = new Task(projectId, name, description, 0 ,status, depth, startDate, endDate, path);
+		Task task = new Task(projectId, name, description, parentId ,status, depth, startDate, endDate, path);
 		
 		GeneralResult<Integer> result = workService.createTask(task);
 		return new NoDataJsonResult(result);
 	}
-	
 	
 	@RequestMapping(value = {"/GetTaskTree"}, method = RequestMethod.GET)
 	@ResponseBody
