@@ -99,11 +99,23 @@ public class CoUtils {
 //		cookie.setPath("/");
 //		cookie.setPath("/1/njucowork");
 //		cookie.setPath("/njucowork");
-		cookie.setPath(request.getContextPath());
+//		cookie.setPath(request.getContextPath());
+//		String realPath = SaeUserInfo.getSaeTmpPath() + "/";
+//		cookie.setPath(realPath);
+//		cookie.setDomain("");
 		response.addCookie(cookie);
+		tmpfsToStorage();
 	}
 	
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
+	public static void tmpfsToStorage(){
+		
+	}
+	
+	public static void storageToTmpfs(){
+		
+	}
+	
+	/*public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("gbk");
         PrintWriter out = response.getWriter();
@@ -127,7 +139,7 @@ public class CoUtils {
                     // 上传完毕后 使用SaeStorage往storage里面写
                     SaeStorage ss = new SaeStorage();
                     // 使用upload方法上传到域为image下
-                    ss.upload("image", realPath + fullFile.getName(),
+                    ss.upload("file", realPath + fullFile.getName(),
                             fullFile.getName());
 
                     out.print("upload file:" + realPath + fullFile.getName()
@@ -141,5 +153,5 @@ public class CoUtils {
             out.flush();
             out.close();
         }
-    }
+    }*/
 }
