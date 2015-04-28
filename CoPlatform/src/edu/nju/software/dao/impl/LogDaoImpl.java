@@ -6,10 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.LogDao;
-import edu.nju.software.pojo.Company;
 import edu.nju.software.pojo.Log;
-import edu.nju.software.pojo.Project;
-import edu.nju.software.pojo.Task;
 
 @Repository
 public class LogDaoImpl extends HibernateDaoBase implements LogDao {

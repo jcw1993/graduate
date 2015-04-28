@@ -154,7 +154,21 @@
 	});
 
 	$taskDeleteBtn.click(function(e) {
+		var taskId = "${model.task.id}";
 		console.log("task delete click");
+		$.ajax({
+			url:"DeleteTask?taskId=" + taskId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("删除任务成功");
+					location.href = "TaskTree?companyId=" + "${model.admin.companyId}";
+				}else {
+					alert("删除任务失败");
+					console.log("delete task error");
+					console.log("error message: " + result.message);
+				}
+			}
+		});
 	});
 
 	$subTaskCreateBtn.click(function(e){
@@ -215,7 +229,7 @@
 			url: url,
 			success: function(result) {
 				if(result.resultCode == 0) {
-					console.log("分配任务成功");
+					alert("分配任务成功");
 					$taskAssignModal.modal("hide");
 				}else {
 					alert("失败，任务不能重复分配！");

@@ -245,8 +245,21 @@ public class WorkController {
 	@ResponseBody
 	public NoDataJsonResult deleteTask(HttpServletRequest request, HttpServletResponse response) {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
-		NoDataResult result = workService.deleteTask(taskId);
-		return new NoDataJsonResult(result);
+		GeneralResult<Task> taskResult = workService.getTaskById(taskId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			NoDataResult deleteResult = workService.deleteTask(taskId);
+			NoDataResult deleteSubResult = workService.deleteSubTasks(taskResult.getData().getProjectId(), taskId);
+			if(deleteResult.getResultCode() != ResultCode.NORMAL) {
+				return new NoDataJsonResult(deleteResult);
+			}
+			if(deleteSubResult.getResultCode() != ResultCode.NORMAL) {
+				return new NoDataJsonResult(deleteSubResult);
+			}
+			return new NoDataJsonResult(deleteResult);
+		}else {
+			return new NoDataJsonResult(taskResult);
+		}
+
 	}
 	
 	@RequestMapping(value = {"/MemberTaskAssign"}, method = RequestMethod.GET)
