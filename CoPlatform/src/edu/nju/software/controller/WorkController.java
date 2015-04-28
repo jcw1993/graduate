@@ -432,7 +432,7 @@ public class WorkController {
 	@RequestMapping(value = {"/TaskTree"}, method = RequestMethod.GET)
 	public ModelAndView taskTree(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		HashMap<String, Object> model = new CoHashMap();
+		HashMap<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Project>> projectResult = workService.getProjectsByCompany(companyId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("projects", projectResult.getData());

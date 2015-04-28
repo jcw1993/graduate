@@ -15,7 +15,7 @@ public class NewsDaoImpl extends HibernateDaoBase implements NewsDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<News> getLatestNews(int companyId) {
-		Query query = getSession().createQuery("from News where companyId = " + companyId + " order by createdTime desc");
+		Query query = getSession().createQuery("from News where companyId = " + companyId + " order by createdTime desc, id desc");
 		query.setFirstResult(0);
 		query.setMaxResults(MAX_PIECES);
 		return query.list();

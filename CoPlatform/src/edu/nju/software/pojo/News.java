@@ -15,7 +15,6 @@ public class News implements Serializable{
     private String title;
     private String content;
     private Date createdTime;
-    private Date publishTime;
     
 	public int getId() {
 		return id;
@@ -46,12 +45,6 @@ public class News implements Serializable{
 	}
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
-	}
-	public Date getPublishTime() {
-		return publishTime;
-	}
-	public void setPublishTime(Date publishTime) {
-		this.publishTime = publishTime;
 	}
 	
 	public News() {}

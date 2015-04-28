@@ -282,6 +282,7 @@
 			success: function(result) {
 				if(result.resultCode == 0) {
 					alert("分配任务成功");
+					location.reload();
 				}else {
 					alert("失败，任务不能重复分配！");
 				}
