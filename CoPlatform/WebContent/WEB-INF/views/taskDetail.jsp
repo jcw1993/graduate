@@ -100,11 +100,21 @@
 		<button id="taskAssignSubmit" type="button" class="btn btn-info btn-sm">确定</button>
 	</div>
 
-
-
-
 	</div>
 
+	<div id="subTaskCreateModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">创建子任务</h4>
+				</div>
+				<div id="subTaskCreateContent" class="modal-body"></div>
+				<div class="modal-footer">
+					<button id="subTaskCreateSubmit" type="button" class="btn btn-primary">创建</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 </body>
 </html>
@@ -126,6 +136,10 @@
 
 	var $taskDeleteBtn = $("#taskDelete");
 	var $subTaskCreateBtn = $("#subTaskCreate");
+
+	var $subTaskCreateModal = $("#subTaskCreateModal");
+	var $subTaskCreateContent = $("#subTaskCreateContent");
+	var $subTaskCreateSubmit = $("#subTaskCreateSubmit");
 
 	/*variables*/
 	var members;
@@ -154,11 +168,63 @@
 	});
 
 	$taskDeleteBtn.click(function(e) {
+		var taskId = "${model.task.id}";
 		console.log("task delete click");
+		$.ajax({
+			url:"DeleteTask?taskId=" + taskId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("删除任务成功");
+					location.href = "TaskTree?companyId=" + "${model.admin.companyId}";
+				}else {
+					alert("删除任务失败");
+					console.log("delete task error");
+					console.log("error message: " + result.message);
+				}
+			}
+		});
 	});
 
 	$subTaskCreateBtn.click(function(e){
 		console.log("subTask create click");
+		var projectId = "${model.task.projectId}";
+		var parentId = "${model.task.id}";
+		console.log("click task, projectId: " + projectId);
+		$subTaskCreateContent.load("CreateTask?projectId=" + projectId + "&parentId=" + parentId, function(response, status, xhr) {
+			if(status == "error") {
+				$subTaskCreateContent.load("Error");
+			}
+		});
+		$subTaskCreateModal.modal();
+	});
+
+	$subTaskCreateSubmit.click(function(e) {
+		var formData = $("#subTaskEditForm").serialize();
+
+		var name = $("#subTaskName").val();
+		var desc = $("#subTaskDescription").val();
+		var startDate = $("#subTaskStartDate").val();
+		var startTime = $("#subTaskStartTime").val();
+		var endDate = $("#subTaskEndDate").val();
+		var endTime = $("#subTaskEndTime").val();
+		var statusIndex = $("#subTaskStatus")[0].selectedIndex;
+		var status = $("#subTaskStatus").children().eq(statusIndex).val().trim();
+		if(checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status)) {
+			$.ajax({
+				url: "CreateTask",
+				data: formData,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						console.log("success");
+						alert("创建子任务成功");
+						location.href = "TaskTree?companyId=" + "${model.admin.companyId}";
+					}else {
+						console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+					}
+				} 
+			});
+		}
 	});
 
 	/*functions*/
@@ -215,13 +281,66 @@
 			url: url,
 			success: function(result) {
 				if(result.resultCode == 0) {
-					console.log("分配任务成功");
-					$taskAssignModal.modal("hide");
+					alert("分配任务成功");
+					location.reload();
 				}else {
 					alert("失败，任务不能重复分配！");
 				}
 			}
 		});
+	}
+
+	function checkTaskParameters(name, desc, startDate, startTime, endDate, endTime, status) {
+		if(name == undefined || name.trim() == "") {
+			alert("任务名称不能为空");
+			return false;
+		}
+		if(desc == undefined || desc.trim() == "") {
+			alert("任务描述不能为空");
+			return false;
+		}
+		if(startDate == undefined || startDate.trim() == "") {
+			alert("开始日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(startDate)) {
+			alert("开始日期格式错误");
+			return false;
+		}
+		if(startTime == undefined || startTime.trim() == "") {
+			alert("开始时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(startTime)) {
+			alert("开始时间格式错误");
+			return false;
+		}
+		if(endDate == undefined || endDate.trim() == "") {
+			alert("结束日期不能为空");
+			return false;
+		}
+		if(!validateDateFormat(endDate)) {
+			alert("结束日期格式错误");
+			return false;
+		}
+		if(!compareDate(startDate, startTime, endDate, endTime)) {
+			alert("结束时间不能早于开始时间");
+			return false;
+		}
+
+		if(endTime == undefined || endTime.trim() == "") {
+			alert("结束时间不能为空");
+			return false;
+		}
+		if(!validateTimeFormat(endTime)) {
+			alert("结束时间格式错误");
+			return false;
+		}
+		if(status == undefined || status.trim() == "") {
+			alert("任务状态不能为空");
+			return false;
+		}
+		return true;
 	}
 
 	loadEmployees(EMPLOYEE_TYPE_MEMBER);

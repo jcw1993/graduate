@@ -98,6 +98,7 @@ public class CoUtils {
 	public static void addCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setMaxAge(maxAge);
+<<<<<<< HEAD
 //		cookie.setPath("/");
 //		cookie.setPath("/1/njucowork");
 //		cookie.setPath("/njucowork");
@@ -116,6 +117,8 @@ public class CoUtils {
 		}*/
 //		org.apache.log4j.Logger log=LoggerUtils.getLogger(CoUtils.class, "log1.txt", true);
 //		log.info("^^^^^^^^^^^^^^:"+cookie.getPath()+" name= "+cookie.getName());
+=======
+>>>>>>> 84a5f920152db49f8f76e945e6cb9bd7ee3a9869
 		response.addCookie(cookie);
 //		tmpfsToStorage(cookie.getPath(),cookie.getName(),);
 	}

@@ -3,6 +3,7 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <jsp:include page="header.jsp" flush="true" />
 
@@ -21,7 +22,7 @@
 			<c:forEach items="${model.newsList}" var="news">
 				<tr>
 					<td><a href="NewsDetail?newsId=${news.id}" target="_blank">${news.title}</a></td>
-					<td>${news.createdTime}</td>
+					<td><fmt:formatDate value="${news.createdTime}" pattern="yyyy-MM-dd" /></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -34,4 +35,3 @@
 </body>
 </html>
 
-<jsp:include page="footer.jsp"></jsp:include>

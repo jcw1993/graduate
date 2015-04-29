@@ -13,31 +13,35 @@
 	<div class="container-body">
 		<h3>项目日志</h3>
 		<hr />
-		<c:forEach items="${model.projectLogs}" var="projectLog">
-			<c:set value="${projectLog.key}" var="project" />
-			<h4>${project.name}</h4>
-			<table
-				class="table table-striped table-bordered table-hover table-responsive">
-				<tr>
-					<th>标题</th>
-					<th>描述</th>
-					<th>项目Id</th>
-					<th>记录时间</th>
-				</tr>
-				<c:forEach items="${projectLog.value}" var="log">
+		<div class="container-fluid">
+		
+			<c:forEach items="${model.projectLogs}" var="projectLog">
+				<c:set value="${projectLog.key}" var="project" />
+				<h4>${project.name}</h4>
+				<table
+					class="table table-striped table-bordered table-hover table-responsive">
 					<tr>
-						<td>${log.title}</td>
-						<td>${log.description}</td>
-						<td>${log.project.id}</td>
-						<td>${log.createdTime}</td>
+						<th>标题</th>
+						<th>描述</th>
+						<th>项目Id</th>
+						<th>记录时间</th>
 					</tr>
-				</c:forEach>
-			</table>
-		</c:forEach>
+					<c:forEach items="${projectLog.value}" var="log">
+						<tr>
+							<td>${log.title}</td>
+							<td>${log.description}</td>
+							<td>${log.project.id}</td>
+							<td>${log.createdTime}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:forEach>
+		</div>
 	</div>
 
 
-	<script type="text/javascript">
+	
+<script type="text/javascript">
 
 </script>
 </body>

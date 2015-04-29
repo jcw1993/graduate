@@ -35,7 +35,7 @@
 								<li><a
 									href="OutEmployeeList?companyId=${model.admin.companyId}">外聘人员</a></li>
 							</ul></li>
-						<li><a href="WorkList?companyId=${model.admin.companyId}">工作管理</a></li>
+						<li><a href="TaskTree?companyId=${model.admin.companyId}">工作管理</a></li>
 						<!-- <li><a href="TaskList?projectId=1">任务管理</a></li> -->
 						<li><a href="ProjectLogList?companyId=${model.admin.companyId}">日志管理</a></li>
 						<!-- <li class="dropdown"><a href="#" class="dropdown-toggle"

@@ -224,7 +224,7 @@
 	$projectInfoLink.click(function(e) {
 		var projectId = $(this).attr("projectId");
 		console.log("get project info, projectId: " + projectId);
-		$projectEditContent.load("GetProjectInfo?projectId=" + projectId + "&companyId=" + ${model.admin.companyId}, function(response, status, xhr) {
+		$projectEditContent.load("GetProjectInfo?projectId=" + projectId + "&companyId=" + "${model.admin.companyId}", function(response, status, xhr) {
 			if(status == "error") {
 				$projectEditContent.load("Error");
 			}

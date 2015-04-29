@@ -80,7 +80,7 @@ public class NewsController {
 		GeneralResult<News> newsResult = newsService.getById(newsId);
 		if(newsResult.getResultCode() == ResultCode.NORMAL) {
 			News news = newsResult.getData();
-			news.setPublishTime(new Date());
+			news.setCreatedTime(new Date());
 			NoDataResult result = newsService.update(news);
 			return new NoDataJsonResult(result);
 		}else {

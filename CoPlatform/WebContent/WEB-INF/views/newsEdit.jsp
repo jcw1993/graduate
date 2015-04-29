@@ -50,10 +50,22 @@
 
 		$submitBtn.click(function(e) {
 			console.log("submit button click");
-			$newsForm.submit();
+			var data = $newsForm.serialize();
+			$.ajax({
+				url: "CreateNews",
+				data: data,
+				method: "post",
+				success: function(result) {
+					if(result.resultCode == 0) {
+						alert("创建成功");
+					}else {
+						alert("创建失败");
+					}
+					location.href = "NewsList?companyId=${model.admin.companyId}";
+				}
+				
+			});
 		});
 	</script>
 	</body>
 </html>
-
-<jsp:include page="footer.jsp"></jsp:include>

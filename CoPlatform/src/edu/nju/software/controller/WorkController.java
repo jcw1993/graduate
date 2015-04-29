@@ -43,7 +43,7 @@ public class WorkController {
 	
 	private static final int TASK_DEPTH_STEP = 1;
 	
-	private static final String TASK_PATH_SEPARATOR = "";
+	private static final String TASK_PATH_SEPARATOR = "_";
 	
 	@Autowired
 	private CompanyService companyService;
@@ -245,8 +245,21 @@ public class WorkController {
 	@ResponseBody
 	public NoDataJsonResult deleteTask(HttpServletRequest request, HttpServletResponse response) {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
-		NoDataResult result = workService.deleteTask(taskId);
-		return new NoDataJsonResult(result);
+		GeneralResult<Task> taskResult = workService.getTaskById(taskId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			NoDataResult deleteResult = workService.deleteTask(taskId);
+			NoDataResult deleteSubResult = workService.deleteSubTasks(taskResult.getData().getProjectId(), taskId);
+			if(deleteResult.getResultCode() != ResultCode.NORMAL) {
+				return new NoDataJsonResult(deleteResult);
+			}
+			if(deleteSubResult.getResultCode() != ResultCode.NORMAL) {
+				return new NoDataJsonResult(deleteSubResult);
+			}
+			return new NoDataJsonResult(deleteResult);
+		}else {
+			return new NoDataJsonResult(taskResult);
+		}
+
 	}
 	
 	@RequestMapping(value = {"/MemberTaskAssign"}, method = RequestMethod.GET)
@@ -346,7 +359,12 @@ public class WorkController {
 		
 		Map<String, Object> model = new CoHashMap(request);
 		model.put("task", task);
-		return new ModelAndView("taskInfo", "model", model);
+		if(parentId == 0) {
+			return new ModelAndView("taskInfo", "model", model);
+		}else {
+			return new ModelAndView("subTaskInfo", "model", model);
+		}
+
 	}
 	
 	@RequestMapping(value = {"/CreateTask"}, method = RequestMethod.POST)
@@ -388,9 +406,7 @@ public class WorkController {
 		String path = null;
 		int parentId = CoUtils.getRequestIntValue(request, "parentId", false);
 		// root task
-		if(parentId == 0) {
-			
-		}else {
+		if(parentId != 0) {
 			GeneralResult<Task> taskResult = workService.getTaskByProjectAndId(projectId, parentId);
 			if(taskResult.getResultCode() == ResultCode.NORMAL) {
 				Task task = taskResult.getData();
@@ -399,12 +415,11 @@ public class WorkController {
 			}
 		}
 		
-		Task task = new Task(projectId, name, description, 0 ,status, depth, startDate, endDate, path);
+		Task task = new Task(projectId, name, description, parentId ,status, depth, startDate, endDate, path);
 		
 		GeneralResult<Integer> result = workService.createTask(task);
 		return new NoDataJsonResult(result);
 	}
-	
 	
 	@RequestMapping(value = {"/GetTaskTree"}, method = RequestMethod.GET)
 	@ResponseBody
@@ -417,7 +432,7 @@ public class WorkController {
 	@RequestMapping(value = {"/TaskTree"}, method = RequestMethod.GET)
 	public ModelAndView taskTree(HttpServletRequest request, HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		HashMap<String, Object> model = new CoHashMap();
+		HashMap<String, Object> model = new CoHashMap(request);
 		GeneralResult<List<Project>> projectResult = workService.getProjectsByCompany(companyId);
 		if(projectResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("projects", projectResult.getData());
