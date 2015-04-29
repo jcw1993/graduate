@@ -21,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import test.LoggerUtils;
+
 import com.sina.sae.storage.SaeStorage;
 import com.sina.sae.util.SaeUserInfo;
 
@@ -100,11 +102,22 @@ public class CoUtils {
 //		cookie.setPath("/1/njucowork");
 //		cookie.setPath("/njucowork");
 //		cookie.setPath(request.getContextPath());
+//		cookie.setPath(request.getContextPath()+"/");
 //		String realPath = SaeUserInfo.getSaeTmpPath() + "/";
 //		cookie.setPath(realPath);
 //		cookie.setDomain("");
+		/*PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print("^^^^^^^^^^^^^^:"+cookie.getPath()+" name= "+cookie.getName());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+//		org.apache.log4j.Logger log=LoggerUtils.getLogger(CoUtils.class, "log1.txt", true);
+//		log.info("^^^^^^^^^^^^^^:"+cookie.getPath()+" name= "+cookie.getName());
 		response.addCookie(cookie);
-		tmpfsToStorage();
+//		tmpfsToStorage(cookie.getPath(),cookie.getName(),);
 	}
 	
 	public static void tmpfsToStorage(){
@@ -115,7 +128,7 @@ public class CoUtils {
 		
 	}
 	
-	/*public void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("gbk");
         PrintWriter out = response.getWriter();
@@ -153,5 +166,5 @@ public class CoUtils {
             out.flush();
             out.close();
         }
-    }*/
+    }
 }
