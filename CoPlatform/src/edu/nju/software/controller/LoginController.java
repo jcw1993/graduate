@@ -22,6 +22,7 @@ import edu.nju.software.service.AdminService;
 import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
+import edu.nju.software.util.UserInfoStorage;
 
 @Controller
 public class LoginController {
@@ -50,10 +51,13 @@ public class LoginController {
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(
 				mail, password);
 		if (adminResult.getResultCode() == ResultCode.NORMAL) {
-			Gson gson = new Gson();
+//			Gson gson = new Gson();
 			Admin admin = adminResult.getData();
-			CoUtils.addCookie(request, response, "currentAdmin",
-					URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);
+//			CoUtils.addCookie(response, "currentAdmin",
+//					URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);
+			String sessionId = request.getSession(true).getId();
+			System.out.println("login sessionId: " + sessionId);
+			UserInfoStorage.putAdmin(sessionId, admin);
 			response.sendRedirect(request.getContextPath() + "/"
 					+ "MemberList?companyId="
 					+ adminResult.getData().getCompanyId());

@@ -74,7 +74,7 @@ public class WeChatLoginController {
 			member.setOpenId(openId);
 			memberService.update(member);
 			Gson gson = new Gson();
-			CoUtils.addCookie(request, response, "currentMember",
+			CoUtils.addCookie(response, "currentMember",
 					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
 
 			response.sendRedirect(request.getContextPath()

@@ -1,6 +1,8 @@
 package edu.nju.software.filter;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,6 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-import edu.nju.software.util.CoUtils;
+import edu.nju.software.util.UserInfoStorage;
 
 public class AuthenticationFilter implements Filter {
 	
@@ -26,6 +29,10 @@ public class AuthenticationFilter implements Filter {
 	private static final String[] VALID_URL_SUFFIX = {"Login", ".js", ".css", ".jpg", ".png"};
 	
 	private static final String WECHAT_URL_PREFIX = "/wechat";
+	
+	//used for solve sae bug
+	public static Map<String, Object> adminMap = new HashMap<String, Object>();
+	public static Map<String, Object> memberMap = new HashMap<String, Object>();
 	
 	private Gson gson = null;
 
@@ -41,15 +48,21 @@ public class AuthenticationFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpServletRequest.getRequestURI();
-		String contextPath = httpServletRequest.getContextPath();
-//		if(!isValidURI(requestURI) && !requestURI.startsWith(contextPath + WECHAT_URL_PREFIX)) {
-		/*if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX)) {
-			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
-			if(null == adminCookieValue) {
+		if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX)) {
+//			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
+/*			if(null == adminCookieValue) {
+				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
+				return;
+			}*/
+			
+			HttpSession session = httpServletRequest.getSession(true);
+			String sessionId = session.getId();
+			System.out.println("sessionId: " + sessionId);
+			if(null == UserInfoStorage.getAdmin(sessionId)) {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
 				return;
 			}
-		}*/
+		}
 		
 //		if(requestURI.startsWith(contextPath + WECHAT_URL_PREFIX) && !requestURI.equals(contextPath + WECHAT_URL_PREFIX)) {
 //			String memberCookieValue = CoUtils.getCookie(httpServletRequest, "currentMember");

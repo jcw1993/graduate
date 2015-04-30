@@ -1,30 +1,17 @@
 package edu.nju.software.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import test.LoggerUtils;
-
-import com.sina.sae.storage.SaeStorage;
-import com.sina.sae.util.SaeUserInfo;
 
 public class CoUtils {
 	
@@ -95,35 +82,18 @@ public class CoUtils {
 		return null;
 	}
 	
-	public static void addCookie(HttpServletRequest request,HttpServletResponse response, String name, String value, int maxAge) {
+	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setMaxAge(maxAge);
-<<<<<<< HEAD
-//		cookie.setPath("/");
-//		cookie.setPath("/1/njucowork");
-//		cookie.setPath("/njucowork");
-//		cookie.setPath(request.getContextPath());
-//		cookie.setPath(request.getContextPath()+"/");
-//		String realPath = SaeUserInfo.getSaeTmpPath() + "/";
-//		cookie.setPath(realPath);
-//		cookie.setDomain("");
-		/*PrintWriter out;
-		try {
-			out = response.getWriter();
-			out.print("^^^^^^^^^^^^^^:"+cookie.getPath()+" name= "+cookie.getName());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-//		org.apache.log4j.Logger log=LoggerUtils.getLogger(CoUtils.class, "log1.txt", true);
-//		log.info("^^^^^^^^^^^^^^:"+cookie.getPath()+" name= "+cookie.getName());
-=======
->>>>>>> 84a5f920152db49f8f76e945e6cb9bd7ee3a9869
+		cookie.setPath("/");
 		response.addCookie(cookie);
-//		tmpfsToStorage(cookie.getPath(),cookie.getName(),);
 	}
 	
-	public static void tmpfsToStorage(){
+	public static void addSaeStorage(HttpServletRequest request) {
+		
+	}
+	 
+/*	public static void tmpfsToStorage(){
 		
 	}
 	
@@ -169,5 +139,5 @@ public class CoUtils {
             out.flush();
             out.close();
         }
-    }
+    }*/
 }
