@@ -1,7 +1,6 @@
 package edu.nju.software.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -15,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-
 import edu.nju.software.pojo.Admin;
 import edu.nju.software.service.AdminService;
-import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
 import edu.nju.software.util.UserInfoStorage;
@@ -51,12 +47,12 @@ public class LoginController {
 		GeneralResult<Admin> adminResult = adminService.getByMailAndPassword(
 				mail, password);
 		if (adminResult.getResultCode() == ResultCode.NORMAL) {
-//			Gson gson = new Gson();
 			Admin admin = adminResult.getData();
-//			CoUtils.addCookie(response, "currentAdmin",
-//					URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);
+			// for normal environment
+/*			Gson gson = new Gson();
+			CoUtils.addCookie(response, "currentAdmin",
+					URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);*/
 			String sessionId = request.getSession(true).getId();
-			System.out.println("login sessionId: " + sessionId);
 			UserInfoStorage.putAdmin(sessionId, admin);
 			response.sendRedirect(request.getContextPath() + "/"
 					+ "MemberList?companyId="

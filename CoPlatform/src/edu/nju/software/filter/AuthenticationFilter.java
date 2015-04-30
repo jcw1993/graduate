@@ -30,6 +30,8 @@ public class AuthenticationFilter implements Filter {
 	
 	private static final String WECHAT_URL_PREFIX = "/wechat";
 	
+	private static final String WECHAT_ENTRANCE_URL_PREFIX = "/weixin";
+	
 	//used for solve sae bug
 	public static Map<String, Object> adminMap = new HashMap<String, Object>();
 	public static Map<String, Object> memberMap = new HashMap<String, Object>();
@@ -48,7 +50,7 @@ public class AuthenticationFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpServletRequest.getRequestURI();
-		if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX)) {
+		if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX) && !requestURI.contains(WECHAT_ENTRANCE_URL_PREFIX)) {
 //			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
 /*			if(null == adminCookieValue) {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");

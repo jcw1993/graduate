@@ -1,7 +1,6 @@
 package edu.nju.software.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-
 import edu.nju.software.pojo.Member;
 import edu.nju.software.service.MemberService;
-import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
+import edu.nju.software.util.UserInfoStorage;
 
 @Controller
 public class WeChatLoginController {
@@ -34,6 +31,7 @@ public class WeChatLoginController {
 	public ModelAndView wxLoginView(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openId");
+		System.out.println("openId: " + openId);
 		if (StringUtils.isBlank(openId)) {
 			response.sendRedirect(request.getContextPath() + "/Error");
 			return null;
@@ -73,10 +71,12 @@ public class WeChatLoginController {
 			Member member = memberResult.getData();
 			member.setOpenId(openId);
 			memberService.update(member);
-			Gson gson = new Gson();
+			// for normal environment
+/*			Gson gson = new Gson();
 			CoUtils.addCookie(response, "currentMember",
-					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
-
+					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);*/
+			String sessionId = request.getSession(true).getId();
+			UserInfoStorage.putMember(sessionId, member);
 			response.sendRedirect(request.getContextPath()
 					+ "/wechat/MyTasks?openId=" + openId);
 			return;
