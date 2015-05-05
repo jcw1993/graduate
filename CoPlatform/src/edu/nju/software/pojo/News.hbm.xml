@@ -12,8 +12,8 @@
         <property name="companyId" type="integer" column="company_id" />
         <property name="title" type="string" column="title" />
         <property name="content" type="string" column="content" />
-        <property name="createdTime" type="date" column="created_time" />
-        <property name="publishTime" type="date" column="publish_time" />
+        <property name="createdTime" type="timestamp" column="created_time" />
+        <property name="publishTime" type="timestamp" column="publish_time" />
     </class>
 
 </hibernate-mapping>

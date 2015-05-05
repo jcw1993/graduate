@@ -3,6 +3,7 @@ package edu.nju.software.dao.impl;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import edu.nju.software.dao.NewsDao;
@@ -15,17 +16,33 @@ public class NewsDaoImpl extends HibernateDaoBase implements NewsDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<News> getLatestNews(int companyId) {
-		Query query = getSession().createQuery("from News where companyId = " + companyId + " and publishTime is not null order by publishTime desc, id desc");
-		query.setFirstResult(0);
-		query.setMaxResults(MAX_PIECES);
-		return query.list();
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("from News where companyId = " + companyId + " and publishTime is not null order by publishTime desc, id desc");
+			query.setFirstResult(0);
+			query.setMaxResults(MAX_PIECES);
+			return query.list();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<News> getNotPublishedNews(int companyId) {
-		Query query = getSession().createQuery("from News where companyId = " + companyId + " and publishTime is null order by createdTime desc, id desc");
-		return query.list();
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("from News where companyId = " + companyId + " and publishTime is null order by createdTime desc, id desc");
+			return query.list();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
+		return null;
 	}
 
 	@Override
@@ -41,8 +58,15 @@ public class NewsDaoImpl extends HibernateDaoBase implements NewsDao{
 
 	@Override
 	public void delete(int id) {
-		Query query = getSession().createQuery("delete from News where id = " + id);
-		query.executeUpdate();
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("delete from News where id = " + id);
+			query.executeUpdate();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package edu.nju.software.dao.impl;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -36,15 +37,30 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Project> getByCompany(int companyId) {
-		Query query = getSession().createQuery("from Project where companyId = " + companyId + " order by id asc");
-		return query.list();
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("from Project where companyId = " + companyId + " order by id asc");
+			return query.list();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
+		return null;
 	}
 
 	@Override
 	public void deleteTaskAssign(int projectId) {
-		Query query = getSession().createQuery("delete from TaskAssign where id > 0 and taskId in (select id from Task where projectId = "
-				+ projectId + ")");
-		query.executeUpdate();
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("delete from TaskAssign where id > 0 and taskId in (select id from Task where projectId = "
+					+ projectId + ")");
+			query.executeUpdate();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
 	}
 
 }

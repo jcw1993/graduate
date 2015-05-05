@@ -3,6 +3,7 @@ package edu.nju.software.dao.impl;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +16,16 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Member> getByCompany(int companyId) throws DataAccessException {
-		Query query = getSession().createQuery("from Member where companyId = " + companyId + " order by id asc");
-		return query.list();
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("from Member where companyId = " + companyId + " order by id asc");
+			return query.list();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
+		return null;
 	}
 
 	@Override
@@ -55,14 +64,22 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@Override
 	public Member getByPhoneAndPassword(String phone, String password) {
-		Query query = getSession().createQuery("from Member where phone = " + phone + " and password = " + password);
-		@SuppressWarnings("unchecked")
-		List<Member> memberList = query.list();
-		if(null != memberList && !memberList.isEmpty()) {
-			return memberList.get(0);
-		}else {
-			return null;
+		Session session = super.getSession(true);
+		try {
+			Query query = getSession().createQuery("from Member where phone = " + phone + " and password = " + password);
+			@SuppressWarnings("unchecked")
+			List<Member> memberList = query.list();
+			if(null != memberList && !memberList.isEmpty()) {
+				return memberList.get(0);
+			}else {
+				return null;
+			}
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
 		}
+		return null;
 	}
 
 }

@@ -39,9 +39,9 @@ public class NewsController {
 			model.put("newsList", newsResult.getData());
 		}
 		
-		GeneralResult<List<News>> notPublishNewsResult = newsService.getLatestNews(companyId);
+		GeneralResult<List<News>> notPublishNewsResult = newsService.getNotPublishedNews(companyId);
 		if(notPublishNewsResult.getResultCode() == ResultCode.NORMAL) {
-			model.put("notPublishedNewsList", newsResult.getData());
+			model.put("notPublishedNewsList", notPublishNewsResult.getData());
 		}
 		
 		return new ModelAndView("newsList", "model", model);
@@ -78,19 +78,26 @@ public class NewsController {
 		return new ModelAndView("newsEdit", "model", model);
 	}
 	
-	@RequestMapping(value = {"/PublishNews"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/DeleteNews"}, method = RequestMethod.GET)
+	@ResponseBody
+	public NoDataJsonResult deleteNews(HttpServletRequest request, HttpServletResponse response) {
+		int newsId = CoUtils.getRequestIntValue(request, "newsId", true);
+		NoDataResult result = newsService.delete(newsId);
+		return new NoDataJsonResult(result);
+	}
+	
+	@RequestMapping(value = {"/PublishNews"}, method = RequestMethod.GET)
 	@ResponseBody
 	public NoDataJsonResult publishNews(HttpServletRequest request, HttpServletResponse response) {
 		int newsId = CoUtils.getRequestIntValue(request, "newsId", true);
 		GeneralResult<News> newsResult = newsService.getById(newsId);
 		if(newsResult.getResultCode() == ResultCode.NORMAL) {
 			News news = newsResult.getData();
-			news.setCreatedTime(new Date());
+			news.setPublishTime(new Date());
 			NoDataResult result = newsService.update(news);
 			return new NoDataJsonResult(result);
 		}else {
 			return new NoDataJsonResult(newsResult);
 		}
-
 	}
 }
