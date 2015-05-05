@@ -15,6 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.sword.wechat4j.WechatSupport;
 import org.sword.wechat4j.response.ArticleResponse;
 
@@ -23,6 +24,7 @@ import edu.nju.software.service.NewsService;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.WeChatInstruct;
 
+@Component
 public class WeChatProcessor extends WechatSupport {
 
 	private static Logger logger = Logger.getLogger(WeChatProcessor.class);
@@ -30,6 +32,7 @@ public class WeChatProcessor extends WechatSupport {
 	@Autowired
 	private NewsService newsService;
 
+	@Autowired
 	public WeChatProcessor(HttpServletRequest request) {
 		super(request);
 	}

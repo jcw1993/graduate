@@ -10,23 +10,24 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.sword.wechat4j.response.ArticleResponse;
 
 import edu.nju.software.pojo.News;
 import edu.nju.software.service.NewsService;
-import edu.nju.software.service.impl.NewsServiceImpl;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.WeChatInstruct;
 
 /**
  * 微信事件回复
  */
+@Component
 public class WeChatRsp {
-	private NewsService newsService = null;
+	@Autowired
+	private NewsService newsService;
 
-	public WeChatRsp() {
-		newsService = new NewsServiceImpl();
-	}
+	public WeChatRsp() {}
 
 	// 返回任务相关图文链接
 	public List<ArticleResponse> tasksRsp(String openId) {
