@@ -38,14 +38,8 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	@Override
 	public List<Project> getByCompany(int companyId) {
 		Session session = super.getSession(true);
-<<<<<<< HEAD
 		try {
 			Query query = getSession().createQuery("from Project where companyId = " + companyId + " order by id asc");
-=======
-		Query query = null;
-		try {
-			query = session.createQuery("from Project where companyId = " + companyId + " order by id asc");
->>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 			return query.list();
 		}catch(Exception e) {
 			logger.error(e.getMessage());
@@ -58,14 +52,8 @@ public class ProjectDaoImpl extends HibernateDaoBase implements ProjectDao {
 	@Override
 	public void deleteTaskAssign(int projectId) {
 		Session session = super.getSession(true);
-<<<<<<< HEAD
 		try {
 			Query query = getSession().createQuery("delete from TaskAssign where id > 0 and taskId in (select id from Task where projectId = "
-=======
-		Query query = null;
-		try {
-			query = session.createQuery("delete from TaskAssign where id > 0 and taskId in (select id from Task where projectId = "
->>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 					+ projectId + ")");
 			query.executeUpdate();
 		}catch(Exception e) {

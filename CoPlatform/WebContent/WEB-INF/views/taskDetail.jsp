@@ -79,7 +79,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td><button id="taskEditSubmit" type="button" class="btn btn-success submit-button">保存任务信息</button>r</td>
+					<td><button id="taskEditSubmit" type="button" class="btn btn-success submit-button">保存任务信息</button></td>
 				</tr>
 			</table>
 		</form>
