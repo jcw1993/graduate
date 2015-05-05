@@ -84,41 +84,42 @@
 			</table>
 		</form>
 		
-
+	<c:if test="${task.isLeaf}">
 		<c:if test="${model.members != null}">
-		<h3>相关人员</h3>
-		<hr/>
-		<c:forEach items="${model.members}" var="member">
-			<span class="taskEmployee">${member.name}</span>
-		</c:forEach>
+			<h3>相关人员</h3>
+			<hr/>
+			<c:forEach items="${model.members}" var="member">
+				<span class="taskEmployee">${member.name}</span>
+			</c:forEach>
 		</c:if>
 
-	<h3>任务分配</h3>
-	<hr/>
-	<div id="taskAssignContent">
-		<label>类型</label> <select id="employeeTypeSelect">
-			<option value="0">公司职员</option>
-			<option value="1">外聘人员</option>
-		</select> <label>人员</label> <select id="employeeList">
-		</select>
-		<button id="taskAssignSubmit" type="button" class="btn btn-info btn-sm">确定</button>
-	</div>
+		<h3>任务分配</h3>
+		<hr/>
+		<div id="taskAssignContent">
+			<label>类型</label> <select id="employeeTypeSelect">
+				<option value="0">公司职员</option>
+				<option value="1">外聘人员</option>
+			</select> <label>人员</label> <select id="employeeList">
+			</select>
+			<button id="taskAssignSubmit" type="button" class="btn btn-info btn-sm">确定</button>
+		</div>
 
-	</div>
+		</div>
 
-	<div id="subTaskCreateModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">创建子任务</h4>
-				</div>
-				<div id="subTaskCreateContent" class="modal-body"></div>
-				<div class="modal-footer">
-					<button id="subTaskCreateSubmit" type="button" class="btn btn-primary">创建</button>
+		<div id="subTaskCreateModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">创建子任务</h4>
+					</div>
+					<div id="subTaskCreateContent" class="modal-body"></div>
+					<div class="modal-footer">
+						<button id="subTaskCreateSubmit" type="button" class="btn btn-primary">创建</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</c:if>
 	
 </body>
 </html>
@@ -214,15 +215,26 @@
 
 	$subTaskCreateBtn.click(function(e){
 		console.log("subTask create click");
-		var projectId = "${model.task.projectId}";
-		var parentId = "${model.task.id}";
-		console.log("click task, projectId: " + projectId);
-		$subTaskCreateContent.load("CreateTask?projectId=" + projectId + "&parentId=" + parentId, function(response, status, xhr) {
-			if(status == "error") {
-				$subTaskCreateContent.load("Error");
+		var taskId = "${model.task.id}";
+		$.ajax({
+			url: "CheckCreateSubTask?taskId=" + taskId,
+			success: function(result) {
+				if(result.resultCode == 0) {
+					var projectId = "${model.task.projectId}";
+					var parentId = "${model.task.id}";
+					console.log("click task, projectId: " + projectId);
+					$subTaskCreateContent.load("CreateTask?projectId=" + projectId + "&parentId=" + parentId, function(response, status, xhr) {
+						if(status == "error") {
+							$subTaskCreateContent.load("Error");
+						}
+					});
+					$subTaskCreateModal.modal();
+				}else {
+					console.log("validate fail");
+					alert("有人员分配，无法创建子任务！");
+				}
 			}
 		});
-		$subTaskCreateModal.modal();
 	});
 
 	$subTaskCreateSubmit.click(function(e) {

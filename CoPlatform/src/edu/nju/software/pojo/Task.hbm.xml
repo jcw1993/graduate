@@ -18,6 +18,7 @@
         <property name="status" type="integer" column="status_id" />
         <property name="depth" type="integer" column="depth" />
         <property name="path" type="string" column="path" />
+        <property name="isLeaf" type="boolean" column="is_leaf" />
     </class>
 
 </hibernate-mapping>

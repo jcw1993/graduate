@@ -199,46 +199,52 @@ public class WorkController {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
 		int projectId = CoUtils.getRequestIntValue(request, "projectId", true);
 		
-		String name = request.getParameter("name");
-		String description = request.getParameter("description");
-		
-		String startDateStr = request.getParameter("startDate").trim();
-		String startTimeStr = request.getParameter("startTime").trim();
-		String endDateStr = request.getParameter("endDate").trim();
-		String endTimeStr = request.getParameter("endTime").trim();
-		Date startDate = null;
-		Date endDate = null;
-		try {
-			startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr, DATE_FORMAT);
-			endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr, DATE_FORMAT);
-		} catch (ParseException e) {
-			logger.error(e.getMessage());
-			return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
+		GeneralResult<Task> taskResult = workService.getTaskById(taskId);
+		if(taskResult.getResultCode() == ResultCode.NORMAL) {
+			
+			String name = request.getParameter("name");
+			String description = request.getParameter("description");
+			
+			String startDateStr = request.getParameter("startDate").trim();
+			String startTimeStr = request.getParameter("startTime").trim();
+			String endDateStr = request.getParameter("endDate").trim();
+			String endTimeStr = request.getParameter("endTime").trim();
+			Date startDate = null;
+			Date endDate = null;
+			try {
+				startDate = CoUtils.parseDate(startDateStr + " " + startTimeStr, DATE_FORMAT);
+				endDate = CoUtils.parseDate(endDateStr + " " + endTimeStr, DATE_FORMAT);
+			} catch (ParseException e) {
+				logger.error(e.getMessage());
+				return new NoDataJsonResult(ResultCode.E_OTHER_ERROR, null);
+			}
+			
+			int status = CoUtils.getRequestIntValue(request, "status", true);
+			
+			if(null != name) {
+				name = name.trim();
+			}
+			if(null != description) {
+				description = description.trim();
+			}
+			
+			int depth = CoUtils.getRequestIntValue(request, "depth", false);
+			if(depth == 0) {
+				depth += TASK_DEPTH_STEP;
+			}
+			
+			String path = request.getParameter("path");
+			if(null != path) {
+				path = path.trim();
+			}
+			
+			Task task = new Task(taskId, projectId, name, description, 0 ,status, depth, startDate, endDate, path, taskResult.getData().getIsLeaf());
+			
+			NoDataResult result = workService.updateTask(task);
+			return new NoDataJsonResult(result);
+		}else {
+			return new NoDataJsonResult(taskResult);
 		}
-		
-		int status = CoUtils.getRequestIntValue(request, "status", true);
-		
-		if(null != name) {
-			name = name.trim();
-		}
-		if(null != description) {
-			description = description.trim();
-		}
-		
-		int depth = CoUtils.getRequestIntValue(request, "depth", false);
-		if(depth == 0) {
-			depth += TASK_DEPTH_STEP;
-		}
-		
-		String path = request.getParameter("path");
-		if(null != path) {
-			path = path.trim();
-		}
-		
-		Task task = new Task(taskId, projectId, name, description, 0 ,status, depth, startDate, endDate, path);
-		
-		NoDataResult result = workService.updateTask(task);
-		return new NoDataJsonResult(result);
 	}
 	
 	@RequestMapping(value = {"/DeleteTask"}, method = RequestMethod.GET)
@@ -411,11 +417,11 @@ public class WorkController {
 			if(taskResult.getResultCode() == ResultCode.NORMAL) {
 				Task task = taskResult.getData();
 				depth = task.getDepth() + TASK_DEPTH_STEP;
-				path = task.getPath() + TASK_PATH_SEPARATOR + task.getId();
+				path = (null == task.getPath() ? "" : task.getPath()) + TASK_PATH_SEPARATOR + task.getId();
 			}
 		}
 		
-		Task task = new Task(projectId, name, description, parentId ,status, depth, startDate, endDate, path);
+		Task task = new Task(projectId, name, description, parentId ,status, depth, startDate, endDate, path, true);
 		
 		GeneralResult<Integer> result = workService.createTask(task);
 		return new NoDataJsonResult(result);

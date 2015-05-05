@@ -13,6 +13,7 @@ public class Task {
 	private Date startTime;
 	private Date endTime;
 	private String path;
+	private boolean isLeaf;
 
 	public int getId() {
 		return id;
@@ -74,6 +75,12 @@ public class Task {
 	public void setPath(String path) {
 		this.path = path;
 	}
+	public boolean getIsLeaf() {
+		return isLeaf;
+	}
+	public void setIsLeaf(boolean isLeaf) {
+		this.isLeaf = isLeaf;
+	}
 	
 	public Task() {}
 	
@@ -81,7 +88,7 @@ public class Task {
 		this.id = id;
 	}
 	
-	public Task(int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime, String path) {
+	public Task(int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime, String path, boolean isLeaf) {
 		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
@@ -91,9 +98,10 @@ public class Task {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.path = path;
+		this.isLeaf = isLeaf;
 	}
 	
-	public Task(int id, int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime, String path) {
+	public Task(int id, int projectId, String name, String description, int parentId, int status, int depth, Date startTime, Date endTime, String path, boolean isLeaf) {
 		this.id = id;
 		this.projectId = projectId;
 		this.name = name;
@@ -104,6 +112,7 @@ public class Task {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.path = path;
+		this.isLeaf = isLeaf;
 	}
 
 	@Override
