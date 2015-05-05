@@ -13,6 +13,7 @@
         <property name="title" type="string" column="title" />
         <property name="content" type="string" column="content" />
         <property name="createdTime" type="date" column="created_time" />
+        <property name="publishTime" type="date" column="publish_time" />
     </class>
 
 </hibernate-mapping>

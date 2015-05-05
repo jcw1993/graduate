@@ -39,6 +39,11 @@ public class NewsController {
 			model.put("newsList", newsResult.getData());
 		}
 		
+		GeneralResult<List<News>> notPublishNewsResult = newsService.getLatestNews(companyId);
+		if(notPublishNewsResult.getResultCode() == ResultCode.NORMAL) {
+			model.put("notPublishedNewsList", newsResult.getData());
+		}
+		
 		return new ModelAndView("newsList", "model", model);
 	}
 	
@@ -62,7 +67,7 @@ public class NewsController {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		
-		News news = new News(companyId, title, content, new Date());
+		News news = new News(companyId, title, content, new Date(), null);
 		GeneralResult<Integer> createResult = newsService.create(news);
 		return new NoDataJsonResult(createResult);
 	}

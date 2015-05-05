@@ -78,8 +78,12 @@
 						</select>
 					</td>
 				</tr>
+				<tr>
+					<td><button id="taskEditSubmit" type="button" class="btn btn-success submit-button">保存任务信息</button>r</td>
+				</tr>
 			</table>
 		</form>
+		
 
 		<c:if test="${model.members != null}">
 		<h3>相关人员</h3>
@@ -140,11 +144,34 @@
 	var $subTaskCreateModal = $("#subTaskCreateModal");
 	var $subTaskCreateContent = $("#subTaskCreateContent");
 	var $subTaskCreateSubmit = $("#subTaskCreateSubmit");
-
+	var $taskEditSubmit = $("#taskEditSubmit");
+	
 	/*variables*/
 	var members;
 	var outEmployees;
 	var currentEmployeeType = EMPLOYEE_TYPE_MEMBER;
+
+
+	$taskEditSubmit.click(function(e) {
+		var $form = $("#taskEditForm");
+		
+		console.log("save task")
+		var formData = $form.serialize();
+		$.ajax({
+			url: "UpdateTask",
+			data: formData,
+			method: "post",
+			success: function(result) {
+				if(result.resultCode == 0) {
+					console.log("success");
+					alert("更新任务状态成功");
+					location.reload();
+				}else {
+					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
+				}
+			} 
+		});
+	});
 
 	$employeeTypeSelect.change(function(e) {
 		var typeIndex = $employeeTypeSelect[0].selectedIndex;

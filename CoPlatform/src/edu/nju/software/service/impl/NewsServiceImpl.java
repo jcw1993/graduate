@@ -46,6 +46,24 @@ public class NewsServiceImpl implements NewsService{
 	}
 
 	@Override
+	public GeneralResult<List<News>> getNotPublishedNews(int companyId) {
+		GeneralResult<List<News>> result = new GeneralResult<List<News>>();
+		try {
+			List<News> newsList = newsDao.getNotPublishedNews(companyId);
+			if(null != newsList && !newsList.isEmpty()) {
+				result.setData(newsList);
+			}else {
+				result.setResultCode(ResultCode.E_NO_DATA);
+				result.setMessage("no news data in company, companyId = " + companyId);
+			}
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+	@Override
 	public GeneralResult<Integer> create(News news) {
 		GeneralResult<Integer> result = new GeneralResult<Integer>();
 		try {

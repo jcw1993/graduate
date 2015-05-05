@@ -9,6 +9,8 @@ import edu.nju.software.util.NoDataResult;
 public interface NewsService {
 	public GeneralResult<List<News>> getLatestNews(int companyId);
 	
+	public GeneralResult<List<News>> getNotPublishedNews(int companyId);
+	
 	public GeneralResult<Integer> create(News news);
 
 	public NoDataResult update(News news);
