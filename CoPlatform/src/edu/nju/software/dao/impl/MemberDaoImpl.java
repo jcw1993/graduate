@@ -4,6 +4,11 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+<<<<<<< HEAD
+=======
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -13,12 +18,20 @@ import edu.nju.software.pojo.Member;
 @Repository
 public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
+	private static Logger logger = LoggerFactory.getLogger(MemberDaoImpl.class);
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Member> getByCompany(int companyId) throws DataAccessException {
 		Session session = super.getSession(true);
+<<<<<<< HEAD
 		try {
 			Query query = getSession().createQuery("from Member where companyId = " + companyId + " order by id asc");
+=======
+		Query query = null;
+		try {
+			query = session.createQuery("from Member where companyId = " + companyId + " order by id asc");
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 			return query.list();
 		}catch(Exception e) {
 			logger.error(e.getMessage());
@@ -65,8 +78,14 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 	@Override
 	public Member getByPhoneAndPassword(String phone, String password) {
 		Session session = super.getSession(true);
+<<<<<<< HEAD
 		try {
 			Query query = getSession().createQuery("from Member where phone = " + phone + " and password = " + password);
+=======
+		Query query = null;
+		try {
+			query = session.createQuery("from Member where phone = " + phone + " and password = " + password);
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 			@SuppressWarnings("unchecked")
 			List<Member> memberList = query.list();
 			if(null != memberList && !memberList.isEmpty()) {
@@ -79,6 +98,10 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 		}finally {
 			session.close();
 		}
+<<<<<<< HEAD
+=======
+		
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 		return null;
 	}
 

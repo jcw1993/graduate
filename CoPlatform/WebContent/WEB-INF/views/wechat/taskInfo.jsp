@@ -24,7 +24,7 @@
 				<input name="path" type="hidden" value="${task.path}" />
 			</c:if>			
 		<input name="projectId" type="hidden"
-				value="${task.project.id}" />
+				value="${task.projectId}" />
 		<tr>
 			<td><label>任务名称</label></td>
 			<td><p>${task.name}</p></td>

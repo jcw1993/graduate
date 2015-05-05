@@ -17,8 +17,14 @@ public class OutEmployeeDaoImpl extends HibernateDaoBase implements OutEmployeeD
 	@Override
 	public List<OutEmployee> getByCompany(int companyId) {
 		Session session = super.getSession(true);
+<<<<<<< HEAD
 		try {
 			Query query = getSession().createQuery("select oe from OutEmployee oe, Company c, CompanyOutEmployee coe where coe.companyId = c.id and coe.outEmployeeId = oe.id and c.id = " + companyId + " order by oe.id asc");
+=======
+		Query query = null;
+		try {
+			query = session.createQuery("select oe from OutEmployee oe, Company c, CompanyOutEmployee coe where coe.companyId = c.id and coe.outEmployeeId = oe.id and c.id = " + companyId + " order by oe.id asc");
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 			return query.list();
 		}catch(Exception e) {
 			logger.error(e.getMessage());
@@ -32,8 +38,14 @@ public class OutEmployeeDaoImpl extends HibernateDaoBase implements OutEmployeeD
 	@Override
 	public List<Company> getRelatedCompanies(int outEmployeeId) {
 		Session session = super.getSession(true);
+<<<<<<< HEAD
 		try {
 			Query query = getSession().createQuery("select c from Company c, OutEmployee oe, CompanyOutEmployee coe where coe.companyId = c.id and coe.outEmployeeId = oe.id and eoe.id = " + outEmployeeId + " order by c.id asc");
+=======
+		Query query = null;
+		try {
+			query = session.createQuery("select c from Company c, OutEmployee oe, CompanyOutEmployee coe where coe.companyId = c.id and coe.outEmployeeId = oe.id and eoe.id = " + outEmployeeId + " order by c.id asc");
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 			return query.list();
 		}catch(Exception e) {
 			logger.error(e.getMessage());
@@ -41,6 +53,10 @@ public class OutEmployeeDaoImpl extends HibernateDaoBase implements OutEmployeeD
 			session.close();
 		}
 		return null;
+<<<<<<< HEAD
+=======
+		
+>>>>>>> a0fec286f646e1f62e98ea82f01fdc0ee78e890a
 	}
 
 	@Override

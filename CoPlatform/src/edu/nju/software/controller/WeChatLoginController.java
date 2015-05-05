@@ -1,7 +1,6 @@
 package edu.nju.software.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-
 import edu.nju.software.pojo.Member;
 import edu.nju.software.service.MemberService;
-import edu.nju.software.util.CoUtils;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
+import edu.nju.software.util.UserInfoStorage;
 
 @Controller
 public class WeChatLoginController {
@@ -34,14 +31,15 @@ public class WeChatLoginController {
 	public ModelAndView wxLoginView(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String openId = request.getParameter("openId");
+		System.out.println("openId: " + openId);
 		if (StringUtils.isBlank(openId)) {
 			response.sendRedirect(request.getContextPath() + "/Error");
 			return null;
 		}
-		
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("openId", openId.trim());
-		
+
 		return new ModelAndView("wechat/login", "model", model);
 	}
 
@@ -51,9 +49,10 @@ public class WeChatLoginController {
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
 		String openId = request.getParameter("openId");
-		
-		if(StringUtils.isBlank(openId)) {
-			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
+
+		if (StringUtils.isBlank(openId)) {
+			response.sendRedirect(request.getContextPath() + "/wechat?openId="
+					+ openId);
 			return;
 		}
 
@@ -65,19 +64,25 @@ public class WeChatLoginController {
 		phone = phone.trim();
 		password = password.trim();
 		openId = openId.trim();
-		
-		GeneralResult<Member> memberResult = memberService.getByPhoneAndPassword(phone, password);
+
+		GeneralResult<Member> memberResult = memberService
+				.getByPhoneAndPassword(phone, password);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			Member member = memberResult.getData();
 			member.setOpenId(openId);
 			memberService.update(member);
-			Gson gson = new Gson();
-			CoUtils.addCookie(response, "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);
-			
-			response.sendRedirect(request.getContextPath() + "/wechat/MyTasks?openId=" + openId);
+			// for normal environment
+/*			Gson gson = new Gson();
+			CoUtils.addCookie(response, "currentMember",
+					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);*/
+			String sessionId = request.getSession(true).getId();
+			UserInfoStorage.putMember(sessionId, member);
+			response.sendRedirect(request.getContextPath()
+					+ "/wechat/MyTasks?openId=" + openId);
 			return;
 		} else {
-			response.sendRedirect(request.getContextPath() + "/wechat?openId=" + openId);
+			response.sendRedirect(request.getContextPath() + "/wechat?openId="
+					+ openId);
 			return;
 		}
 

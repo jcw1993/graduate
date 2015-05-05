@@ -1,7 +1,5 @@
 package edu.nju.software.util;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 import edu.nju.software.pojo.Admin;
 
@@ -31,7 +28,8 @@ public class CoHashMap extends HashMap<String, Object>{
 	
 	public CoHashMap(HttpServletRequest request) {
 		this();
-		if(null == gson) {
+		// for normal environment
+/*		if(null == gson) {
 			gson = new Gson();
 		}
 		Admin admin = null;
@@ -42,8 +40,16 @@ public class CoHashMap extends HashMap<String, Object>{
 			logger.error(e.getMessage());
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage());
+		}*/
+		String sessionId = request.getSession().getId();
+		Admin admin = (Admin) UserInfoStorage.getAdmin(sessionId);
+		System.out.println("coHashMap sessionId: " + sessionId);
+		if(null != admin) {
+			logger.debug("admin not null");
+			super.put("admin", admin);
+		}else {
+			logger.debug("admin null");
 		}
-		
 	}
 }
 

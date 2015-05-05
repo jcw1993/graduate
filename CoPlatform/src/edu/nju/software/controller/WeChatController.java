@@ -14,7 +14,7 @@ import edu.nju.software.wechat.WeChatProcessor;
 public class WeChatController {
 	
 	@RequestMapping(value="/weixin")
-	public void test2(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void wechat(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		WeChatProcessor myWechat = new WeChatProcessor(request);
 		String result = myWechat.execute();
 		response.getOutputStream().write(result.getBytes());
