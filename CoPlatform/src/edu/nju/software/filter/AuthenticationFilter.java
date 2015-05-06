@@ -32,9 +32,14 @@ public class AuthenticationFilter implements Filter {
 	
 	private static final String WECHAT_ENTRANCE_URL_PREFIX = "/weixin";
 	
+	private static final String SYSTEM_ENTRANCE_URL_PREFIX = "/System";
+	
+	private static final String SYSTEM_LOGIN_URL_SUFFIX = "Login";
+	
 	//used for solve sae bug
 	public static Map<String, Object> adminMap = new HashMap<String, Object>();
 	public static Map<String, Object> memberMap = new HashMap<String, Object>();
+	public static Map<String, Object> systemAdminMap = new HashMap<String, Object>();
 	
 	private Gson gson = null;
 
@@ -50,7 +55,8 @@ public class AuthenticationFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpServletRequest.getRequestURI();
-		if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX) && !requestURI.contains(WECHAT_ENTRANCE_URL_PREFIX)) {
+		if(!isValidURI(requestURI) && !requestURI.contains(WECHAT_URL_PREFIX) && !requestURI.contains(WECHAT_ENTRANCE_URL_PREFIX)
+				&& !requestURI.contains(SYSTEM_ENTRANCE_URL_PREFIX)) {
 //			String adminCookieValue = CoUtils.getCookie(httpServletRequest, "currentAdmin");
 /*			if(null == adminCookieValue) {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
@@ -62,6 +68,11 @@ public class AuthenticationFilter implements Filter {
 			System.out.println("sessionId: " + sessionId);
 			if(null == UserInfoStorage.getAdmin(sessionId)) {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/Login");
+				return;
+			}
+		}else if(requestURI.contains(SYSTEM_ENTRANCE_URL_PREFIX) && !requestURI.endsWith(SYSTEM_LOGIN_URL_SUFFIX)) {
+			if(null == UserInfoStorage.getSystemAdmin(httpServletRequest.getSession(true).getId())) {
+				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/System/Login");
 				return;
 			}
 		}
