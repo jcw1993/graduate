@@ -469,4 +469,24 @@ public class WorkController {
 		}
 		return new ModelAndView("taskDetail", "model", model);
 	}
+	
+	@RequestMapping(value = "/DeleteAssignToMember", method = RequestMethod.GET)
+	@ResponseBody
+	public NoDataJsonResult deleteAssignToMember(HttpServletRequest request, HttpServletResponse response) {
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
+		int memberId = CoUtils.getRequestIntValue(request, "memberId", true);
+		
+		NoDataResult result = workService.deleteAssignToMmeber(taskId, memberId);
+		return new NoDataJsonResult(result);
+	}
+	
+	@RequestMapping(value = "/DeleteAssignToOutEmployee", method = RequestMethod.GET)
+	@ResponseBody
+	public NoDataJsonResult deleteAssignToOutEmployee(HttpServletRequest request, HttpServletResponse response) {
+		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
+		int outEmployeeId = CoUtils.getRequestIntValue(request, "outEmployeeId", true);
+		
+		NoDataResult result = workService.deleteAssignToOutEmployee(taskId, outEmployeeId);
+		return new NoDataJsonResult(result);
+	}
 }

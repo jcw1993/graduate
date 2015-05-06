@@ -102,10 +102,33 @@ public class TaskDaoImpl extends HibernateDaoBase implements TaskDao {
 	}
 
 	@Override
-	public void deleteTaskAssign(int taskId) {
+	public void deleteTaskAssignByTask(int taskId) {
 		Session session = super.getSession(true);
 		try {
 			Query query = getSession().createQuery("delete from TaskAssign where taskId = " + taskId);
+			query.executeUpdate();
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			session.close();
+		}
+	}
+	
+	@Override
+	public void deleteTaskAssign(int taskId, Integer memberId, Integer outEmployeeId) {
+		if(null == memberId && null == outEmployeeId) {
+			return;
+		}
+		
+		Session session = super.getSession(true);
+		String sql = "delete from TaskAssign where taskId = " + taskId;
+		if(null != memberId) {
+			sql +=  " and memberId = " + memberId;
+		}else {
+			sql += "and outEmployeeId = " + outEmployeeId;
+		}
+		try {
+			Query query = getSession().createQuery(sql);
 			query.executeUpdate();
 		}catch(Exception e) {
 			logger.error(e.getMessage());

@@ -41,9 +41,6 @@ public class WorkServiceImpl implements WorkService {
 	
 	private static final String TASK_PATH_SEPARATOR = "_";
 	
-	@SuppressWarnings("unused")
-	private static final int MAX_TREE_DEPTH = 3;
-	
 	private static Logger logger = LoggerFactory.getLogger(WorkServiceImpl.class);
 	
 	@Autowired
@@ -291,7 +288,7 @@ public class WorkServiceImpl implements WorkService {
 		
 		try {
 			
-			taskDao.deleteTaskAssign(taskId);
+			taskDao.deleteTaskAssignByTask(taskId);
 			taskDao.delete(taskId);
 		}catch(DataAccessException e) {
 			logger.error(e.getMessage());
@@ -551,5 +548,31 @@ public class WorkServiceImpl implements WorkService {
 		}
 		return false;
 		
+	}
+
+	@Override
+	public NoDataResult deleteAssignToMmeber(int taskId, int memberId) {
+		NoDataResult result = new NoDataResult();
+		try {
+			taskDao.deleteTaskAssign(taskId, memberId, null);
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public NoDataResult deleteAssignToOutEmployee(int taskId, int outEmployeeId) {
+		NoDataResult result = new NoDataResult();
+		try {
+			taskDao.deleteTaskAssign(taskId, null, outEmployeeId);
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_DELETE_ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
 	}
 }

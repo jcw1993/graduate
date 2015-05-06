@@ -39,6 +39,10 @@ public interface WorkService {
 	
 	public NoDataResult assignTaskToOutEmployee(int taskId, int outEmployeeId, int companyId);
 	
+	public NoDataResult deleteAssignToMmeber(int taskId, int memberId);
+	
+	public NoDataResult deleteAssignToOutEmployee(int taskId, int outEmployeeId);
+	
 	public GeneralResult<List<Task>> getTasksWithChildrenByProject(int projectId);
 	
 	public GeneralResult<List<Member>> getRelatedMembers(int taskId);
