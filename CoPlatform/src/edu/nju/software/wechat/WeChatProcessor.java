@@ -19,6 +19,7 @@ public class WeChatProcessor extends WechatSupport {
 
 	private static Logger logger = Logger.getLogger(WeChatProcessor.class);
 
+	@Autowired
 	private WeChatRsp weChatRsp;
 
 	@Autowired
@@ -41,7 +42,7 @@ public class WeChatProcessor extends WechatSupport {
 
 		// 回复任务相关图文链接
 		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
-			List<ArticleResponse> tasksRsp = new ArrayList<ArticleResponse>();
+			List<ArticleResponse> tasksRsp = weChatRsp.tasksRsp(openID);
 			responseNews(tasksRsp);
 		}
 		// 回复资讯
