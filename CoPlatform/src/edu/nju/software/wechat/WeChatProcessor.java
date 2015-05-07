@@ -33,16 +33,16 @@ public class WeChatProcessor extends WechatSupport {
 	 */
 	@Override
 	protected void onText() {
-//		String prefix = "njucowork.sinaapp.com";
+		// String prefix = "njucowork.sinaapp.com";
 		String content = wechatRequest.getContent().trim();
-		String openID = wechatRequest.getFromUserName();
-//		String parameter = "?openId=" + openID;
+		String openId = wechatRequest.getFromUserName();
+		// String parameter = "?openId=" + openID;
 
 		logger.info(content);
 
 		// 回复任务相关图文链接
 		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
-			List<ArticleResponse> tasksRsp = weChatRsp.tasksRsp(openID);
+			List<ArticleResponse> tasksRsp = weChatRsp.tasksRsp(openId);
 			responseNews(tasksRsp);
 		}
 		// 回复资讯
@@ -198,15 +198,8 @@ public class WeChatProcessor extends WechatSupport {
 	 */
 	@Override
 	protected void subscribe() {
-		String prefix = "njucowork.sinaapp.com";
-		String openID = wechatRequest.getFromUserName();
-		String parameter = "?openId=" + openID;
-
-		String result = "感谢您关注南大任务协同平台!" + "\n\n" + weChatRsp.helpRsp() + "\n\n"
-				+ "您可点击以下链接绑定南大协同工作平台PC端账号：" + prefix + "/wechat/MyTasks"
-				+ parameter;
-
-		responseText(result);
+		String openId = wechatRequest.getFromUserName();
+		responseText(weChatRsp.subscribeRsp(openId));
 	}
 
 	/**
@@ -322,7 +315,7 @@ public class WeChatProcessor extends WechatSupport {
 	}
 
 	/**
-	 * 扫码推事�? *
+	 * 扫码推事件
 	 */
 	@Override
 	protected void scanCodePush() {

@@ -27,11 +27,14 @@ public class WeChatRsp {
 	@Autowired
 	private NewsService newsService;
 
-	public WeChatRsp() {}
+	private String prefix = WeChatInstruct.DIMAIN;
+
+	public WeChatRsp() {
+	}
 
 	// 返回任务相关图文链接
 	public List<ArticleResponse> tasksRsp(String openId) {
-		String prefix = "njucowork.sinaapp.com";
+
 		String parameter = "?openId=" + openId;
 
 		List<ArticleResponse> tasksRsp = new ArrayList<ArticleResponse>();
@@ -86,6 +89,17 @@ public class WeChatRsp {
 		String result = "您好，若需查询任务或修改任务状态请发送" + WeChatInstruct.TASKS
 				+ ",若需获取最新资讯请发送" + WeChatInstruct.NEWS + ",若需要帮助请发送"
 				+ WeChatInstruct.HELP + "。";
+
+		return result;
+	}
+
+	// 返回订阅反馈
+	public String subscribeRsp(String openId) {
+		String parameter = "?openId=" + openId;
+		String link = "<a href=\"http://" + prefix + "/wechat/MyTasks"
+				+ parameter + "\">绑定南大协同工作平台PC端账号~点我！</a>";
+
+		String result = "感谢您关注南大任务协同平台!" + "\n\n" + helpRsp() + "\n\n" + link;
 
 		return result;
 	}
