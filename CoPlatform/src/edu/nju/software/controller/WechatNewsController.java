@@ -34,7 +34,8 @@ public class WechatNewsController {
 			model.put("wxnews",newsResult.getData());
 		}
 		
-		return new ModelAndView("wechat/newsDetail", "model", model);
+//		return new ModelAndView("wechat/newsDetail", "model", model);
+		return new ModelAndView("wechat/tecent_news", "model", model);
 	}
 	
 	

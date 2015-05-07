@@ -22,6 +22,8 @@
 	href="<c:url value="/resources/css/co_platform.css" />" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/co_platform_wx.css" />" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/wechat_news.css" />" />
 
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
