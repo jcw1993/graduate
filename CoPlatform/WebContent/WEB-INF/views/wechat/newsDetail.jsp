@@ -11,11 +11,11 @@
 
 	<div class="container-body">
 	<div class="news_title">
-		<p>${model.news.title}</p>
-		<p class="time">${model.news.createdTime}</p>
+		<p>${model.wxnews.title}</p>
+		<p class="time">${model.wxnews.createdTime}</p>
 	</div>
 	<div class="news_content">
-		${model.news.content}
+		${model.wxnews.content}
 	</div>
 	</div>
 

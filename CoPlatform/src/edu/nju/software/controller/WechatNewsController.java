@@ -31,10 +31,10 @@ public class WechatNewsController {
 		Map<String, Object> model = new CoHashMap(request);
 		GeneralResult<News> newsResult = newsService.getById(newsId);
 		if(newsResult.getResultCode() == ResultCode.NORMAL) {
-			model.put("news",newsResult.getData());
+			model.put("wxnews",newsResult.getData());
 		}
 		
-		return new ModelAndView("newsDetail", "model", model);
+		return new ModelAndView("wechat/newsDetail", "model", model);
 	}
 	
 	

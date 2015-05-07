@@ -36,10 +36,26 @@ public class WeChatLoginController {
 			response.sendRedirect(request.getContextPath() + "/Error");
 			return null;
 		}
+		
+		GeneralResult<Member> memberResult = memberService.getByOpenId(openId);
+		if (memberResult.getResultCode() == ResultCode.NORMAL) {
+			Member member = memberResult.getData();
+			
+			// for normal environment
+/*			Gson gson = new Gson();
+			CoUtils.addCookie(response, "currentMember",
+					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);*/
+			
+			String sessionId = request.getSession(true).getId();
+			UserInfoStorage.putMember(sessionId, member);
+			response.sendRedirect(request.getContextPath()
+					+ "/wechat/MyTasks?openId=" + openId);
+			return null;
+		}
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("openId", openId.trim());
-
+		
 		return new ModelAndView("wechat/login", "model", model);
 	}
 
