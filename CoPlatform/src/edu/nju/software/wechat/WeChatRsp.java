@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -58,6 +59,27 @@ public class WeChatRsp {
 		return tasksRsp;
 	}
 
+	// 返回资讯消息体,图片URL默认为info.jpg
+	public static ArticleResponse getNewsRsp(News news, String picURL) {
+
+		if (null == news) {
+			return null;
+		}
+		if (null == picURL || StringUtils.isBlank(picURL)) {
+			picURL = "http://njucowork-pic.stor.sinaapp.com/info.jpg";
+		}
+
+		ArticleResponse newsRsp = new ArticleResponse();
+		String parameter = "?newsId=" + news.getId();
+
+		newsRsp.setTitle(news.getTitle());
+		newsRsp.setDescription(news.getContent());
+		newsRsp.setPicUrl(picURL);
+		newsRsp.setUrl(WeChatInstruct.DIMAIN + "/wechat/NewsDetail" + parameter);
+
+		return newsRsp;
+	}
+
 	// 返回资讯
 	public List<ArticleResponse> newsRsp() {
 		GeneralResult<List<News>> result = newsService.getLatestNews(1);
@@ -71,12 +93,20 @@ public class WeChatRsp {
 
 			int index = 1;
 			for (News news : newsList) {
+				String picURL = "http://njucowork-pic.stor.sinaapp.com/number"
+						+ index + ".png";
+				ArticleResponse newsRsp = WeChatRsp.getNewsRsp(news, picURL);
+				if(null == newsRsp){
+					continue;
+				}
 
-				ArticleResponse newsRsp = new ArticleResponse();
-				newsRsp.setTitle(news.getTitle());
-				newsRsp.setDescription(news.getContent());
-				newsRsp.setPicUrl("http://njucowork-pic.stor.sinaapp.com/number"
-						+ index + ".png");
+				/*
+				 * ArticleResponse newsRsp = new ArticleResponse();
+				 * newsRsp.setTitle(news.getTitle());
+				 * newsRsp.setDescription(news.getContent());
+				 * newsRsp.setPicUrl("http://njucowork-pic.stor.sinaapp.com/number"
+				 * + index + ".png");
+				 */
 				newsRsps.add(newsRsp);
 				index++;
 			}
