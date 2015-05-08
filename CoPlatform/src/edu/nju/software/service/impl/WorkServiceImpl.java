@@ -299,7 +299,7 @@ public class WorkServiceImpl implements WorkService {
 
 			Log log = new Log("修改任务" + task.getName(), "修改任务" + task.getName()
 					+ "状态由“" + TaskStatus.getStatusStr(originStatus) + "”到“"
-					+ TaskStatus.getStatusStr(task.getStatus()),
+					+ TaskStatus.getStatusStr(task.getStatus()) + "”",
 					projectResult.getData(), task, originStatus,
 					task.getStatus(), date, projectResult.getData()
 							.getCompanyId(), creatorId, creatorType);
