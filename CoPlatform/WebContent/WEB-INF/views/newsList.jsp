@@ -60,7 +60,7 @@ $publishButton.click(function(e) {
 	var newsId = $(this).attr("newsId");
 	console.log("click publish newsId: " + newsId);
 	$.ajax({
-		url: "PublishNews?newsId=" + newsId,
+		url: "SubscribeNews?newsId=" + newsId,
 		success: function(result) {
 			if(result.resultCode == 0) {
 				console.log("success");

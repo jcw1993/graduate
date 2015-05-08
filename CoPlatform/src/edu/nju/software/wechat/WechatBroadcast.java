@@ -4,10 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.sword.wechat4j.message.CustomerMsg;
 import org.sword.wechat4j.response.ArticleResponse;
-import org.sword.wechat4j.user.UserManager;
 
 import edu.nju.software.common.EmployeeType;
 import edu.nju.software.common.TaskStatus;
@@ -18,18 +19,55 @@ import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.util.GeneralResult;
+import edu.nju.software.util.ResultCode;
 
 /**
  * 
  * 微信群发类
  *
  */
+@Component
 public class WechatBroadcast {
 	@Autowired
 	private static MemberService memberService;
 
 	@Autowired
 	private static OutEmployeeService outEmployeeService;
+
+	public static List<String> getOpenIdList(int companyId) {
+		List<String> openIdList = new ArrayList<String>();
+		// member
+		GeneralResult<List<Member>> memberResult = memberService
+				.getAllByCompany(companyId);
+		if (memberResult.getResultCode() == ResultCode.NORMAL) {
+			List<Member> memberList = memberResult.getData();
+			if (null != memberList && !memberList.isEmpty()) {
+				for (Member member : memberList) {
+					String openId = member.getOpenId();
+					if (null == openId || StringUtils.isBlank(openId)) {
+						continue;
+					}
+					openIdList.add(openId);
+				}
+			}
+		}
+		// outEmployee
+		GeneralResult<List<OutEmployee>> outEmployeeResult = outEmployeeService
+				.getByCompany(companyId);
+		if (outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
+			List<OutEmployee> outEmployeeList = outEmployeeResult.getData();
+			if (null != outEmployeeList && !outEmployeeList.isEmpty()) {
+				for (OutEmployee outEmployee : outEmployeeList) {
+					String openId = outEmployee.getOpenId();
+					if (null == openId || StringUtils.isBlank(openId)) {
+						continue;
+					}
+					openIdList.add(openId);
+				}
+			}
+		}
+		return openIdList;
+	}
 
 	// 群发资讯
 	public static void broadcastNews(News news) {
@@ -46,12 +84,12 @@ public class WechatBroadcast {
 		 * parameter);
 		 */
 
-		UserManager userManager = new UserManager();
-		List<Object> openIDList = userManager.allSubscriber();
+		// UserManager userManager = new UserManager();
+		// List<Object> openIdList = userManager.allSubscriber();
+		List<String> openIdList = getOpenIdList(1);
 
-		for (Object openId : openIDList) {
-			String openIdString = String.valueOf(openId);
-			CustomerMsg msg = new CustomerMsg(openIdString);
+		for (String openId : openIdList) {
+			CustomerMsg msg = new CustomerMsg(openId);
 
 			msg.sendNews(newsRsp);
 		}
@@ -59,9 +97,6 @@ public class WechatBroadcast {
 
 	// 群发资讯列表
 	public static void broadcastNewsList(List<News> newsList) {
-		UserManager userManager = new UserManager();
-		List<Object> openIDList = userManager.allSubscriber();
-
 		List<ArticleResponse> newsRsps = new ArrayList<ArticleResponse>();
 
 		int index = 1;
@@ -76,9 +111,12 @@ public class WechatBroadcast {
 			index++;
 		}
 
-		for (Object openId : openIDList) {
-			String openIdString = String.valueOf(openId);
-			CustomerMsg msg = new CustomerMsg(openIdString);
+		// UserManager userManager = new UserManager();
+		// List<Object> openIdList = userManager.allSubscriber();
+		List<String> openIdList = getOpenIdList(1);
+
+		for (String openId : openIdList) {
+			CustomerMsg msg = new CustomerMsg(openId);
 
 			msg.sendNews(newsRsps);
 		}
@@ -122,7 +160,8 @@ public class WechatBroadcast {
 					+ change.getTask().getName() + "任务状态已经于"
 					+ dateFormat.format(change.getCreatedTime()) + "被" + name
 					+ "由“" + TaskStatus.getStatusStr(change.getOriginStatus())
-					+ "”改为“" + TaskStatus.getStatusStr(change.getCurrentStatus())
+					+ "”改为“"
+					+ TaskStatus.getStatusStr(change.getCurrentStatus())
 					+ "”，敬请关注。";
 
 			customerMsg.sendText(message);
