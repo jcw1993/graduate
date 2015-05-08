@@ -13,14 +13,13 @@ import edu.nju.software.service.AdminService;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	private AdminService adminService;
-	
+
 	@RequestMapping(value = { "/Error", "/error" }, method = RequestMethod.GET)
-	public ModelAndView error(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView error(HttpServletRequest request,
+			HttpServletResponse response) {
 		return new ModelAndView("error", null);
 	}
 }
-
-

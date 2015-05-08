@@ -20,18 +20,20 @@ import edu.nju.software.util.ResultCode;
 
 @Controller
 public class ValidateController {
-	
+
 	@Autowired
 	private WorkService workService;
-	
+
 	@RequestMapping(value = { "/CheckCreateSubTask" }, method = RequestMethod.GET)
 	@ResponseBody
-	public GeneralJsonResult<Integer> checkCreateSubTask(HttpServletRequest request, HttpServletResponse response) {
+	public GeneralJsonResult<Integer> checkCreateSubTask(
+			HttpServletRequest request, HttpServletResponse response) {
 		int taskId = CoUtils.getRequestIntValue(request, "taskId", true);
-		GeneralResult<List<Member>> taskAssignResult = workService.getRelatedMembers(taskId);
-		
+		GeneralResult<List<Member>> taskAssignResult = workService
+				.getRelatedMembers(taskId);
+
 		int resultCode = 0;
-		if(taskAssignResult.getResultCode() == ResultCode.NORMAL) {
+		if (taskAssignResult.getResultCode() == ResultCode.NORMAL) {
 			resultCode = 1;
 		}
 		return new GeneralJsonResult<Integer>(resultCode);

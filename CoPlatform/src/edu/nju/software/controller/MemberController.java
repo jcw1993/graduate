@@ -32,7 +32,7 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
-	
+
 	@Autowired
 	private CompanyService companyService;
 
@@ -86,8 +86,8 @@ public class MemberController {
 		String qqNumber = request.getParameter("qqNumber");
 		String wxNumber = request.getParameter("wxNumber");
 		String phone = request.getParameter("phone");
-		String password= request.getParameter("password");
-		
+		String password = request.getParameter("password");
+
 		if (null != name) {
 			name = name.trim();
 		}
@@ -103,11 +103,11 @@ public class MemberController {
 		if (null != phone) {
 			phone = phone.trim();
 		}
-		if(null != password) {
+		if (null != password) {
 			password = password.trim();
 		}
 
-		Member member = new Member(id, name, companyId, workId,  password,
+		Member member = new Member(id, name, companyId, workId, password,
 				qqNumber, wxNumber, phone, null);
 
 		NoDataResult result = memberService.update(member);
@@ -145,12 +145,13 @@ public class MemberController {
 	public ModelAndView createMemberGet(HttpServletRequest request,
 			HttpServletResponse response) {
 		int companyId = CoUtils.getRequestIntValue(request, "companyId", true);
-		
-		GeneralResult<Company> companyResult = companyService.getById(companyId);
+
+		GeneralResult<Company> companyResult = companyService
+				.getById(companyId);
 		Member member = new Member();
-		if(companyResult.getResultCode() == ResultCode.NORMAL) {
-			member.setCompanyId(companyId);	
-		}else {
+		if (companyResult.getResultCode() == ResultCode.NORMAL) {
+			member.setCompanyId(companyId);
+		} else {
 			throw new IllegalArgumentException();
 		}
 
@@ -187,15 +188,15 @@ public class MemberController {
 		if (null != phone) {
 			phone = phone.trim();
 		}
-		
-		if(null != password && password.trim().length() > 0) {
+
+		if (null != password && password.trim().length() > 0) {
 			password = password.trim();
-		}else {
+		} else {
 			password = phone.substring(phone.length() - 6);
 		}
-		
-		Member member = new Member(name, companyId, workId,
-				password, qqNumber, wxNumber, phone, null);
+
+		Member member = new Member(name, companyId, workId, password, qqNumber,
+				wxNumber, phone, null);
 
 		GeneralResult<Integer> result = memberService.create(member);
 		return new NoDataJsonResult(result);

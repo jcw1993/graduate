@@ -49,9 +49,11 @@ public class LoginController {
 		if (adminResult.getResultCode() == ResultCode.NORMAL) {
 			Admin admin = adminResult.getData();
 			// for normal environment
-/*			Gson gson = new Gson();
-			CoUtils.addCookie(response, "currentAdmin",
-					URLEncoder.encode(gson.toJson(admin), "UTF-8"), 3600);*/
+			/*
+			 * Gson gson = new Gson(); CoUtils.addCookie(response,
+			 * "currentAdmin", URLEncoder.encode(gson.toJson(admin), "UTF-8"),
+			 * 3600);
+			 */
 			String sessionId = request.getSession(true).getId();
 			UserInfoStorage.putAdmin(sessionId, admin);
 			response.sendRedirect(request.getContextPath() + "/"
