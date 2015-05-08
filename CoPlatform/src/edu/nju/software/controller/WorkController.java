@@ -262,7 +262,8 @@ public class WorkController {
 					status, depth, startDate, endDate, path, taskResult
 							.getData().getIsLeaf());
 
-			NoDataResult result = workService.updateTask(task);
+			NoDataResult result = workService.updateTask(task, request
+					.getSession(true).getId());
 			return new NoDataJsonResult(result);
 		} else {
 			return new NoDataJsonResult(taskResult);

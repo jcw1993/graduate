@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.nju.software.pojo.Member;
+import edu.nju.software.pojo.OutEmployee;
 import edu.nju.software.service.MemberService;
+import edu.nju.software.service.OutEmployeeService;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
 import edu.nju.software.util.UserInfoStorage;
@@ -27,6 +29,9 @@ public class WeChatLoginController {
 	@Autowired
 	private MemberService memberService;
 
+	@Autowired
+	private OutEmployeeService outEmployeeService;
+
 	@RequestMapping(value = { "/wechat" }, method = RequestMethod.GET)
 	public ModelAndView wxLoginView(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
@@ -36,26 +41,41 @@ public class WeChatLoginController {
 			response.sendRedirect(request.getContextPath() + "/Error");
 			return null;
 		}
-		
+
 		GeneralResult<Member> memberResult = memberService.getByOpenId(openId);
 		if (memberResult.getResultCode() == ResultCode.NORMAL) {
 			Member member = memberResult.getData();
-			
+
 			// for normal environment
-/*			Gson gson = new Gson();
-			CoUtils.addCookie(response, "currentMember",
-					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);*/
-			
+			/*
+			 * Gson gson = new Gson(); CoUtils.addCookie(response,
+			 * "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"),
+			 * 3600);
+			 */
+
 			String sessionId = request.getSession(true).getId();
 			UserInfoStorage.putMember(sessionId, member);
 			response.sendRedirect(request.getContextPath()
 					+ "/wechat/MyTasks?openId=" + openId);
 			return null;
+		} else {
+			// 外聘人员
+			GeneralResult<OutEmployee> outEmployeeResult = outEmployeeService
+					.getByOpenId(openId);
+			if (outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
+				OutEmployee outEmployee = outEmployeeResult.getData();
+
+				String sessionId = request.getSession(true).getId();
+				UserInfoStorage.putOutEmployee(sessionId, outEmployee);
+				response.sendRedirect(request.getContextPath()
+						+ "/wechat/MyTasks?openId=" + openId);
+				return null;
+			}
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("openId", openId.trim());
-		
+
 		return new ModelAndView("wechat/login", "model", model);
 	}
 
@@ -88,18 +108,35 @@ public class WeChatLoginController {
 			member.setOpenId(openId);
 			memberService.update(member);
 			// for normal environment
-/*			Gson gson = new Gson();
-			CoUtils.addCookie(response, "currentMember",
-					URLEncoder.encode(gson.toJson(member), "UTF-8"), 3600);*/
+			/*
+			 * Gson gson = new Gson(); CoUtils.addCookie(response,
+			 * "currentMember", URLEncoder.encode(gson.toJson(member), "UTF-8"),
+			 * 3600);
+			 */
 			String sessionId = request.getSession(true).getId();
 			UserInfoStorage.putMember(sessionId, member);
 			response.sendRedirect(request.getContextPath()
 					+ "/wechat/MyTasks?openId=" + openId);
 			return;
 		} else {
-			response.sendRedirect(request.getContextPath() + "/wechat?openId="
-					+ openId);
-			return;
+			//外聘人员
+			GeneralResult<OutEmployee> outEmployeeResult = outEmployeeService
+					.getByPhoneAndPassword(phone, password);
+			if (outEmployeeResult.getResultCode() == ResultCode.NORMAL) {
+				OutEmployee outEmployee = outEmployeeResult.getData();
+				outEmployee.setOpenId(openId);
+				outEmployeeService.update(outEmployee);
+
+				String sessionId = request.getSession(true).getId();
+				UserInfoStorage.putOutEmployee(sessionId, outEmployee);;
+				response.sendRedirect(request.getContextPath()
+						+ "/wechat/MyTasks?openId=" + openId);
+				return;
+			}else{
+				response.sendRedirect(request.getContextPath() + "/wechat?openId="
+						+ openId);
+				return;
+			}
 		}
 
 	}

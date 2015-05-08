@@ -7,6 +7,8 @@ public class OutEmployee {
 	private String wxNumber;
 	private String qqNumber;
 	private String phone;
+	private String password;
+	private String openId;
 	
 	public int getId() {
 		return id;
@@ -43,5 +45,17 @@ public class OutEmployee {
 	
 	public OutEmployee(int id) {
 		this.id = id;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getOpenId() {
+		return openId;
+	}
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 }

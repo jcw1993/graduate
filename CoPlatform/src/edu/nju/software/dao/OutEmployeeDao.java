@@ -13,4 +13,9 @@ public interface OutEmployeeDao {
 	
 	public OutEmployee getById(int outEmployeeId);
 
+    public OutEmployee getByOpenId(String openId);
+	
+	public OutEmployee getByPhoneAndPassword(String phone, String password);
+	
+	public void update(OutEmployee outEmployee);
 }

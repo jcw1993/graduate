@@ -13,6 +13,8 @@
         <property name="wxNumber" type="string" column="wx_number" />
         <property name="qqNumber" type="string" column="qq_number" />
         <property name="phone" type="string" column="phone" />
+        <property name="password" type="string" column="password" />
+        <property name="openId" type="string" column="open_id" />
     </class>
 
 </hibernate-mapping>
