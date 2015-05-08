@@ -109,6 +109,9 @@ public class NewsController {
 			return new NoDataJsonResult(newsResult);
 		}
 	}
+	
+	@Autowired
+	private WechatBroadcast wechatBroadcast;
 
 	@RequestMapping(value = { "/SubscribeNews" }, method = RequestMethod.GET)
 	@ResponseBody
@@ -120,7 +123,7 @@ public class NewsController {
 			News news = newsResult.getData();
 			news.setPublishTime(new Date());
 			NoDataResult result = newsService.update(news);
-			new WechatBroadcast().broadcastNews(news);
+			wechatBroadcast.broadcastNews(news);
 			return new NoDataJsonResult(result);
 		} else {
 			return new NoDataJsonResult(newsResult);
