@@ -32,6 +32,7 @@ public class WechatNewsController {
 		GeneralResult<News> newsResult = newsService.getById(newsId);
 		if(newsResult.getResultCode() == ResultCode.NORMAL) {
 			model.put("wxnews",newsResult.getData());
+			model.put("newspic", (newsId%11));
 		}
 		
 //		return new ModelAndView("wechat/newsDetail", "model", model);

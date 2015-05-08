@@ -15,12 +15,21 @@ public class CustomerAccessTokenServer extends CustomerServer {
 	/* (non-Javadoc)
 	 * @see org.sword.wechat4j.token.DbAccessTokenServer#find()
 	 */
+	
+//	@Autowired
+//	private CfgDao cfgDao;
+//	private static String accessToken= "GOka8q9eM6hsPJkksYhWBXoymLsLuP2RuiuI7BVNDeILwGLHMddmsXcayauy8aoBZS4JYnaRv5YkmqEnWqcO2UPjp3PE60ErcX3g2sGGDBA";
+	
 	@Override
 	public String find() {
 		String accessToken = null;
+//		Cfg cfg = cfgDao.getByKey("access_token");
+//		String accessToken = cfg.getCfgvalue();
+		
 		//执行数据库操作
 //		String sql = "select cfgValue from cfg where cfg.cfgKey = 'access_token'";
 //		accessToken = DBUtil.query(sql);
+		
 		return accessToken;
 	}
 
@@ -29,10 +38,15 @@ public class CustomerAccessTokenServer extends CustomerServer {
 	 */
 	@Override
 	public boolean save(Token accessToken) {
+//		Cfg cfg = cfgDao.getByKey("access_token");
+//		cfg.setCfgvalue(accessToken.getToken());
+//		cfgDao.update(cfg);
+		
 		//如果没有需要插入，如果有的就更新，假设已经有了数据库配置项
 //		String sql = "update cfg set cfg.cfgValue=" + accessToken.getToken() + 
 //				" where cfg.cfgKey= 'access_token'";
 //		DBUtil.execute(sql);
+//		this.accessToken=accessToken.getToken();
 		return true;
 	}
 }

@@ -15,7 +15,7 @@
 
 	<div id="content" class="main fontSize2">
 		<p class="title" align="left">${model.wxnews.title}</p>
-		<span class="src">${model.wxnews.createdTime}</span>
+		<span class="src">发布日期：${model.wxnews.createdTime}</span>
 
 		
 
@@ -26,7 +26,7 @@
 		<p class="text"></p>
 		<div class="preLoad" style="width: 100%; min-height: 129px">
 			<div class="img">
-				<img src="./腾讯新闻_files/1000"
+				<img src="http://njucowork-pic.stor.sinaapp.com/news${model.newspic}.jpg"
 					preview-src="http://inews.gtimg.com/newsapp_match/0/44857511/1000"
 					style="width: 100%; display: block;">
 			</div>
@@ -34,6 +34,6 @@
 		</div>
 		<p class="text">${model.wxnews.content}</p>
 		<p></p>
-		
+		</div>
 </body>
 </html>
