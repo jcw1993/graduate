@@ -60,6 +60,9 @@ public class WorkServiceImpl implements WorkService {
 
 	@Autowired
 	private LogDao logDao;
+	
+	@Autowired
+	private WechatBroadcast wechatBroadcast;
 
 	@Override
 	public GeneralResult<Project> getProjectById(int id) {
@@ -318,7 +321,7 @@ public class WorkServiceImpl implements WorkService {
 				}
 			}
 
-			new WechatBroadcast().broadcastChanges(openIDList, log);
+			wechatBroadcast.broadcastChanges(openIDList, log);
 
 		} catch (DataAccessException e) {
 			logger.error(e.getMessage());

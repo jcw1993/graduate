@@ -44,7 +44,7 @@ public class WechatBroadcast {
 	@Autowired
 	private SystemAdminService systemAdminService;
 
-	public List<String> getOpenIdList(int companyId) {
+	private List<String> getOpenIdList(int companyId) {
 		List<String> openIdList = new ArrayList<String>();
 		// member
 		GeneralResult<List<Member>> memberResult = memberService
