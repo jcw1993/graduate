@@ -120,7 +120,7 @@ public class NewsController {
 			News news = newsResult.getData();
 			news.setPublishTime(new Date());
 			NoDataResult result = newsService.update(news);
-			WechatBroadcast.broadcastNews(news);
+			new WechatBroadcast().broadcastNews(news);
 			return new NoDataJsonResult(result);
 		} else {
 			return new NoDataJsonResult(newsResult);

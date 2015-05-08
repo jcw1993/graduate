@@ -12,12 +12,16 @@ import org.sword.wechat4j.response.ArticleResponse;
 
 import edu.nju.software.common.EmployeeType;
 import edu.nju.software.common.TaskStatus;
+import edu.nju.software.pojo.Admin;
 import edu.nju.software.pojo.Log;
 import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.News;
 import edu.nju.software.pojo.OutEmployee;
+import edu.nju.software.pojo.SystemAdmin;
+import edu.nju.software.service.AdminService;
 import edu.nju.software.service.MemberService;
 import edu.nju.software.service.OutEmployeeService;
+import edu.nju.software.service.SystemAdminService;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.ResultCode;
 
@@ -29,12 +33,18 @@ import edu.nju.software.util.ResultCode;
 @Component
 public class WechatBroadcast {
 	@Autowired
-	private static MemberService memberService;
+	private MemberService memberService;
 
 	@Autowired
-	private static OutEmployeeService outEmployeeService;
+	private OutEmployeeService outEmployeeService;
 
-	public static List<String> getOpenIdList(int companyId) {
+	@Autowired
+	private AdminService adminService;
+
+	@Autowired
+	private SystemAdminService systemAdminService;
+
+	public List<String> getOpenIdList(int companyId) {
 		List<String> openIdList = new ArrayList<String>();
 		// member
 		GeneralResult<List<Member>> memberResult = memberService
@@ -70,7 +80,7 @@ public class WechatBroadcast {
 	}
 
 	// 群发资讯
-	public static void broadcastNews(News news) {
+	public void broadcastNews(News news) {
 		ArticleResponse newsRsp = WeChatRsp.getNewsRsp(news, null);
 
 		/*
@@ -96,7 +106,7 @@ public class WechatBroadcast {
 	}
 
 	// 群发资讯列表
-	public static void broadcastNewsList(List<News> newsList) {
+	public void broadcastNewsList(List<News> newsList) {
 		List<ArticleResponse> newsRsps = new ArrayList<ArticleResponse>();
 
 		int index = 1;
@@ -123,7 +133,7 @@ public class WechatBroadcast {
 	}
 
 	// 任务状态修改推送
-	public static void broadcastChanges(List<String> openIDList, Log change) {
+	public void broadcastChanges(List<String> openIDList, Log change) {
 		for (Object openId : openIDList) {
 			String openIdString = String.valueOf(openId);
 			CustomerMsg customerMsg = new CustomerMsg(openIdString);
@@ -143,7 +153,6 @@ public class WechatBroadcast {
 				}
 
 			} else if (change.getCreatorType() == EmployeeType.OUT_EMPLOYEE) {
-				name += "外聘人员";
 				GeneralResult<OutEmployee> outEmployeeResult = outEmployeeService
 						.getById(change.getCreatorId());
 				OutEmployee outEmployee = outEmployeeResult.getData();
@@ -152,6 +161,26 @@ public class WechatBroadcast {
 					name = name + "外聘人员" + outEmployee.getName();
 				} else {
 					name += "某外聘人员";
+				}
+			} else if (change.getCreatorType() == EmployeeType.ADMIN) {
+				GeneralResult<Admin> adminResult = adminService.getById(change
+						.getCreatorId());
+				Admin admin = adminResult.getData();
+
+				if (null != admin) {
+					name = name + "管理员" + admin.getName();
+				} else {
+					name += "某管理员";
+				}
+			} else if (change.getCreatorType() == EmployeeType.SYSTEM_ADMIN) {
+				GeneralResult<SystemAdmin> systemAdminResult = systemAdminService
+						.getById(change.getCreatorId());
+				SystemAdmin systemAdmin = systemAdminResult.getData();
+
+				if (null != systemAdmin) {
+					name = name + "系统管理员" + systemAdmin.getUserName();
+				} else {
+					name += "某系统管理员";
 				}
 			}
 

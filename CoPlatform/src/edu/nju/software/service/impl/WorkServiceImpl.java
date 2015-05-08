@@ -318,7 +318,7 @@ public class WorkServiceImpl implements WorkService {
 				}
 			}
 
-			WechatBroadcast.broadcastChanges(openIDList, log);
+			new WechatBroadcast().broadcastChanges(openIDList, log);
 
 		} catch (DataAccessException e) {
 			logger.error(e.getMessage());
