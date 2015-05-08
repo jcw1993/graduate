@@ -145,8 +145,8 @@ public class OutEmployeeServiceImpl implements OutEmployeeService {
 	@Override
 	public GeneralResult<OutEmployee> getByOpenId(String openId) {
 		GeneralResult<OutEmployee> result = new GeneralResult<OutEmployee>();
-		OutEmployee outEmployee = (OutEmployee) CoCacheManager.get(String
-				.format(OUT_EMPLOYEE_OPENID_CACHE_KEY, openId));
+		OutEmployee outEmployee = (OutEmployee) CoCacheManager
+				.get(OUT_EMPLOYEE_OPENID_CACHE_KEY +openId);
 		if (null != outEmployee) {
 			result.setData(outEmployee);
 		} else {
@@ -155,8 +155,8 @@ public class OutEmployeeServiceImpl implements OutEmployeeService {
 				if (null != outEmployee) {
 					result.setData(outEmployee);
 					CoCacheManager
-							.put(String.format(OUT_EMPLOYEE_OPENID_CACHE_KEY,
-									openId), outEmployee);
+							.put(OUT_EMPLOYEE_OPENID_CACHE_KEY+
+									openId, outEmployee);
 				} else {
 					result.setResultCode(ResultCode.E_NO_DATA);
 				}
