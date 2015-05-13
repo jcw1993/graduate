@@ -146,7 +146,13 @@ public class WeChatProcessor extends WechatSupport {
 				+ Location_Y + ", Scale:" + Scale + ", Label:" + Label
 				+ ", MsgId:" + MsgId;
 		logger.info(result);
-		responseText(result);
+//		responseText(result);
+		
+		String content =  Label + "怎么走";
+		if(null == Label && StringUtils.isBlank(Label)){
+			content = "您的地理位置为：Location_X:" + Location_X + ", Location_Y:"
+					+ Location_Y ;
+		}
 	}
 
 	/**
