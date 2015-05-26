@@ -40,12 +40,14 @@ public class WeChatProcessor extends WechatSupport {
 		logger.info(content);
 
 		// 回复任务相关图文链接
-		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
+//		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
+		if (KeywordHandler.isTask(content)) {
 			List<ArticleResponse> tasksRsp = weChatRsp.tasksRsp(openId);
 			responseNews(tasksRsp);
 		}
 		// 回复资讯
-		else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
+//		else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
+		else if (KeywordHandler.isNews(content)) {
 			List<ArticleResponse> news = weChatRsp.newsRsp();
 
 			if (news == null) {
@@ -55,7 +57,8 @@ public class WeChatProcessor extends WechatSupport {
 			}
 		}
 		// 回复帮助信息
-		else if ((content.toUpperCase()).equals(WeChatInstruct.HELP)) {
+//		else if ((content.toUpperCase()).equals(WeChatInstruct.HELP)) {
+		else if (KeywordHandler.isHelp(content)) {
 			responseText(weChatRsp.helpRsp());
 		} else {
 			// 聊天机器人
@@ -153,6 +156,7 @@ public class WeChatProcessor extends WechatSupport {
 			content = "您的地理位置为：Location_X:" + Location_X + ", Location_Y:"
 					+ Location_Y ;
 		}
+		responseText("你是要去那里么？\n"+weChatRsp.chattingRobotRsp(content));
 	}
 
 	/**
