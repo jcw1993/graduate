@@ -75,6 +75,21 @@
 </div>
 </div>
 
+<div id="messageModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">系统信息</h4>
+			</div>
+			<div class="modal-body">更新任务状态成功</div>
+			<div class="modal-footer">
+				<button id="confirm" type="button" class="btn btn-primary"
+					data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$taskStartDatePicker = $("#taskStartDate");
 	$taskStartTimePicker = $("#taskStartTime");
@@ -100,8 +115,8 @@
 			success: function(result) {
 				if(result.resultCode == 0) {
 					console.log("success");
-					alert("更新任务状态成功");
-					location.reload();
+					$("#messageModal").modal();
+					// location.reload();
 				}else {
 					console.log("save task info error, error code : " + result.resultCode + ";error message: " + result.message);
 				}
@@ -109,6 +124,10 @@
 		});
 	});
 	
+
+	$("#confirm").click(function(e) {
+		location.reload();
+	});
 </script>
 
 </body>

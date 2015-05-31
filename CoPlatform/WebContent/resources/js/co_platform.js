@@ -56,3 +56,7 @@ function compareDate(date1, time1, date2, time2) {
 	}
 
 }
+
+function showDialog(title, message, confirmCallback) {
+
+}
