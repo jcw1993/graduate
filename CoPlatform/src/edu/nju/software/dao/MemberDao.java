@@ -8,6 +8,8 @@ import edu.nju.software.pojo.Member;
 public interface MemberDao {
 	public List<Member> getByCompany(int companyId);
 	
+	public List<Member> getByName(String name);
+	
 	public Member getById(int id);
 	
 	public Member getByOpenId(String openId);

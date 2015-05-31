@@ -15,6 +15,8 @@ public interface MemberService {
 	public GeneralResult<Member> getByOpenId(String openId);
 
 	public GeneralResult<Member> getByCompanyAndId(int companyId, int memberId);
+	
+	public GeneralResult<List<Member>> getByName(String name);
 
 	public GeneralResult<Member> getByCompanyAndWorkId(int companyId, String workId);
 

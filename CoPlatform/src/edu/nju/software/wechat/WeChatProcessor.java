@@ -40,13 +40,32 @@ public class WeChatProcessor extends WechatSupport {
 		logger.info(content);
 
 		// 回复任务相关图文链接
-//		if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
-		if (KeywordHandler.isTask(content)) {
+		// if ((content.toUpperCase()).equals(WeChatInstruct.TASKS)) {
+		/*if (KeywordHandler.isTask(content)) {
+			List<ArticleResponse> tasksRsp = weChatRsp.tasksRsp(openId);
+			responseNews(tasksRsp);
+		}*/
+		// 回复他人信息
+		if (KeywordHandler.isOrder(content)) {
+			content = content.substring(1);
+			String result = "糟糕，您没有权限(⊙o⊙)！ ";
+			String[] info = content.split(" ");
+			if (info.length == 1) {
+				result = weChatRsp.userInfoRsp(info[0]);
+			} else if (info.length == 2) {
+				result = weChatRsp.sendInfoRsp(info[0], info[1], content);
+			} else {
+				result = "并不能看懂o(╯□╰)o！"+content+"  "+info.length;
+			}
+			 responseText(result);
+		}
+		// 回复任务相关图文链接
+		else if (KeywordHandler.isTask(content)) {
 			List<ArticleResponse> tasksRsp = weChatRsp.tasksRsp(openId);
 			responseNews(tasksRsp);
 		}
 		// 回复资讯
-//		else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
+		// else if ((content.toUpperCase()).equals(WeChatInstruct.NEWS)) {
 		else if (KeywordHandler.isNews(content)) {
 			List<ArticleResponse> news = weChatRsp.newsRsp();
 
@@ -56,8 +75,12 @@ public class WeChatProcessor extends WechatSupport {
 				responseNews(news);
 			}
 		}
+		// 回复公司信息
+		else if (KeywordHandler.isCompany(content)) {
+			responseText(weChatRsp.companyRsp());
+		}
 		// 回复帮助信息
-//		else if ((content.toUpperCase()).equals(WeChatInstruct.HELP)) {
+		// else if ((content.toUpperCase()).equals(WeChatInstruct.HELP)) {
 		else if (KeywordHandler.isHelp(content)) {
 			responseText(weChatRsp.helpRsp());
 		} else {
@@ -149,14 +172,14 @@ public class WeChatProcessor extends WechatSupport {
 				+ Location_Y + ", Scale:" + Scale + ", Label:" + Label
 				+ ", MsgId:" + MsgId;
 		logger.info(result);
-//		responseText(result);
-		
-		String content =  Label + "怎么走";
-		if(null == Label && StringUtils.isBlank(Label)){
+		// responseText(result);
+
+		String content = Label + "怎么走";
+		if (null == Label && StringUtils.isBlank(Label)) {
 			content = "您的地理位置为：Location_X:" + Location_X + ", Location_Y:"
-					+ Location_Y ;
+					+ Location_Y;
 		}
-		responseText("你是要去那里么？\n"+weChatRsp.chattingRobotRsp(content));
+		responseText("你是要去那里么？\n" + weChatRsp.chattingRobotRsp(content));
 	}
 
 	/**

@@ -247,4 +247,19 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+	@Override
+	public GeneralResult<List<Member>> getByName(String name) {
+		GeneralResult<List<Member>> result = new GeneralResult<List<Member>>();
+		List<Member> memberList = null;
+		try {
+			memberList = memberDao.getByName(name);
+			result.setData(memberList);
+		}catch(DataAccessException e) {
+			logger.error(e.getMessage());
+			result.setResultCode(ResultCode.E_DATABASE_GET_ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
 }

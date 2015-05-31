@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.sword.wechat4j.response.ArticleResponse;
 
+import edu.nju.software.pojo.Member;
 import edu.nju.software.pojo.News;
+import edu.nju.software.service.MemberService;
 import edu.nju.software.service.NewsService;
 import edu.nju.software.util.GeneralResult;
 import edu.nju.software.util.WeChatInstruct;
@@ -27,6 +29,9 @@ import edu.nju.software.util.WeChatInstruct;
 public class WeChatRsp {
 	@Autowired
 	private NewsService newsService;
+	
+	@Autowired
+	private MemberService memberService;
 
 	private String prefix = WeChatInstruct.DIMAIN;
 
@@ -96,7 +101,7 @@ public class WeChatRsp {
 				String picURL = "http://njucowork-pic.stor.sinaapp.com/number"
 						+ index + ".png";
 				ArticleResponse newsRsp = WeChatRsp.getNewsRsp(news, picURL);
-				if(null == newsRsp){
+				if (null == newsRsp) {
 					continue;
 				}
 
@@ -119,6 +124,53 @@ public class WeChatRsp {
 		String result = "您好，若需查询任务或修改任务状态请发送" + WeChatInstruct.TASKS
 				+ ",若需获取最新资讯请发送" + WeChatInstruct.NEWS + ",若需要帮助请发送"
 				+ WeChatInstruct.HELP + "。";
+
+		return result;
+	}
+
+	// 返回公司信息
+	public String companyRsp() {
+		String result = "公司名称：南京大学软件学院\n"
+				+ "公司简介：南京大学软件学院是南京大学所属的教学研究型工科学院，现设有软件工程本科专业、软件工程专业硕士专业、应用软件工程工学硕士与博士专业；拥有国家级软件工程人才培养模式创新实验区、国家软件人才国际培训（南京）基地。\n"
+				+ "联系电话：18251324234\n" + "联系地址：南京市鼓楼区汉口路22号";
+
+		return result;
+	}
+
+	// 返回公司信息
+	/*public String orderRsp() {
+		String result = "公司名称：\t南京大学软件学院\n"
+				+ "公司简介：\t南京大学软件学院是南京大学所属的教学研究型工科学院，现设有软件工程本科专业、软件工程专业硕士专业、应用软件工程工学硕士与博士专业；拥有国家级软件工程人才培养模式创新实验区、国家软件人才国际培训（南京）基地。\n"
+				+ "联系电话：\t18251324234\n" + "联系地址：\t南京市鼓楼区汉口路22号";
+
+		return result;
+	}*/
+
+	private String getInfo(Member member){
+		return "姓名："+member.getName()+"\n"
+				+"工号："+ member.getWorkId()+"\n"
+				+"联系电话："+member.getPhone()+"\n";
+	}
+	
+	// 返回用户信息
+	public String userInfoRsp(String name) {
+		GeneralResult<List<Member>> result = memberService.getByName(name);
+		String res = "";
+		if (result == null || result.getData() == null
+				|| result.getData().isEmpty()) {
+			return "查无此人╮(╯▽╰)╭!";
+		} else {
+			List<Member> memberList = result.getData();
+			for(Member m:memberList){
+				res+=getInfo(m);
+			}
+		}
+		return res;
+	}
+
+	// 返回发送信息
+	public String sendInfoRsp(String name, String info,String c) {
+		String result = "消息发送成功！ 名字="+name+"；消息="+info+"；内容="+c;
 
 		return result;
 	}
