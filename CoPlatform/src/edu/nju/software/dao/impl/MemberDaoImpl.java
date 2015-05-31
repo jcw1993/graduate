@@ -88,7 +88,7 @@ public class MemberDaoImpl extends HibernateDaoBase implements MemberDao {
 
 	@Override
 	public List<Member> getByName(String name) {
-		Query query = getSession().createQuery("from Member where name like %" + name + "%" );
+		Query query = getSession().createQuery("from Member where name like '%" + name + "%'" );
 		@SuppressWarnings("unchecked")
 		List<Member> memberList = query.list();
 		if(null != memberList && !memberList.isEmpty()) {

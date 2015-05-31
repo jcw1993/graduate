@@ -149,7 +149,7 @@ public class WeChatRsp {
 	private String getInfo(Member member){
 		return "姓名："+member.getName()+"\n"
 				+"工号："+ member.getWorkId()+"\n"
-				+"联系电话："+member.getPhone()+"\n";
+				+"联系电话："+member.getPhone();
 	}
 	
 	// 返回用户信息
